@@ -15,9 +15,15 @@ def addVectors(angle1, length1, angle2, length2):
 def createBulletTime(speed):
     i = 0
     if speed > 0.5:
-        while i < 10:
+        while i < 20:
             pygame.time.wait(10)
             i += 1
+
+
+def setInvicibility(players):
+    for player in players:
+        player.invincible = True
+        player.invincibleTimer = 0
 
 
 class Particle:
@@ -26,15 +32,15 @@ class Particle:
         self.y = y
         self.elasticity = 0.75
         self.size = size
-        self.colour = (0, 0, 255)
+        self.color = (255, 255, 255)
         self.thickness = 0
         self.speed = 1
         self.angle = 0
-        self.circle = pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, self.thickness)
+        self.circle = pygame.draw.circle(screen, self.color, (self.x, self.y), self.size, self.thickness)
 
     def display(self, screen):
-        self.circle = pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), self.size, self.thickness)
-        pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, self.thickness)
+        self.circle = pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.size, self.thickness)
+        pygame.draw.circle(screen, self.color, (self.x, self.y), self.size, self.thickness)
 
     def move(self, gravity):
         self.angle, self.speed = addVectors(self.angle, self.speed, gravity[0], gravity[1])
@@ -50,10 +56,12 @@ class Particle:
                         self.x += 10
                         self.angle = (3 * math.pi) / 4
                         self.speed *= 2
+                        self.color = player.color
                     else:
                         self.x -= 10
                         self.angle = (5 * math.pi) / 4
                         self.speed *= 2
+                        self.color = player.color
             elif player.attackMiddleUpRect != 0:
                 if self.circle.colliderect(player.attackMiddleUpRect):
                     createBulletTime(self.speed)
@@ -61,10 +69,12 @@ class Particle:
                         self.x += 10
                         self.angle = math.pi / 4
                         self.speed *= 2
+                        self.color = player.color
                     else:
                         self.x -= 10
                         self.angle = (7 * math.pi) / 4
                         self.speed *= 2
+                        self.color = player.color
             elif player.attackMiddleRect != 0:
                 if self.circle.colliderect(player.attackMiddleRect):
                     createBulletTime(self.speed)
@@ -73,11 +83,13 @@ class Particle:
                         self.x += 10
                         self.angle = math.pi / 2
                         self.speed *= 2
+                        self.color = player.color
                     else:
                         self.y = player.attackMiddleRect.y
                         self.x -= 10
                         self.angle = (3 * math.pi) / 2
                         self.speed *= 2
+                        self.color = player.color
             elif player.attackDownRect != 0:
                 if self.circle.colliderect(player.attackDownRect):
                     createBulletTime(self.speed)
@@ -85,10 +97,12 @@ class Particle:
                         self.y = player.attackDownRect.y + 32
                         self.angle = 15
                         self.speed *= 2
+                        self.color = player.color
                     else:
                         self.y = player.attackDownRect.y + 32
                         self.angle = - 15
                         self.speed *= 2
+                        self.color = player.color
             elif player.attackUpRect != 0:
                 if self.circle.colliderect(player.attackUpRect):
                     createBulletTime(self.speed)
@@ -96,25 +110,21 @@ class Particle:
                         self.y = player.attackUpRect.y - 32
                         self.angle = 100
                         self.speed *= 2
+                        self.color = player.color
                     else:
                         self.y = player.attackUpRect.y - 32
                         self.angle = - 100
                         self.speed *= 2
+                        self.color = player.color
             if self.circle.colliderect(player.rect):
                 if self.speed > 0.2:
-                    if self.x < player.x:
-                        self.x = player.x - 20
-                        player.x = self.x + 22
-                    elif self.x > player.x:
-                        self.x = player.x + 21
-                        player.x = self.x - 22
-                    elif self.y > player.y:
-                        self.x = player.x + 10
-                    elif self.y < player.y:
-                        if self.x < player.x:
-                            self.x = player.x - 10
-                        elif self.x > player.x:
-                            self.x = player.x + 10
+                    if self.color != player.color and self.color != (255, 255, 255):
+                        player.health -= self.speed * 10
+                        print(player.health)
+                        self.color = (255, 255, 255)
+                        setInvicibility(players)
+                else:
+                    self.color = (255, 255, 255)
         if self.x > 800 - self.size:
             self.x = 2 * (800 - self.size) - self.x
             self.angle = - self.angle
