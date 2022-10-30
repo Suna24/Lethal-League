@@ -62,6 +62,7 @@ class Particle:
                         self.angle = (5 * math.pi) / 4
                         self.speed *= 2
                         self.color = player.color
+                    player.isAttacking = False
             elif player.attackMiddleUpRect != 0:
                 if self.circle.colliderect(player.attackMiddleUpRect):
                     createBulletTime(self.speed)
@@ -75,6 +76,7 @@ class Particle:
                         self.angle = (7 * math.pi) / 4
                         self.speed *= 2
                         self.color = player.color
+                    player.isAttacking = False
             elif player.attackMiddleRect != 0:
                 if self.circle.colliderect(player.attackMiddleRect):
                     createBulletTime(self.speed)
@@ -90,6 +92,7 @@ class Particle:
                         self.angle = (3 * math.pi) / 2
                         self.speed *= 2
                         self.color = player.color
+                    player.isAttacking = False
             elif player.attackDownRect != 0:
                 if self.circle.colliderect(player.attackDownRect):
                     createBulletTime(self.speed)
@@ -103,6 +106,7 @@ class Particle:
                         self.angle = - 15
                         self.speed *= 2
                         self.color = player.color
+                    player.isAttacking = False
             elif player.attackUpRect != 0:
                 if self.circle.colliderect(player.attackUpRect):
                     createBulletTime(self.speed)
@@ -111,14 +115,17 @@ class Particle:
                         self.angle = 100
                         self.speed *= 2
                         self.color = player.color
+
                     else:
                         self.y = player.attackUpRect.y - 32
                         self.angle = - 100
                         self.speed *= 2
                         self.color = player.color
+                    player.isAttacking = False
             if self.circle.colliderect(player.rect):
                 if self.speed > 0.2:
                     if self.color != player.color and self.color != (255, 255, 255):
+                        createBulletTime(self.speed)
                         player.health -= self.speed * 10
                         print(player.health)
                         self.color = (255, 255, 255)

@@ -27,6 +27,9 @@ class Player:
         self.direction = Direction.RIGHT
         self.jumpCount = 0
         self.hprect = hprect
+        self.attackTimer = 0
+        self.newattackTimer = 0
+        self.newAttack = False
         self.moveUp = None
         self.moveDown = None
         self.moveLeft = None
@@ -46,6 +49,11 @@ class Player:
         self.specialAttack = specialAttack
 
     def move(self, ball):
+        if self.newAttack:
+            self.newattackTimer += 1
+            if self.newattackTimer == 500:
+                self.newAttack = False
+                self.newattackTimer = 0
         if self.invincible:
             self.invincibleTimer += 1
             self.color = (255, 255, 255)
@@ -54,6 +62,12 @@ class Player:
                 print("invincible off")
                 self.color = self.colorguard
                 self.invincibleTimer = 0
+        if self.isAttacking:
+            self.attackTimer += 1
+            if self.attackTimer >= 1000:
+                self.isAttacking = False
+                self.newAttack = True
+                self.attackTimer = 0
         keys = pygame.key.get_pressed()
         if keys[self.moveLeft] and self.x > 0:
             self.direction = Direction.LEFT
@@ -73,23 +87,23 @@ class Player:
                 self.isJump = True
             if not keys[self.jump]:
                 self.isJump = False
-        if keys[self.moveUp] and keys[self.attack]:
-            self.isAttacking = True
-            self.attackDirection = 1
         if keys[pygame.K_b]:
             self.isAttacking = False
-        if keys[self.moveDown] and keys[self.attack]:
-            self.isAttacking = True
-            self.attackDirection = 2
-        if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]):
-            self.isAttacking = True
-            self.attackDirection = 5
-        if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp]:
+        if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] and self.isAttacking == False and self.newAttack == False:
             self.isAttacking = True
             self.attackDirection = 3
-        if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveDown]:
+        elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveDown] and self.isAttacking == False and self.newAttack == False:
             self.isAttacking = True
             self.attackDirection = 4
+        elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and self.isAttacking == False and self.newAttack == False:
+            self.isAttacking = True
+            self.attackDirection = 5
+        elif keys[self.moveUp] and keys[self.attack] and self.isAttacking == False and self.newAttack == False:
+            self.isAttacking = True
+            self.attackDirection = 1
+        elif keys[self.moveDown] and keys[self.attack] and self.isAttacking == False and self.newAttack == False:
+            self.isAttacking = True
+            self.attackDirection = 2
         self.vel_y += 0.0006
         if self.vel_y > 10:
             self.vel_y = 10
