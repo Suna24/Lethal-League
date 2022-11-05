@@ -58,7 +58,7 @@ class Player:
         self.repeatSprite -= 1
         if self.repeatSprite == 0:
             self.currentSprite += 1
-            self.repeatSprite = 30
+            self.repeatSprite = 60
 
     def move(self, ball, screen):
         if self.newAttack:
@@ -81,16 +81,16 @@ class Player:
                 self.newAttack = True
                 self.attackTimer = 0
         keys = pygame.key.get_pressed()
-        # Default character position
-        if not(keys[self.moveLeft] or keys[self.moveUp] or keys[self.moveRight] or keys[self.moveDown])\
-                or (keys[self.moveLeft] and keys[self.moveRight]):
+        # Default character position if both keys are pressed
+        if (not(keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight]))\
+                and self.isAttacking is False:
             screen.blit(self.sprite.defaultRight[0], (self.x - self.sprite.defaultRight[0].get_width() // 2, self.y - self.sprite.defaultRight[0].get_height() + 100))
         else:
-            if keys[self.moveLeft] and self.x > 0:
+            if keys[self.moveLeft] and self.x > 0 and self.isAttacking is False:
                 self.direction = Direction.LEFT
                 self.x -= self.speed / 2
                 self.playAnimation(screen, self.sprite.runningLeft)
-            if keys[self.moveRight] and self.x < 800 - 10:
+            if keys[self.moveRight] and self.x < 800 - 10 and self.isAttacking is False:
                 self.direction = Direction.RIGHT
                 self.x += self.speed / 2
                 self.playAnimation(screen, self.sprite.runningRight)
@@ -101,7 +101,7 @@ class Player:
             if keys[self.moveDown] and self.y < 600 - 100:
                 if not self.rect.colliderect(ball.circle):
                     self.y += self.speed / 2
-            if keys[self.jump] and self.isJump == False and self.in_air == False:
+            if keys[self.jump] and self.isJump == False and self.in_air == False and self.isAttacking is False:
                 self.vel_y = -0.5
                 self.isJump = True
             if not keys[self.jump]:
@@ -142,7 +142,6 @@ class Player:
         pygame.draw.rect(screen, self.color, self.rect)
         pygame.draw.rect(screen, (255, 255, 255), self.hprect,2)
         pygame.draw.rect(screen, (255, 0, 0), (self.hprect.x + 2, self.hprect.y + 2, (self.health * 296) / 100, self.hprect.height-4))
-        pygame.draw.rect(self.sprite.defaultRight[0], (255, 0, 0), self.sprite.defaultRight[0].get_rect(), 1)
         if self.isAttacking:
             if self.attackDirection == 1:
                 self.attackUpRect = pygame.Rect(self.x - 10, self.y - 20, 32, 20)
@@ -153,19 +152,24 @@ class Player:
             if self.attackDirection == 3:
                 if self.direction == Direction.RIGHT:
                     self.attackMiddleUpRect = pygame.Rect(self.x + 10, self.y - 20, 20, 20)
+                    self.playAnimation(screen, self.sprite.attackingTopRight)
                 else:
                     self.attackMiddleUpRect = pygame.Rect(self.x - 20, self.y - 20, 20, 20)
+                    self.playAnimation(screen, self.sprite.attackingTopLeft)
                 pygame.draw.rect(screen, (255, 255, 0), self.attackMiddleUpRect)
             if self.attackDirection == 4:
                 if self.direction == Direction.RIGHT:
-                    self.attackMiddleDownRect = pygame.Rect(self.x + 10, self.y + 40, 20, 20)
+                    self.attackMiddleDownRect = pygame.Rect(self.x + 10, self.y + 60, 20, 30)
+                    self.playAnimation(screen, self.sprite.attackingBottomRight)
                 else:
-                    self.attackMiddleDownRect = pygame.Rect(self.x - 20, self.y + 40, 20, 20)
+                    self.attackMiddleDownRect = pygame.Rect(self.x - 20, self.y + 60, 20, 30)
+                    self.playAnimation(screen, self.sprite.attackingBottomLeft)
                 pygame.draw.rect(screen, (255, 0, 255), self.attackMiddleDownRect)
             if self.attackDirection == 5:
                 if self.direction == Direction.RIGHT:
                     self.attackMiddleRect = pygame.Rect(self.x + 10, self.y + 20, 20, 20)
+                    self.playAnimation(screen, self.sprite.attackingMiddleRight)
                 else:
                     self.attackMiddleRect = pygame.Rect(self.x - 20, self.y + 20, 20, 20)
+                    self.playAnimation(screen, self.sprite.attackingMiddleLeft)
                 pygame.draw.rect(screen, (0, 255, 255), self.attackMiddleRect)
-
