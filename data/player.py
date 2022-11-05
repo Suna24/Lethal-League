@@ -2,7 +2,7 @@ import pygame
 from data.direction import Direction
 
 class Player:
-    def __init__(self, x, y, color,hprect):
+    def __init__(self, x, y, color, hprect, sprite):
         self.in_air = False
         self.vel_y = 0
         self.vel_x = 0
@@ -38,19 +38,7 @@ class Player:
         self.hprect = hprect
         self.currentSprite = 0
         self.repeatSprite = 30
-        self.defaultSprite = pygame.image.load("images/RapRapDefault/RapRap_bis.png")
-        self.RapRapRunningRight = []
-        self.RapRapRunningLeft = []
-
-    def initSprites(self):
-        self.RapRapRunningRight = [pygame.image.load("images/RapRapRunning/RapRap_18.png"),
-                                   pygame.image.load("images/RapRapRunning/RapRap_19.png"),
-                                   pygame.image.load("images/RapRapRunning/RapRap_20.png"),
-                                   pygame.image.load("images/RapRapRunning/RapRap_21.png"),
-                                   pygame.image.load("images/RapRapRunning/RapRap_22.png"),
-                                   pygame.image.load("images/RapRapRunning/RapRap_23.png")]
-        for i in range(6):
-            self.RapRapRunningLeft.append(pygame.transform.flip(self.RapRapRunningRight[i], True, False))
+        self.sprite = sprite
 
     def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
         self.moveUp = moveUp
@@ -62,7 +50,7 @@ class Player:
         self.specialAttack = specialAttack
 
     def playAnimation(self, screen, listOfSprites):
-        if self.currentSprite >= 6:
+        if self.currentSprite >= len(listOfSprites):
             self.currentSprite = 0
         screen.blit(listOfSprites[self.currentSprite],
                     (self.x - listOfSprites[self.currentSprite].get_width() // 2,
@@ -94,16 +82,18 @@ class Player:
                 self.attackTimer = 0
         keys = pygame.key.get_pressed()
         # Default character position
-        if not(keys[self.moveLeft] or keys[self.moveUp] or keys[self.moveRight] or keys[self.moveDown]):
-            screen.blit(self.defaultSprite,(self.x - self.defaultSprite.get_width() // 2, self.y - self.defaultSprite.get_height() + 100))
-        if keys[self.moveLeft] and self.x > 0:
-            self.direction = Direction.LEFT
-            self.x -= self.speed / 2
-            self.playAnimation(screen, self.RapRapRunningLeft)
-        if keys[self.moveRight] and self.x < 800 - 10:
-            self.direction = Direction.RIGHT
-            self.x += self.speed / 2
-            self.playAnimation(screen, self.RapRapRunningRight)
+        if not(keys[self.moveLeft] or keys[self.moveUp] or keys[self.moveRight] or keys[self.moveDown])\
+                or (keys[self.moveLeft] and keys[self.moveRight]):
+            screen.blit(self.sprite.defaultRight[0], (self.x - self.sprite.defaultRight[0].get_width() // 2, self.y - self.sprite.defaultRight[0].get_height() + 100))
+        else:
+            if keys[self.moveLeft] and self.x > 0:
+                self.direction = Direction.LEFT
+                self.x -= self.speed / 2
+                self.playAnimation(screen, self.sprite.runningLeft)
+            if keys[self.moveRight] and self.x < 800 - 10:
+                self.direction = Direction.RIGHT
+                self.x += self.speed / 2
+                self.playAnimation(screen, self.sprite.runningRight)
         if not self.isJump:
             if keys[self.moveUp] and self.y > 0:
                 if not self.rect.colliderect(ball.circle):
@@ -152,7 +142,7 @@ class Player:
         pygame.draw.rect(screen, self.color, self.rect)
         pygame.draw.rect(screen, (255, 255, 255), self.hprect,2)
         pygame.draw.rect(screen, (255, 0, 0), (self.hprect.x + 2, self.hprect.y + 2, (self.health * 296) / 100, self.hprect.height-4))
-        pygame.draw.rect(self.defaultSprite, (255, 0, 0), self.defaultSprite.get_rect(), 1)
+        pygame.draw.rect(self.sprite.defaultRight[0], (255, 0, 0), self.sprite.defaultRight[0].get_rect(), 1)
         if self.isAttacking:
             if self.attackDirection == 1:
                 self.attackUpRect = pygame.Rect(self.x - 10, self.y - 20, 32, 20)
