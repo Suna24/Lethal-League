@@ -106,8 +106,56 @@ class Sprite:
         # TODO
 
     def initLatchSprites(self):
-        print()
-        # TODO
+        # Default sprite
+        self.defaultRight = [pygame.image.load("images/Latch/Default/Latch_Default.png")]
+        self.defaultLeft = self.mirrorSprites(self.defaultRight)
+
+        # Running sprites
+        self.runningRight = [pygame.image.load("images/Latch/Running/Latch_18.png"),
+                             pygame.image.load("images/Latch/Running/Latch_19.png"),
+                             pygame.image.load("images/Latch/Running/Latch_20.png"),
+                             pygame.image.load("images/Latch/Running/Latch_21.png"),
+                             pygame.image.load("images/Latch/Running/Latch_22.png"),
+                             pygame.image.load("images/Latch/Running/Latch_23.png")]
+        self.runningLeft = self.mirrorSprites(self.runningRight)
+
+        # Jumping sprites
+        self.jumpingRight = [pygame.image.load("images/Latch/Jumping/Latch_03.png"),
+                             pygame.image.load("images/Latch/Jumping/Latch_04.png"),
+                             pygame.image.load("images/Latch/Jumping/Latch_05.png"),
+                             pygame.image.load("images/Latch/Jumping/Latch_06.png"),]
+        self.jumpingLeft = self.mirrorSprites(self.jumpingRight)
+
+        # Attacking Top sprites
+        self.attackingTopRight = [pygame.image.load("images/Latch/AttackingTop/Latch_12.png"),
+                                  pygame.image.load("images/Latch/AttackingTop/Latch_13.png"),
+                                  pygame.image.load("images/Latch/AttackingTop/Latch_14.png"),
+                                  pygame.image.load("images/Latch/AttackingTop/Latch_15.png"),
+                                  pygame.image.load("images/Latch/AttackingTop/Latch_16.png"),
+                                  pygame.image.load("images/Latch/AttackingTop/Latch_17.png")]
+        self.attackingTopLeft = self.mirrorSprites(self.attackingTopRight)
+
+        # Attacking Middle sprites
+        self.attackingMiddleRight = [pygame.image.load("images/Latch/AttackingMiddle/Latch_07.png"),
+                                     pygame.image.load("images/Latch/AttackingMiddle/Latch_08.png"),
+                                     pygame.image.load("images/Latch/AttackingMiddle/Latch_09.png"),
+                                     pygame.image.load("images/Latch/AttackingMiddle/Latch_10.png"),
+                                     pygame.image.load("images/Latch/AttackingMiddle/Latch_11.png")]
+        self.attackingMiddleLeft = self.mirrorSprites(self.attackingMiddleRight)
+
+        # Attacking Bottom sprites
+        self.attackingBottomRight = [pygame.image.load("images/Latch/AttackingBottom/Latch_41.png"),
+                                     pygame.image.load("images/Latch/AttackingBottom/Latch_42.png"),
+                                     pygame.image.load("images/Latch/AttackingBottom/Latch_43.png"),
+                                     pygame.image.load("images/Latch/AttackingBottom/Latch_44.png")]
+        self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
+
+        # Victory sprites
+        self.victoryRight = [pygame.image.load("images/Latch/Victory/Latch_50.png"),
+                             pygame.image.load("images/Latch/Victory/Latch_51.png"),
+                             pygame.image.load("images/Latch/Victory/Latch_52.png"),
+                             pygame.image.load("images/Latch/Victory/Latch_53.png")]
+        self.victoryLeft = self.mirrorSprites(self.victoryRight)
 
     def initDiceSprites(self):
         print()
