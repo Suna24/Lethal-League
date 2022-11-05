@@ -8,7 +8,8 @@ class Player:
         self.vel_x = 0
         self.x = x
         self.y = y
-        self.speed = 0.5
+        self.speed = 3
+        self.move_per_second = self.speed * 100
         self.colorguard = color
         self.invincible = False
         self.invincibleTimer = 0
@@ -58,9 +59,9 @@ class Player:
         self.repeatSprite -= 1
         if self.repeatSprite == 0:
             self.currentSprite += 1
-            self.repeatSprite = 60
+            self.repeatSprite = 30
 
-    def move(self, ball, screen):
+    def move(self, ball, screen, ms_frame):
         if self.newAttack:
             self.newattackTimer += 1
             if self.newattackTimer == 500:
@@ -76,7 +77,7 @@ class Player:
                 self.invincibleTimer = 0
         if self.isAttacking:
             self.attackTimer += 1
-            if self.attackTimer >= 1000:
+            if self.attackTimer >= 150:
                 self.isAttacking = False
                 self.newAttack = True
                 self.attackTimer = 0
@@ -88,21 +89,21 @@ class Player:
         else:
             if keys[self.moveLeft] and self.x > 0 and self.isAttacking is False:
                 self.direction = Direction.LEFT
-                self.x -= self.speed / 2
+                self.x -= self.move_per_second * ms_frame / 1000
                 self.playAnimation(screen, self.sprite.runningLeft)
             if keys[self.moveRight] and self.x < 800 - 10 and self.isAttacking is False:
                 self.direction = Direction.RIGHT
-                self.x += self.speed / 2
+                self.x += self.move_per_second * ms_frame / 1000
                 self.playAnimation(screen, self.sprite.runningRight)
         if not self.isJump:
             if keys[self.moveUp] and self.y > 0:
                 if not self.rect.colliderect(ball.circle):
-                    self.y -= self.speed / 2
+                    self.y -= self.move_per_second * ms_frame / 1000
             if keys[self.moveDown] and self.y < 600 - 100:
                 if not self.rect.colliderect(ball.circle):
-                    self.y += self.speed / 2
+                    self.y += self.move_per_second * ms_frame / 1000
             if keys[self.jump] and self.isJump == False and self.in_air == False and self.isAttacking is False:
-                self.vel_y = -0.5
+                self.vel_y = -2
                 self.isJump = True
             if not keys[self.jump]:
                 self.isJump = False
@@ -123,7 +124,7 @@ class Player:
         elif keys[self.moveDown] and keys[self.attack] and self.isAttacking == False and self.newAttack == False:
             self.isAttacking = True
             self.attackDirection = 2
-        self.vel_y += 0.0006
+        self.vel_y += 0.008
         if self.vel_y > 10:
             self.vel_y = 10
         self.y += self.vel_y

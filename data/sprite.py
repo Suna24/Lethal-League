@@ -20,6 +20,8 @@ class Sprite:
         self.attackingBottomLeft = None
         self.victoryRight = None
         self.victoryLeft = None
+        self.hittedRight = None
+        self.hittedLeft = None
 
     def __init__(self, character):
         # If the character chose is Raptor
@@ -93,6 +95,11 @@ class Sprite:
                              pygame.image.load("images/Raptor/Victory/Raptor_40.png")]
         self.victoryLeft = self.mirrorSprites(self.victoryRight)
 
+        # Hitted sprite
+        self.hittedRight = [pygame.image.load("images/Raptor/Hitted/Raptor_24.png")]
+        self.hittedLeft = self.mirrorSprites(self.hittedRight)
+
+
     def initSwitchSprites(self):
         print()
         # TODO
@@ -156,6 +163,10 @@ class Sprite:
                              pygame.image.load("images/Latch/Victory/Latch_52.png"),
                              pygame.image.load("images/Latch/Victory/Latch_53.png")]
         self.victoryLeft = self.mirrorSprites(self.victoryRight)
+
+        # Hitted sprite
+        self.hittedRight = [pygame.image.load("images/Latch/Hitted/Latch_24.png")]
+        self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
     def initDiceSprites(self):
         print()
