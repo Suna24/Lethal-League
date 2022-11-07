@@ -31,6 +31,7 @@ class Particle:
         self.x = x
         self.y = y
         self.elasticity = 0.75
+        self.move_per_second = 800
         self.size = size
         self.color = (255, 255, 255)
         self.thickness = 0
@@ -42,12 +43,12 @@ class Particle:
         self.circle = pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.size, self.thickness)
         pygame.draw.circle(screen, self.color, (self.x, self.y), self.size, self.thickness)
 
-    def move(self, gravity):
+    def move(self, gravity,ms_frame):
         self.angle, self.speed = addVectors(self.angle, self.speed, gravity[0], gravity[1])
-        self.x += math.sin(self.angle) * self.speed
-        self.y -= math.cos(self.angle) * self.speed
+        self.x += math.sin(self.angle) * self.speed * self.move_per_second * ms_frame / 1000
+        self.y -= math.cos(self.angle) * self.speed * self.move_per_second * ms_frame / 1000
 
-    def bounce(self, players):
+    def bounce(self, players,ms_frame):
         for player in players:
             if player.attackMiddleDownRect != 0:
                 if self.circle.colliderect(player.attackMiddleDownRect):
