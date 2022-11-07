@@ -64,13 +64,13 @@ class Player:
     def move(self, ball, screen, ms_frame):
         if self.newAttack:
             self.newattackTimer += 1
-            if self.newattackTimer == 500:
+            if self.newattackTimer == 100:
                 self.newAttack = False
                 self.newattackTimer = 0
         if self.invincible:
             self.invincibleTimer += 1
             self.color = (255, 255, 255)
-            if self.invincibleTimer >= 3000:
+            if self.invincibleTimer >= 1000:
                 self.invincible = False
                 print("invincible off")
                 self.color = self.colorguard
@@ -84,7 +84,7 @@ class Player:
         keys = pygame.key.get_pressed()
         # Default character position if both keys are pressed
         if (not(keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight]))\
-                and self.isAttacking is False:
+                and self.isAttacking is False and self.isJump is False and self.in_air is False:
             screen.blit(self.sprite.defaultRight[0], (self.x - self.sprite.defaultRight[0].get_width() // 2, self.y - self.sprite.defaultRight[0].get_height() + 100))
         else:
             if keys[self.moveLeft] and self.x > 0 and self.isAttacking is False:
@@ -107,6 +107,8 @@ class Player:
                 self.isJump = True
             if not keys[self.jump]:
                 self.isJump = False
+        else:
+            self.playAnimation(screen, self.sprite.jumpingRight)
         if keys[pygame.K_b]:
             self.isAttacking = False
         if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] and self.isAttacking == False and self.newAttack == False:
