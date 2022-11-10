@@ -15,23 +15,23 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Lethal League")
 clock = pygame.time.Clock()
 
-# Players
-raptor = Sprite(Character.RAPTOR)
-latch = Sprite(Character.LATCH)
-
 # Background images
 game_background = pygame.image.load("data/images/bg.png")
 game_background_scaled = pygame.transform.scale(game_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+# Players sprites
+listOfSprites = [Sprite(Character.RAPTOR), Sprite(Character.LATCH),
+                 Sprite(Character.DICE), Sprite(Character.SONATA),
+                 Sprite(Character.CANDYMAN), Sprite(Character.SWITCH)]
 
-def gameLoop():
+def gameLoop(ch1, ch2):
     gravity = (math.pi, 0.0003)
     run = True
 
-    player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), raptor)
-    player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30), latch)
+    player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), listOfSprites[ch1])
+    player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30), listOfSprites[ch2])
     particle = Particle(300, 100, 10, screen)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_LCTRL)
     player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
@@ -114,9 +114,24 @@ def changeIndex(index, key):
 
     return 0
 
+def validateCharacter(index1, hasChoosen1, index2, hasChoosen2):
+    if hasChoosen1 is True and hasChoosen2 is True:
+        gameLoop(index1, index2)
 
 # Function that enables players to choose their characters
 def chooseCharacterScreen():
+
+    # Load images
+    listOfCharacterBg = [
+        pygame.image.load("data/images/CharacterSelection/Raptor.png"),
+        pygame.image.load("data/images/CharacterSelection/Latch.png"),
+        pygame.image.load("data/images/CharacterSelection/Dice.png"),
+        pygame.image.load("data/images/CharacterSelection/Sonata.png"),
+        pygame.image.load("data/images/CharacterSelection/CandyMan.png"),
+        pygame.image.load("data/images/CharacterSelection/Switch.png")]
+
+    for i in range(len(listOfCharacterBg)):
+        listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
 
     # Those rectangles will represent characters
     raptorRect = pygame.Rect(30, 20, SCREEN_WIDTH / 2.5, SCREEN_HEIGHT / 4)
@@ -127,7 +142,6 @@ def chooseCharacterScreen():
     switchRect = pygame.Rect(SCREEN_WIDTH - 30 - SCREEN_WIDTH / 2.5, SCREEN_HEIGHT - 20 - SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2.5, SCREEN_HEIGHT / 4)
 
     listOfRect = [raptorRect, latchRect, diceRect, sonataRect, candyManRect, switchRect]
-    listOfCharacter = [Character.RAPTOR, Character.LATCH, Character.DICE, Character.SONATA, Character.CANDYMAN, Character.SWITCH]
 
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT
@@ -135,6 +149,8 @@ def chooseCharacterScreen():
 
     run = True
     blinking = True
+    hasChoosen1 = False
+    hasChoosen2 = False
     index1 = 0
     index2 = 0
 
@@ -150,15 +166,35 @@ def chooseCharacterScreen():
                     index1 = changeIndex(index1, key)
                 if key == pygame.K_UP or key == pygame.K_DOWN or key == pygame.K_LEFT or key == pygame.K_RIGHT:
                     index2 = changeIndex(index2, key)
+                if key == pygame.K_SPACE:
+                    hasChoosen1 = not hasChoosen1
+                if key == pygame.K_RCTRL:
+                    hasChoosen2 = not hasChoosen2
+                if key == pygame.K_RETURN:
+                    validateCharacter(index1, hasChoosen1, index2, hasChoosen2)
 
         screen.fill([0, 0, 0])
 
         if blinking is True:
-            pygame.draw.rect(screen, [255, 0, 0], pygame.Rect(listOfRect[index2].x - 4, listOfRect[index2].y - 4, SCREEN_WIDTH / 2.5 + 8, SCREEN_HEIGHT / 4 + 8))
-            pygame.draw.rect(screen, [0, 0, 255], pygame.Rect(listOfRect[index1].x - 4, listOfRect[index1].y - 4, SCREEN_WIDTH / 2.5 + 8, SCREEN_HEIGHT / 4 + 8))
+            if not hasChoosen2:
+                pygame.draw.rect(screen, [255, 0, 0], pygame.Rect(listOfRect[index2].x - 4, listOfRect[index2].y - 4, SCREEN_WIDTH / 2.5 + 8, SCREEN_HEIGHT / 4 + 8))
+            if not hasChoosen1:
+                pygame.draw.rect(screen, [0, 0, 255], pygame.Rect(listOfRect[index1].x - 4, listOfRect[index1].y - 4, SCREEN_WIDTH / 2.5 + 8, SCREEN_HEIGHT / 4 + 8))
+
+        if hasChoosen1:
+            pygame.draw.rect(screen, [0, 0, 255],
+                             pygame.Rect(listOfRect[index1].x - 4, listOfRect[index1].y - 4, SCREEN_WIDTH / 2.5 + 8,
+                                         SCREEN_HEIGHT / 4 + 8))
+
+        if hasChoosen2:
+            pygame.draw.rect(screen, [255, 0, 0],
+                             pygame.Rect(listOfRect[index2].x - 4, listOfRect[index2].y - 4, SCREEN_WIDTH / 2.5 + 8,
+                                         SCREEN_HEIGHT / 4 + 8))
 
         for i in range(len(listOfRect)):
-            pygame.draw.rect(screen, [255, 255, 255], listOfRect[i])
+            pygame.draw.rect(screen, [255, 255, 0], listOfRect[i])
+            center = (listOfRect[i].centerx - listOfCharacterBg[i].get_size()[0] / 2, listOfRect[i].y)
+            screen.blit(listOfCharacterBg[i], center)
 
         pygame.display.update()
     pygame.quit()
