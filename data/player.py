@@ -13,7 +13,6 @@ class Player:
         self.colorguard = color
         self.invincible = False
         self.invincibleTimer = 0
-        self.onGround = True
         self.isAttacking = False
         self.attackDirection = 0
         self.health = 100
@@ -85,45 +84,47 @@ class Player:
         # Default character position if both keys are pressed
         if (not(keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight]))\
                 and self.isAttacking is False and self.isJump is False and self.in_air is False:
-            screen.blit(self.sprite.defaultRight[0], (self.x - self.sprite.defaultRight[0].get_width() // 2, self.y - self.sprite.defaultRight[0].get_height() + 100))
+            if self.direction == Direction.RIGHT:
+                screen.blit(self.sprite.defaultRight[0], (self.x - self.sprite.defaultRight[0].get_width() // 2, self.y - self.sprite.defaultRight[0].get_height() + 100))
+            else:
+                screen.blit(self.sprite.defaultLeft[0], (self.x - self.sprite.defaultLeft[0].get_width() // 2, self.y - self.sprite.defaultLeft[0].get_height() + 100))
         else:
             if keys[self.moveLeft] and self.x > 0 and self.isAttacking is False:
                 self.direction = Direction.LEFT
                 self.x -= self.move_per_second * ms_frame / 1000
-                self.playAnimation(screen, self.sprite.runningLeft)
+                if not self.isJump:
+                    self.playAnimation(screen, self.sprite.runningLeft)
             if keys[self.moveRight] and self.x < 800 - 10 and self.isAttacking is False:
                 self.direction = Direction.RIGHT
                 self.x += self.move_per_second * ms_frame / 1000
-                self.playAnimation(screen, self.sprite.runningRight)
+                if not self.isJump:
+                    self.playAnimation(screen, self.sprite.runningRight)
         if not self.isJump:
-            if keys[self.moveUp] and self.y > 0:
-                if not self.rect.colliderect(ball.circle):
-                    self.y -= self.move_per_second * ms_frame / 1000
-            if keys[self.moveDown] and self.y < 600 - 100:
-                if not self.rect.colliderect(ball.circle):
-                    self.y += self.move_per_second * ms_frame / 1000
-            if keys[self.jump] and self.isJump == False and self.in_air == False and self.isAttacking is False:
+            if keys[self.jump] and self.isJump is False and self.in_air is False and self.isAttacking is False:
                 self.vel_y = -2
                 self.isJump = True
             if not keys[self.jump]:
                 self.isJump = False
-        else:
-            self.playAnimation(screen, self.sprite.jumpingRight)
+        elif self.isJump and not self.isAttacking:
+            if self.direction == Direction.RIGHT:
+                self.playAnimation(screen, self.sprite.jumpingRight)
+            else:
+                self.playAnimation(screen, self.sprite.jumpingLeft)
         if keys[pygame.K_b]:
             self.isAttacking = False
-        if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] and self.isAttacking == False and self.newAttack == False:
+        if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True
             self.attackDirection = 3
-        elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveDown] and self.isAttacking == False and self.newAttack == False:
+        elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveDown] and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True
             self.attackDirection = 4
-        elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and self.isAttacking == False and self.newAttack == False:
+        elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True
             self.attackDirection = 5
-        elif keys[self.moveUp] and keys[self.attack] and self.isAttacking == False and self.newAttack == False:
+        elif keys[self.moveUp] and keys[self.attack] and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True
             self.attackDirection = 1
-        elif keys[self.moveDown] and keys[self.attack] and self.isAttacking == False and self.newAttack == False:
+        elif keys[self.moveDown] and keys[self.attack] and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True
             self.attackDirection = 2
         self.vel_y += 0.008
