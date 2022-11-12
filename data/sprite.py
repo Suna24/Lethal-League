@@ -48,7 +48,7 @@ class Sprite:
 
     def initRaptorSprites(self):
         # Default sprite
-        self.defaultRight = [pygame.image.load("data/images/Raptor/Default/Raptor_Default_bis.png")]
+        self.defaultRight = [pygame.image.load("data/images/Raptor/Default/Raptor_Default.png")]
         self.defaultLeft = self.mirrorSprites(self.defaultRight)
 
         # Running sprites

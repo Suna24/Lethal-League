@@ -1,13 +1,16 @@
 import pygame
 from data.direction import Direction
 
+
 class Player:
-    def __init__(self, x, y, color, hprect, sprite):
+    def __init__(self, x, y, color, hpRect, powerRect, sprite, direction):
         self.in_air = False
         self.vel_y = 0
         self.vel_x = 0
         self.x = x
         self.y = y
+        self.defaultX = x
+        self.defaultY = y
         self.speed = 3
         self.move_per_second = self.speed * 100
         self.colorguard = color
@@ -16,13 +19,15 @@ class Player:
         self.isAttacking = False
         self.attackDirection = 0
         self.health = 100
+        self.power = 0
+        self.powerRect = powerRect
         self.attackUpRect = 0
         self.attackDownRect = 0
         self.attackMiddleUpRect = 0
         self.attackMiddleDownRect = 0
         self.attackMiddleRect = 0
         self.isJump = True
-        self.direction = Direction.RIGHT
+        self.direction = direction
         self.jumpCount = 0
         self.attackTimer = 0
         self.newattackTimer = 0
@@ -35,7 +40,7 @@ class Player:
         self.attack = None
         self.color = color
         self.specialAttack = None
-        self.hprect = hprect
+        self.hprect = hpRect
         self.currentSprite = 0
         self.repeatSprite = 30
         self.sprite = sprite
@@ -82,7 +87,7 @@ class Player:
                 self.attackTimer = 0
         keys = pygame.key.get_pressed()
         # Default character position if both keys are pressed
-        if (not(keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight]))\
+        if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
                 and self.isAttacking is False and self.isJump is False and self.in_air is False:
             if self.direction == Direction.RIGHT:
                 screen.blit(self.sprite.defaultRight[0], (self.x - self.sprite.defaultRight[0].get_width() // 2, self.y - self.sprite.defaultRight[0].get_height() + 100))
@@ -144,8 +149,11 @@ class Player:
         self.attackDownRect = 0
         self.rect = pygame.Rect(self.x, self.y, 10, 100)
         pygame.draw.rect(screen, self.color, self.rect)
-        pygame.draw.rect(screen, (255, 255, 255), self.hprect,2)
-        pygame.draw.rect(screen, (255, 0, 0), (self.hprect.x + 2, self.hprect.y + 2, (self.health * 296) / 100, self.hprect.height-4))
+        pygame.draw.rect(screen, (255, 255, 255), self.hprect, 2)
+        pygame.draw.rect(screen, (255, 0, 0), self.powerRect, 2)
+        pygame.draw.rect(screen, (0, 0, 0), (self.powerRect.x + 2, self.powerRect.y + 2, self.power, 6))
+        pygame.draw.rect(screen, (255, 0, 0),
+                         (self.hprect.x + 2, self.hprect.y + 2, (self.health * 296) / 100, self.hprect.height - 4))
         if self.isAttacking:
             if self.attackDirection == 1:
                 self.attackUpRect = pygame.Rect(self.x - 10, self.y - 20, 32, 20)
@@ -177,3 +185,8 @@ class Player:
                     self.attackMiddleRect = pygame.Rect(self.x - 20, self.y + 20, 20, 20)
                     self.playAnimation(screen, self.sprite.attackingMiddleLeft)
                 pygame.draw.rect(screen, (0, 255, 255), self.attackMiddleRect)
+
+    def resetPosition(self):
+        self.x = self.defaultX
+        self.y = self.defaultY
+        self.health = 100

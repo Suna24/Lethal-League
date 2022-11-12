@@ -30,6 +30,8 @@ class Particle:
     def __init__(self, x, y, size, screen):
         self.x = x
         self.y = y
+        self.defaultX = x
+        self.defaultY = y
         self.elasticity = 0.75
         self.move_per_second = 800
         self.size = size
@@ -128,7 +130,9 @@ class Particle:
                     if self.color != player.color and self.color != (255, 255, 255):
                         createBulletTime(self.speed)
                         player.health -= self.speed * 10
+                        player.power += self.speed * 10
                         print(player.health)
+                        print(player.power)
                         self.color = (255, 255, 255)
                         setInvicibility(players)
                 else:
@@ -152,3 +156,9 @@ class Particle:
             self.y = 2 * self.size - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
+
+    def resetPosition(self):
+        self.x = self.defaultX
+        self.y = self.defaultY
+        self.angle = 0
+        self.speed = 1
