@@ -1,5 +1,5 @@
 import pygame
-from data.character import Character
+from data.characterenum import CharacterEnum
 
 
 class Sprite:
@@ -27,22 +27,22 @@ class Sprite:
 
     def __init__(self, character):
         # If the character chose is Raptor
-        if character == Character.RAPTOR:
+        if character == CharacterEnum.RAPTOR:
             self.initRaptorSprites()
         # If the character chose is Switch
-        elif character == Character.SWITCH:
+        elif character == CharacterEnum.SWITCH:
             self.initSwitchSprites()
         # If the character chose is CandyMan
-        elif character == Character.CANDYMAN:
+        elif character == CharacterEnum.CANDYMAN:
             self.initCandyManSprites()
         # If the character chose is Sonata
-        elif character == Character.SONATA:
+        elif character == CharacterEnum.SONATA:
             self.initSonataSprites()
         # If the character chose is Latch
-        elif character == Character.LATCH:
+        elif character == CharacterEnum.LATCH:
             self.initLatchSprites()
         # If the character chose is Dice
-        elif character == Character.DICE:
+        elif character == CharacterEnum.DICE:
             self.initDiceSprites()
 
 

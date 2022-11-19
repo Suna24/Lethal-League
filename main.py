@@ -2,7 +2,7 @@ import pygame
 import math
 from data.player import Player
 from data.particle import Particle
-from data.character import Character
+from data.characterenum import CharacterEnum
 from data.sprite import Sprite
 from data.score import Score
 from data.direction import Direction
@@ -24,17 +24,22 @@ welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Players sprites
-listOfSprites = [Sprite(Character.RAPTOR), Sprite(Character.LATCH),
-                 Sprite(Character.DICE), Sprite(Character.SONATA),
-                 Sprite(Character.CANDYMAN), Sprite(Character.SWITCH)]
+listOfCharacters = [CharacterEnum.RAPTOR, CharacterEnum.LATCH, CharacterEnum.DICE, CharacterEnum.SONATA,
+                    CharacterEnum.CANDYMAN, CharacterEnum.SWITCH]
+listOfSprites = [Sprite(CharacterEnum.RAPTOR), Sprite(CharacterEnum.LATCH),
+                 Sprite(CharacterEnum.DICE), Sprite(CharacterEnum.SONATA),
+                 Sprite(CharacterEnum.CANDYMAN), Sprite(CharacterEnum.SWITCH)]
 
 
 def gameLoop(ch1, ch2):
     gravity = (math.pi, 0.0003)
     run = True
 
-    player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10), listOfSprites[ch1], Direction.RIGHT)
-    player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30), pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfSprites[ch2], Direction.LEFT)
+    player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10),
+                    listOfCharacters[ch1], Direction.RIGHT, listOfSprites)
+    player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
+                     pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[ch2], Direction.LEFT,
+                     listOfSprites)
     score = Score()
     particle = Particle(400, 100, 10, screen)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_LCTRL)
@@ -48,19 +53,20 @@ def gameLoop(ch1, ch2):
             if event.type == pygame.QUIT:
                 run = False
         screen.blit(game_background_scaled, (0, 0))
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
         for player in players:
             player.draw(screen)
-            player.move(particle, screen, ms_frame)
+            player.move(screen, ms_frame)
         particle.move(gravity, ms_frame)
         particle.bounce(players)
         score.draw(screen)
         particle.display(screen)
         pygame.display.update()
-        if players[0].health <= 0:
+        if players[0].character.health <= 0:
             resetPositions(players, particle)
             score.addScore(2)
 
-        elif players[1].health <= 0:
+        elif players[1].character.health <= 0:
             resetPositions(players, particle)
             score.addScore(1)
 
@@ -150,7 +156,7 @@ def chooseCharacterScreen():
 
     for i in range(len(listOfCharacterBg)):
         listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
-        listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
+            listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
 
     # Those rectangles will represent characters
     raptorRect = pygame.Rect(30, 20, SCREEN_WIDTH / 2.5, SCREEN_HEIGHT / 4)

@@ -52,22 +52,30 @@ class Particle:
 
     def bounce(self, players):
         for player in players:
-            if player.attackMiddleDownRect != 0:
-                if self.circle.colliderect(player.attackMiddleDownRect):
+            if player.character.attackMiddleDownRect != 0:
+                if self.circle.colliderect(player.character.attackMiddleDownRect):
                     createBulletTime(self.speed)
                     if player.direction == Direction.RIGHT:
                         self.x += 10
+                        self.y += player.character.attackMiddleDownRect.height + 10
                         self.angle = (3 * math.pi) / 4
-                        self.speed *= 2
+                        if self.speed < 0.5:
+                            self.speed *= 10
+                        else:
+                            self.speed *= 2
                         self.color = player.color
                     else:
                         self.x -= 10
+                        self.y += player.character.attackMiddleDownRect.height + 10
                         self.angle = (5 * math.pi) / 4
-                        self.speed *= 2
+                        if self.speed < 0.5:
+                            self.speed *= 10
+                        else:
+                            self.speed *= 2
                         self.color = player.color
                     player.isAttacking = False
-            elif player.attackMiddleUpRect != 0:
-                if self.circle.colliderect(player.attackMiddleUpRect):
+            elif player.character.attackMiddleUpRect != 0:
+                if self.circle.colliderect(player.character.attackMiddleUpRect):
                     createBulletTime(self.speed)
                     if player.direction == Direction.RIGHT:
                         self.x += 10
@@ -80,59 +88,60 @@ class Particle:
                         self.speed *= 2
                         self.color = player.color
                     player.isAttacking = False
-            elif player.attackMiddleRect != 0:
-                if self.circle.colliderect(player.attackMiddleRect):
+            elif player.character.attackMiddleRect != 0:
+                if self.circle.colliderect(player.character.attackMiddleRect):
                     createBulletTime(self.speed)
                     if player.direction == Direction.RIGHT:
-                        self.y = player.attackMiddleRect.y
+                        self.y = player.character.attackMiddleRect.y
                         self.x += 10
                         self.angle = math.pi / 2
                         self.speed *= 2
                         self.color = player.color
                     else:
-                        self.y = player.attackMiddleRect.y
+                        self.y = player.character.attackMiddleRect.y
                         self.x -= 10
                         self.angle = (3 * math.pi) / 2
                         self.speed *= 2
                         self.color = player.color
                     player.isAttacking = False
-            elif player.attackDownRect != 0:
-                if self.circle.colliderect(player.attackDownRect):
+            elif player.character.attackDownRect != 0:
+                if self.circle.colliderect(player.character.attackDownRect):
                     createBulletTime(self.speed)
-                    if self.x > player.attackDownRect.x:
-                        self.y = player.attackDownRect.y + 32
+                    if self.x > player.character.attackDownRect.x:
+                        self.y = player.character.attackDownRect.y + 32
                         self.angle = 15
                         self.speed *= 2
                         self.color = player.color
                     else:
-                        self.y = player.attackDownRect.y + 32
+                        self.y = player.character.attackDownRect.y + 32
                         self.angle = - 15
                         self.speed *= 2
                         self.color = player.color
                     player.isAttacking = False
-            elif player.attackUpRect != 0:
-                if self.circle.colliderect(player.attackUpRect):
+            elif player.character.attackUpRect != 0:
+                if self.circle.colliderect(player.character.attackUpRect):
                     createBulletTime(self.speed)
-                    if self.x < player.attackUpRect.x:
-                        self.y = player.attackUpRect.y - 32
+                    if self.x < player.character.attackUpRect.x:
+                        self.y = player.character.attackUpRect.y - 32
                         self.angle = 100
                         self.speed *= 2
                         self.color = player.color
 
                     else:
-                        self.y = player.attackUpRect.y - 32
+                        self.y = player.character.attackUpRect.y - 32
                         self.angle = - 100
                         self.speed *= 2
                         self.color = player.color
                     player.isAttacking = False
-            if self.circle.colliderect(player.rect):
+            if self.circle.colliderect(player.character.hitbox):
                 if self.speed > 0.2:
                     if self.color != player.color and self.color != (255, 255, 255):
                         createBulletTime(self.speed)
-                        player.health -= self.speed * 10
+                        for player in players:
+                            if player.color == self.color:
+                                player.power += self.speed * 5
+                        player.character.health -= self.speed * 10
                         player.power += self.speed * 10
-                        print(player.health)
-                        print(player.power)
                         self.color = (255, 255, 255)
                         setInvicibility(players)
                 else:
@@ -147,8 +156,8 @@ class Particle:
             self.angle = - self.angle
             self.speed *= self.elasticity
 
-        if self.y > 600 - self.size:
-            self.y = 2 * (600 - self.size) - self.y
+        if self.y > 570 - self.size:
+            self.y = 2 * (570 - self.size) - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
 
