@@ -1,9 +1,12 @@
 import pygame
 from data.direction import Direction
 from data.characterenum import CharacterEnum
-from data.Latch import Latch
-from data.Raptor import Raptor
-
+from data.charactersClasses.Latch import Latch
+from data.charactersClasses.Raptor import Raptor
+from data.charactersClasses.Dice import Dice
+from data.charactersClasses.Sonata import Sonata
+from data.charactersClasses.Candyman import Candyman
+from data.charactersClasses.Switch import Switch
 
 class Player:
     def __init__(self, x, y, color, hpRect, powerRect, sprite, direction, spritesList):
@@ -52,6 +55,7 @@ class Player:
         self.hprect = hpRect
         self.currentSprite = 0
         self.repeatSprite = 30
+        self.ultchargeTimer = 0
 
     def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
         self.moveUp = moveUp
@@ -74,6 +78,10 @@ class Player:
             self.repeatSprite = 30
 
     def move(self, screen, ms_frame):
+        self.ultchargeTimer += 1
+        if self.ultchargeTimer == 600:
+            self.power += 1
+            self.ultchargeTimer = 0
         if self.newAttack:
             self.newattackTimer += 1
             if self.newattackTimer == 100:
