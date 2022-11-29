@@ -1,4 +1,5 @@
 import pygame
+from data.particle import Particle
 from data.direction import Direction
 from data.characterenum import CharacterEnum
 from data.charactersClasses.Latch import Latch
@@ -36,7 +37,7 @@ class Player:
         self.invincibleTimer = 0
         self.isAttacking = False
         self.attackDirection = 0
-        self.power = 0
+        self.power = 100
         self.powerRect = powerRect
         self.isJump = True
         self.direction = direction
@@ -56,6 +57,8 @@ class Player:
         self.currentSprite = 0
         self.repeatSprite = 30
         self.ultchargeTimer = 0
+        self.usingUltimate = False
+        self.ultimateTimer = 0
 
     def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
         self.moveUp = moveUp
@@ -78,7 +81,24 @@ class Player:
             self.repeatSprite = 30
 
     def move(self, screen, ms_frame):
+        self.move_per_second = self.character.speed * 100
+        if self.usingUltimate:
+            print("using ultimate")
+            self.character.deployUltimate()
+            if self.character.__class__.__name__ == "Dice":
+                self.color = (255, 255, 255)
+            self.ultimateTimer += 1
+            self.power -= 1
+            if self.ultimateTimer == 3000:
+                self.usingUltimate = False
+                self.character.resetUltimate()
+                if self.character.__class__.__name__ == "Dice":
+                    self.color = self.colorguard
+                self.ultimateTimer = 0
+                self.power = 0
         self.ultchargeTimer += 1
+        if self.power > 100:
+            self.power = 100
         if self.ultchargeTimer == 600:
             self.power += 1
             self.ultchargeTimer = 0
@@ -103,6 +123,8 @@ class Player:
                 self.attackTimer = 0
         keys = pygame.key.get_pressed()
         # Default character position if both keys are pressed
+        if keys[self.specialAttack] and self.power == 100:
+            self.usingUltimate = True
         if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
                 and self.isAttacking is False and self.isJump is False and self.in_air is False:
             if self.direction == Direction.RIGHT:
@@ -135,8 +157,6 @@ class Player:
                 self.playAnimation(screen, self.character.sprite.jumpingRight)
             else:
                 self.playAnimation(screen, self.character.sprite.jumpingLeft)
-        if keys[pygame.K_b]:
-            self.isAttacking = False
         if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] \
                 and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True
@@ -175,7 +195,7 @@ class Player:
         pygame.draw.rect(screen, self.color, self.character.hitbox)
         pygame.draw.rect(screen, (255, 255, 255), self.hprect, 2)
         pygame.draw.rect(screen, (255, 0, 0), self.powerRect, 2)
-        pygame.draw.rect(screen, (0, 0, 0), (self.powerRect.x + 2, self.powerRect.y + 2, self.power, 6))
+        pygame.draw.rect(screen, (0, 0, 0), (self.powerRect.x + 2, self.powerRect.y + 2, (self.power * 296) / 100, 6))
         pygame.draw.rect(screen, (255, 0, 0),
                          (self.hprect.x + 2, self.hprect.y + 2, (self.character.health * 296) / 100,
                           self.hprect.height - 4))
@@ -227,4 +247,4 @@ class Player:
     def resetPosition(self):
         self.x = self.defaultX
         self.y = self.defaultY
-        self.character.health = 100
+        self.character.health = self.character.maxHealth

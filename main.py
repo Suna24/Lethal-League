@@ -42,7 +42,7 @@ def gameLoop(ch1, ch2):
                      listOfSprites)
     score = Score()
     particle = Particle(400, 100, 10, screen)
-    player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_LCTRL)
+    player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
     player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
                         pygame.K_n)
     players = [player, player2]
@@ -63,17 +63,30 @@ def gameLoop(ch1, ch2):
         particle.display(screen)
         pygame.display.update()
         if players[0].character.health <= 0:
-            resetPositions(players, particle)
             score.addScore(2)
+            score.displayActualScore(screen)
+            pygame.display.update()
+            pygame.time.wait(1000)
+            resetPositions(players, particle)
 
         elif players[1].character.health <= 0:
-            resetPositions(players, particle)
             score.addScore(1)
+            score.displayActualScore(screen)
+            pygame.display.update()
+            pygame.time.wait(1000)
+            resetPositions(players, particle)
+
+        if score.oneWon() is True:
+            run = False
+            score.displayFinalScore(screen)
+            pygame.display.update()
+            pygame.time.wait(5000)
 
 
 def resetPositions(players, ball):
     for player in players:
         player.resetPosition()
+        player.character.resetUltimate()
     ball.resetPosition()
 
 

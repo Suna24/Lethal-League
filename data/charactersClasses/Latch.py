@@ -4,7 +4,7 @@ import pygame
 
 class Latch(character):
     def __init__(self, sprites):
-        character.__init__(self, 3, 100, 0, 0, 0, 0, 0, 0, sprites,25, 15)
+        character.__init__(self, 3, 10, 2, 0, 0, 0, 0, 0, 0, sprites,25, 15)
         self.attackUpRectDefault = pygame.Rect(0, 0, 70, 20)
         self.aURxoffset = 25
         self.aURyoffset = 15
@@ -32,3 +32,10 @@ class Latch(character):
         self.attackMiddleUpRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleDownRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
+
+    def deployUltimate(self):
+        self.force = 5
+
+
+    def resetUltimate(self):
+        self.force = 2

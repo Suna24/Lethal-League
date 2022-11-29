@@ -1,8 +1,10 @@
 from data.character import character
 import pygame
+
+
 class Dice(character):
     def __init__(self, sprites):
-        character.__init__(self, 3, 100, 0, 0, 0, 0, 0, 0, sprites,25, 15)
+        character.__init__(self, 3, 100, 2, 0, 0, 0, 0, 0, 0, sprites, 25, 15)
         self.attackUpRectDefault = pygame.Rect(0, 0, 70, 20)
         self.aURxoffset = 25
         self.aURyoffset = 15
@@ -30,3 +32,9 @@ class Dice(character):
         self.attackMiddleUpRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleDownRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
+
+    def deployUltimate(self):
+        pass
+
+    def resetUltimate(self):
+        pass

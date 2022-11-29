@@ -3,7 +3,7 @@ import pygame
 
 class Switch(character):
     def __init__(self, sprites):
-        character.__init__(self, 3, 100, 0, 0, 0, 0, 0, 0, sprites,25, 15)
+        character.__init__(self, 3, 100, 2, 0, 0, 0, 0, 0, 0, sprites,25, 15)
         self.attackUpRectDefault = pygame.Rect(0, 0, 70, 20)
         self.aURxoffset = 25
         self.aURyoffset = 15
@@ -31,3 +31,19 @@ class Switch(character):
         self.attackMiddleUpRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleDownRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
+
+
+    def deployUltimate(self):
+        self.attackUpRectDefault = pygame.Rect(0, 0, 90, 30)
+        self.attackDownRectDefault = pygame.Rect(0, 0, 90, 30)
+        self.attackMiddleUpRectDefault = pygame.Rect(0, 0, 60, 30)
+        self.attackMiddleDownRectDefault = pygame.Rect(0, 0, 70, 30)
+        self.attackMiddleRectDefault = pygame.Rect(0, 0, 70, 30)
+
+
+    def resetUltimate(self):
+        self.attackUpRectDefault = pygame.Rect(0, 0, 70, 20)
+        self.attackDownRectDefault = pygame.Rect(0, 0, 70, 20)
+        self.attackMiddleUpRectDefault = pygame.Rect(0, 0, 40, 20)
+        self.attackMiddleDownRectDefault = pygame.Rect(0, 0, 50, 20)
+        self.attackMiddleRectDefault = pygame.Rect(0, 0, 50, 20)

@@ -60,18 +60,18 @@ class Particle:
                         self.y += player.character.attackMiddleDownRect.height + 10
                         self.angle = (3 * math.pi) / 4
                         if self.speed < 0.5:
-                            self.speed *= 10
+                            self.speed *= 5 * player.character.force
                         else:
-                            self.speed *= 2
+                            self.speed *= player.character.force
                         self.color = player.color
                     else:
                         self.x -= 10
                         self.y += player.character.attackMiddleDownRect.height + 10
                         self.angle = (5 * math.pi) / 4
                         if self.speed < 0.5:
-                            self.speed *= 10
+                            self.speed *= 5 * player.character.force
                         else:
-                            self.speed *= 2
+                            self.speed *= player.character.force
                         self.color = player.color
                     player.isAttacking = False
             elif player.character.attackMiddleUpRect != 0:
@@ -80,12 +80,12 @@ class Particle:
                     if player.direction == Direction.RIGHT:
                         self.x += 10
                         self.angle = math.pi / 4
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     else:
                         self.x -= 10
                         self.angle = (7 * math.pi) / 4
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     player.isAttacking = False
             elif player.character.attackMiddleRect != 0:
@@ -95,13 +95,13 @@ class Particle:
                         self.y = player.character.attackMiddleRect.y
                         self.x += 10
                         self.angle = math.pi / 2
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     else:
                         self.y = player.character.attackMiddleRect.y
                         self.x -= 10
                         self.angle = (3 * math.pi) / 2
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     player.isAttacking = False
             elif player.character.attackDownRect != 0:
@@ -110,12 +110,12 @@ class Particle:
                     if self.x > player.character.attackDownRect.x:
                         self.y = player.character.attackDownRect.y + 32
                         self.angle = 15
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     else:
                         self.y = player.character.attackDownRect.y + 32
                         self.angle = - 15
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     player.isAttacking = False
             elif player.character.attackUpRect != 0:
@@ -124,13 +124,13 @@ class Particle:
                     if self.x < player.character.attackUpRect.x:
                         self.y = player.character.attackUpRect.y - 32
                         self.angle = 100
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
 
                     else:
                         self.y = player.character.attackUpRect.y - 32
                         self.angle = - 100
-                        self.speed *= 2
+                        self.speed *= player.character.force
                         self.color = player.color
                     player.isAttacking = False
             if self.circle.colliderect(player.character.hitbox):
@@ -139,9 +139,20 @@ class Particle:
                         createBulletTime(self.speed)
                         for player in players:
                             if player.color == self.color:
-                                player.power += self.speed * 5
-                        player.character.health -= self.speed * 10
-                        player.power += self.speed * 10
+                                if player.character.__class__.__name__ == "Candyman" and player.usingUltimate:
+                                    player.character.health += self.speed * 10
+                                    if player.character.health > player.character.maxHealth:
+                                        player.character.health = player.character.maxHealth
+                                else:
+                                    player.power += self.speed * 5
+                            if player.color != self.color:
+                                if player.character.__class__.__name__ == "Candyman" and player.usingUltimate:
+                                    player.character.health += self.speed * 10
+                                    if player.character.health > player.character.maxHealth:
+                                        player.character.health = player.character.maxHealth
+                                else:
+                                    player.character.health -= self.speed * 10
+                                player.power += self.speed * 10
                         self.color = (255, 255, 255)
                         setInvicibility(players)
                 else:
