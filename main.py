@@ -1,5 +1,6 @@
 import pygame
 import math
+from pygame import mixer
 from data.player import Player
 from data.particle import Particle
 from data.characterenum import CharacterEnum
@@ -18,6 +19,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Lethal League")
 clock = pygame.time.Clock()
+mixer.init()
 
 # Game Manager to store which characters and which map is selected
 gameManager = GameManager()
@@ -43,6 +45,10 @@ listOfSprites = [Sprite(CharacterEnum.RAPTOR), Sprite(CharacterEnum.LATCH),
                  Sprite(CharacterEnum.DICE), Sprite(CharacterEnum.SONATA),
                  Sprite(CharacterEnum.CANDYMAN), Sprite(CharacterEnum.SWITCH)]
 
+# Sounds
+listOfMusicPath = ["data/musics/HomePage.mp3",
+                   "data/musics/Fight.mp3"]
+mixer.music.load(listOfMusicPath[0])
 
 def gameLoop():
     print(gameManager.map)
@@ -54,6 +60,10 @@ def gameLoop():
     player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
                      pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[gameManager.secondCharacter], Direction.LEFT,
                      listOfSprites)
+    # Sound
+    mixer.music.load(listOfMusicPath[1])
+    mixer.music.play(-1)
+
     # Map
     map_background_scaled = pygame.transform.scale(listOfMapBackgrounds[gameManager.map], (SCREEN_WIDTH, SCREEN_HEIGHT))
     score = Score()
@@ -68,6 +78,7 @@ def gameLoop():
         ms_frame = clock.tick(300)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                mixer.music.stop()
                 run = False
         screen.blit(map_background_scaled, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
@@ -118,6 +129,9 @@ def welcomeScreen():
     # Boolean useful
     run = True
     textDisplayed = True
+    # Play music
+    mixer.music.set_volume(0.1)
+    mixer.music.play(-1)
 
     while run:
         for event in pygame.event.get():
@@ -171,6 +185,7 @@ def chooseMapScreen():
                 if key == pygame.K_RETURN:
                     if hasChoosen is True:
                         gameManager.map = index
+                        mixer.music.stop()
                         gameLoop()
 
         screen.fill([0, 0, 0])
