@@ -59,7 +59,7 @@ class Score:
         font = pygame.font.SysFont("rubik", 150)
         text = font.render(str(self.score_p1) + " - " + str(self.score_p2), True, [255, 255, 255])
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0,200, 800, 100))
-        screen.blit(text, (350, 200))
+        screen.blit(text, (300, 200))
 
     def oneWon(self):
         if self.score_p1 == 2 or self.score_p2 == 2:
