@@ -8,6 +8,7 @@ class Score:
         self.rect1color = (255, 255, 255)
         self.rect2color = (255, 255, 255)
         self.rect3color = (255, 255, 255)
+        self.hasBeenCalled = False
 
     def draw(self, screen):
         if self.score_p1 == 1 and self.score_p2 == 1:

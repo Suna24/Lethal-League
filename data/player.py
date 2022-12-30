@@ -80,7 +80,7 @@ class Player:
             self.currentSprite += 1
             self.repeatSprite = 30
 
-    def move(self, screen, ms_frame):
+    def move(self, screen, ms_frame, score):
         self.move_per_second = self.character.speed * 100
         if self.usingUltimate:
             print("using ultimate")
@@ -126,7 +126,7 @@ class Player:
         if keys[self.specialAttack] and self.power == 100:
             self.usingUltimate = True
         if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
-                and self.isAttacking is False and self.isJump is False and self.in_air is False:
+                and self.isAttacking is False and self.isJump is False and self.in_air is False and score.hasBeenCalled is False:
             if self.direction == Direction.RIGHT:
                 screen.blit(self.character.sprite.defaultRight[0], (
                     self.x - self.character.sprite.defaultRight[0].get_width() // 2,
