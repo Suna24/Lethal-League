@@ -229,8 +229,23 @@ class Sprite:
         self.attackingMiddleLeft = self.mirrorSprites(self.attackingMiddleRight)
 
         # Attacking Bottom sprites
-        self.attackingBottomRight = [pygame.image.load("data/images/CandyMan/Default/CandyMan_Default.png")]
+        self.attackingBottomRight = [pygame.image.load("data/images/CandyMan/AttackingBottom/CandyMan_25.png"),
+                                     pygame.image.load("data/images/CandyMan/AttackingBottom/CandyMan_25.png"),
+                                     pygame.image.load("data/images/CandyMan/AttackingBottom/CandyMan_26.png"),
+                                     pygame.image.load("data/images/CandyMan/AttackingBottom/CandyMan_26.png")]
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
+
+        # Attacking Above sprites
+        self.attackingAboveRight = []
+        for i in range(len(self.attackingTopRight)):
+            self.attackingAboveRight.append(pygame.transform.rotate(self.attackingTopRight[i], 90))
+        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
+
+        # Attacking Below sprites
+        self.attackingBelowRight = []
+        for i in range(len(self.attackingTopRight)):
+            self.attackingBelowRight.append(pygame.transform.rotate(self.attackingTopRight[i], -90))
+        self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
 
         # Victory sprites
         self.victoryRight = [pygame.image.load("data/images/CandyMan/Victory/CandyMan_31.png"),
