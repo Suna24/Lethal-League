@@ -165,6 +165,20 @@ class Sprite:
                                      pygame.image.load("data/images/Switch/AttackingBottom/Switch_38.png")]
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
 
+        # Attacking Above sprites
+        self.attackingAboveRight = [pygame.image.load("data/images/Switch/AttackingAbove/Switch_31.png"),
+                                    pygame.image.load("data/images/Switch/AttackingAbove/Switch_32.png"),
+                                    pygame.image.load("data/images/Switch/AttackingAbove/Switch_33.png"),
+                                    pygame.image.load("data/images/Switch/AttackingAbove/Switch_34.png")]
+        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
+
+        # Attacking Below sprites
+        self.attackingBelowRight = [pygame.image.load("data/images/Switch/AttackingBelow/Switch_25.png"),
+                                    pygame.image.load("data/images/Switch/AttackingBelow/Switch_26.png"),
+                                    pygame.image.load("data/images/Switch/AttackingBelow/Switch_27.png"),
+                                    pygame.image.load("data/images/Switch/AttackingBelow/Switch_28.png")]
+        self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
+
         # Victory sprites
         self.victoryRight = [pygame.image.load("data/images/Switch/Victory/Switch_42.png"),
                              pygame.image.load("data/images/Switch/Victory/Switch_43.png"),
