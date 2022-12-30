@@ -27,14 +27,23 @@ gameManager = GameManager()
 
 # Background images
 listOfMapBackgrounds = [
-        pygame.image.load("data/images/Maps/map1.png"),
-        pygame.image.load("data/images/Maps/map2.png"),
-        pygame.image.load("data/images/Maps/map3.png"),
-        pygame.image.load("data/images/Maps/map4.png"),
-        pygame.image.load("data/images/Maps/map5.png"),
-        pygame.image.load("data/images/Maps/map6.png"),
-        pygame.image.load("data/images/Maps/map7.png"),
-        pygame.image.load("data/images/Maps/map8.png")]
+    pygame.image.load("data/images/Maps/map1.png"),
+    pygame.image.load("data/images/Maps/map2.png"),
+    pygame.image.load("data/images/Maps/map3.png"),
+    pygame.image.load("data/images/Maps/map4.png"),
+    pygame.image.load("data/images/Maps/map5.png"),
+    pygame.image.load("data/images/Maps/map6.png"),
+    pygame.image.load("data/images/Maps/map7.png"),
+    pygame.image.load("data/images/Maps/map8.png")]
+listOfMapMenuBackgrounds = [
+    pygame.image.load("data/images/MapsBackground/map1.png"),
+    pygame.image.load("data/images/MapsBackground/map2.png"),
+    pygame.image.load("data/images/MapsBackground/map3.png"),
+    pygame.image.load("data/images/MapsBackground/map4.png"),
+    pygame.image.load("data/images/MapsBackground/map5.png"),
+    pygame.image.load("data/images/MapsBackground/map6.png"),
+    pygame.image.load("data/images/MapsBackground/map7.png"),
+    pygame.image.load("data/images/MapsBackground/map8.png")]
 
 welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -59,7 +68,8 @@ def gameLoop():
     player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10),
                     listOfCharacters[gameManager.firstCharacter], Direction.RIGHT, listOfSprites)
     player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
-                     pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[gameManager.secondCharacter], Direction.LEFT,
+                     pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[gameManager.secondCharacter],
+                     Direction.LEFT,
                      listOfSprites)
     # Sound
     mixer.music.load(listOfMusicPath[1])
@@ -131,7 +141,8 @@ def gameLoop():
             else:
                 score.displayActualScore(screen)
             pygame.display.update()
-
+            pygame.time.wait(3000)
+            chooseCharacterScreen()
         pygame.display.update()
 
 def resetPositions(players, ball, score):
@@ -179,12 +190,7 @@ def welcomeScreen():
 def chooseMapScreen():
     print("In choose map screen")
 
-    chooseElement = ChooseElement(screen, listOfMapBackgrounds, 2, 4)
-
-    for i in range(len(listOfMapBackgrounds)):
-        listOfMapBackgrounds[i] = pygame.transform.scale(listOfMapBackgrounds[i], (
-            listOfMapBackgrounds[i].get_size()[0] / 4, listOfMapBackgrounds[i].get_size()[1] / 4))
-
+    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4)
     run = True
 
     # Create a user event appearing every 0.5 sec
