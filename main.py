@@ -125,10 +125,12 @@ def gameLoop():
             pygame.display.update()
 
         if score.oneWon() is True:
-            run = False
-            score.displayFinalScore(screen)
+            if eventOccurs is False:
+                run = False
+                pygame.time.set_timer(playerHasScored, 6000, True)
+            else:
+                score.displayActualScore(screen)
             pygame.display.update()
-            pygame.time.wait(5000)
 
         pygame.display.update()
 
