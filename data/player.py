@@ -80,7 +80,7 @@ class Player:
             self.currentSprite += 1
             self.repeatSprite = 30
 
-    def move(self, screen, ms_frame):
+    def move(self, screen, ms_frame, score):
         self.move_per_second = self.character.speed * 100
         if self.usingUltimate:
             print("using ultimate")
@@ -126,7 +126,7 @@ class Player:
         if keys[self.specialAttack] and self.power == 100:
             self.usingUltimate = True
         if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
-                and self.isAttacking is False and self.isJump is False and self.in_air is False:
+                and self.isAttacking is False and self.isJump is False and self.in_air is False and score.hasBeenCalled is False:
             if self.direction == Direction.RIGHT:
                 screen.blit(self.character.sprite.defaultRight[0], (
                     self.x - self.character.sprite.defaultRight[0].get_width() // 2,
@@ -205,11 +205,19 @@ class Player:
                 self.character.attackUpRect.x = self.x - 10 - self.character.aURxoffset
                 self.character.attackUpRect.y = self.y - 20 - self.character.aURyoffset
                 pygame.draw.rect(screen, (255, 0, 0), self.character.attackUpRect)
+                if self.direction == Direction.RIGHT:
+                    self.playAnimation(screen, self.character.sprite.attackingAboveRight)
+                else:
+                    self.playAnimation(screen, self.character.sprite.attackingAboveLeft)
             if self.attackDirection == 2:
                 self.character.attackDownRect = self.character.attackDownRectDefault
                 self.character.attackDownRect.x = self.x - 10 - self.character.aDRxoffset
                 self.character.attackDownRect.y = self.y + 100 - self.character.aDRyoffset
                 pygame.draw.rect(screen, (0, 255, 0), self.character.attackDownRect)
+                if self.direction == Direction.RIGHT:
+                    self.playAnimation(screen, self.character.sprite.attackingBelowRight)
+                else:
+                    self.playAnimation(screen, self.character.sprite.attackingBelowLeft)
             if self.attackDirection == 3:
                 self.character.attackMiddleUpRect = self.character.attackMiddleUpRectDefault
                 if self.direction == Direction.RIGHT:

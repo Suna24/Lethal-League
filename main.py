@@ -1,5 +1,6 @@
 import pygame
 import math
+from threading import Timer
 from pygame import mixer
 from data.player import Player
 from data.particle import Particle
@@ -82,7 +83,10 @@ def gameLoop():
     player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
                         pygame.K_n)
     players = [player, player2]
-    resetPositions(players, particle)
+    resetPositions(players, particle, score)
+
+    playerHasScored = pygame.USEREVENT + 1
+    eventOccurs = False
     
     while run:
         ms_frame = clock.tick(300)
@@ -90,43 +94,63 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 mixer.music.stop()
                 run = False
+            if event.type == playerHasScored:
+                eventOccurs = False
+                resetPositions(players, particle, score)
         screen.blit(map_background_scaled, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
         for player in players:
             player.draw(screen)
-            player.move(screen, ms_frame)
+            player.move(screen, ms_frame, score)
         particle.move(gravity, ms_frame)
         particle.bounce(players)
         score.draw(screen)
         particle.display(screen)
-        pygame.display.update()
         if players[0].character.health <= 0:
-            score.addScore(2)
-            score.displayActualScore(screen)
+            if players[1].direction == Direction.RIGHT:
+                players[1].playAnimation(screen, players[1].character.sprite.victoryRight)
+            else:
+                players[1].playAnimation(screen, players[1].character.sprite.victoryLeft)
+            if eventOccurs is False:
+                score.addScore(2)
+                eventOccurs = True
+                score.hasBeenCalled = True
+                pygame.time.set_timer(playerHasScored, 3000, True)
+            else:
+                score.displayActualScore(screen)
             pygame.display.update()
-            pygame.time.wait(1000)
-            resetPositions(players, particle)
 
         elif players[1].character.health <= 0:
-            score.addScore(1)
-            score.displayActualScore(screen)
+            if players[0].direction == Direction.RIGHT:
+                players[0].playAnimation(screen, players[0].character.sprite.victoryRight)
+            else:
+                players[0].playAnimation(screen, players[0].character.sprite.victoryLeft)
+            if eventOccurs is False:
+                score.addScore(1)
+                eventOccurs = True
+                score.hasBeenCalled = True
+                pygame.time.set_timer(playerHasScored, 3000, True)
+            else:
+                score.displayActualScore(screen)
             pygame.display.update()
-            pygame.time.wait(1000)
-            resetPositions(players, particle)
 
         if score.oneWon() is True:
-            run = False
-            score.displayFinalScore(screen)
+            if eventOccurs is False:
+                run = False
+                pygame.time.set_timer(playerHasScored, 6000, True)
+            else:
+                score.displayActualScore(screen)
             pygame.display.update()
             pygame.time.wait(3000)
             chooseCharacterScreen()
+        pygame.display.update()
 
-
-def resetPositions(players, ball):
+def resetPositions(players, ball, score):
     for player in players:
         player.resetPosition()
         player.character.resetUltimate()
     ball.resetPosition()
+    score.hasBeenCalled = False
 
 
 # Function that displays the first screen of the game
