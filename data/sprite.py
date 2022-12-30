@@ -118,7 +118,6 @@ class Sprite:
         self.hittedRight = [pygame.image.load("data/images/Raptor/Hitted/Raptor_24.png")]
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
-
     def initSwitchSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/Switch/Default/Switch_Default.png")]
@@ -282,12 +281,10 @@ class Sprite:
         self.fallingLeft = self.mirrorSprites(self.fallingRight)
 
         # Attacking Top sprites
-        self.attackingTopRight = [pygame.image.load("data/images/Sonata/AttackingTop/Sonata_12.png"),
-                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_13.png"),
-                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_14.png"),
-                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_15.png"),
-                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_16.png"),
-                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_17.png")]
+        self.attackingTopRight = [pygame.image.load("data/images/Sonata/AttackingTop/Sonata_27.png"),
+                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_28.png"),
+                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_29.png"),
+                                  pygame.image.load("data/images/Sonata/AttackingTop/Sonata_30.png")]
         self.attackingTopLeft = self.mirrorSprites(self.attackingTopRight)
 
         # Attacking Middle sprites
@@ -300,8 +297,26 @@ class Sprite:
         self.attackingMiddleLeft = self.mirrorSprites(self.attackingMiddleRight)
 
         # Attacking Bottom sprites
+        # TODO SONATA BOTTOM
         self.attackingBottomRight = [pygame.image.load("data/images/Sonata/Default/Sonata_Default.png")]
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
+
+        # Attacking Above sprites
+        self.attackingAboveRight = [pygame.image.load("data/images/Sonata/AttackingAbove/Sonata_12.png"),
+                                    pygame.image.load("data/images/Sonata/AttackingAbove/Sonata_13.png"),
+                                    pygame.image.load("data/images/Sonata/AttackingAbove/Sonata_14.png"),
+                                    pygame.image.load("data/images/Sonata/AttackingAbove/Sonata_15.png"),
+                                    pygame.image.load("data/images/Sonata/AttackingAbove/Sonata_16.png"),
+                                    pygame.image.load("data/images/Sonata/AttackingAbove/Sonata_17.png")]
+        for i in range(len(self.attackingAboveRight)):
+            self.attackingAboveRight.append(pygame.transform.rotate(self.attackingAboveRight[i], 90))
+        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
+
+        # Attacking Below sprites
+        self.attackingBelowRight = []
+        for i in range(len(self.attackingAboveRight)):
+            self.attackingBelowRight.append(pygame.transform.rotate(self.attackingAboveRight[i], -180))
+        self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
 
         # Victory sprites
         self.victoryRight = [pygame.image.load("data/images/Sonata/Victory/Sonata_37.png"),
