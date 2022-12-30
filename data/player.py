@@ -205,11 +205,19 @@ class Player:
                 self.character.attackUpRect.x = self.x - 10 - self.character.aURxoffset
                 self.character.attackUpRect.y = self.y - 20 - self.character.aURyoffset
                 pygame.draw.rect(screen, (255, 0, 0), self.character.attackUpRect)
+                if self.direction == Direction.RIGHT:
+                    self.playAnimation(screen, self.character.sprite.attackingAboveRight)
+                else:
+                    self.playAnimation(screen, self.character.sprite.attackingAboveLeft)
             if self.attackDirection == 2:
                 self.character.attackDownRect = self.character.attackDownRectDefault
                 self.character.attackDownRect.x = self.x - 10 - self.character.aDRxoffset
                 self.character.attackDownRect.y = self.y + 100 - self.character.aDRyoffset
                 pygame.draw.rect(screen, (0, 255, 0), self.character.attackDownRect)
+                if self.direction == Direction.RIGHT:
+                    self.playAnimation(screen, self.character.sprite.attackingBelowRight)
+                else:
+                    self.playAnimation(screen, self.character.sprite.attackingBelowLeft)
             if self.attackDirection == 3:
                 self.character.attackMiddleUpRect = self.character.attackMiddleUpRectDefault
                 if self.direction == Direction.RIGHT:

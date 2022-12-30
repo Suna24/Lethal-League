@@ -24,6 +24,10 @@ class Sprite:
         self.victoryLeft = None
         self.hittedRight = None
         self.hittedLeft = None
+        self.attackingAboveRight = None
+        self.attackingAboveLeft = None
+        self.attackingBelowRight = None
+        self.attackingBelowLeft = None
 
     def __init__(self, character):
         # If the character chose is Raptor
@@ -92,6 +96,16 @@ class Sprite:
                                      pygame.image.load("data/images/Raptor/AttackingBottom/Raptor_27.png"),
                                      pygame.image.load("data/images/Raptor/AttackingBottom/Raptor_28.png")]
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
+
+        # Attacking Above sprites
+        self.attackingAboveRight = [pygame.image.load("data/images/Raptor/AttackingAbove/Raptor_29.png"),
+                                    pygame.image.load("data/images/Raptor/AttackingAbove/Raptor_30.png")]
+        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
+
+        # Attacking Below sprites
+        self.attackingBelowRight = [pygame.image.load("data/images/Raptor/AttackingBelow/Raptor_29.png"),
+                                    pygame.image.load("data/images/Raptor/AttackingBelow/Raptor_30.png")]
+        self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
 
         # Victory sprites
         self.victoryRight = [pygame.image.load("data/images/Raptor/Victory/Raptor_37.png"),
@@ -317,6 +331,18 @@ class Sprite:
                                      pygame.image.load("data/images/Latch/AttackingBottom/Latch_43.png"),
                                      pygame.image.load("data/images/Latch/AttackingBottom/Latch_44.png")]
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
+
+        # Attacking Above sprites
+        self.attackingAboveRight = []
+        for i in range(len(self.attackingTopRight)):
+            self.attackingAboveRight.append(pygame.transform.rotate(self.attackingTopRight[i], 90))
+        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
+
+        # Attacking Below sprites
+        self.attackingBelowRight = []
+        for i in range(len(self.attackingTopRight)):
+            self.attackingBelowRight.append(pygame.transform.rotate(self.attackingTopRight[i], -90))
+        self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
 
         # Victory sprites
         self.victoryRight = [pygame.image.load("data/images/Latch/Victory/Latch_50.png"),
