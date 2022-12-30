@@ -9,28 +9,31 @@ from data.charactersClasses.Sonata import Sonata
 from data.charactersClasses.Candyman import Candyman
 from data.charactersClasses.Switch import Switch
 
+
 class Player:
-    def __init__(self, x, y, color, hpRect, powerRect, sprite, direction, spritesList):
+    def __init__(self, x, y, color, hpRect, powerRect, sprite, direction, spritesList, width, height):
         self.in_air = False
         self.vel_y = 0
         self.vel_x = 0
         self.x = x
         self.y = y
+        self.width = width
+        self.height = height
         self.defaultX = x
         self.defaultY = y
         # instantiate character
         if sprite == CharacterEnum.RAPTOR:
-            self.character = Raptor(spritesList[0])
+            self.character = Raptor(spritesList)
         elif sprite == CharacterEnum.DICE:
-            self.character = Dice(spritesList[2])
+            self.character = Dice(spritesList)
         elif sprite == CharacterEnum.LATCH:
-            self.character = Latch(spritesList[1])
+            self.character = Latch(spritesList)
         elif sprite == CharacterEnum.SONATA:
-            self.character = Sonata(spritesList[3])
+            self.character = Sonata(spritesList)
         elif sprite == CharacterEnum.CANDYMAN:
-            self.character = Candyman(spritesList[4])
+            self.character = Candyman(spritesList)
         elif sprite == CharacterEnum.SWITCH:
-            self.character = Switch(spritesList[5])
+            self.character = Switch(spritesList)
         self.move_per_second = self.character.speed * 100
         self.colorguard = color
         self.invincible = False
@@ -78,7 +81,7 @@ class Player:
         self.repeatSprite -= 1
         if self.repeatSprite == 0:
             self.currentSprite += 1
-            self.repeatSprite = 30
+            self.repeatSprite = 20
 
     def move(self, screen, ms_frame, score):
         self.move_per_second = self.character.speed * 100
@@ -141,7 +144,7 @@ class Player:
                 self.x -= self.move_per_second * ms_frame / 1000
                 if not self.isJump:
                     self.playAnimation(screen, self.character.sprite.runningLeft)
-            if keys[self.moveRight] and self.x < 800 - 10 and self.isAttacking is False:
+            if keys[self.moveRight] and self.x < 1600 - 10 and self.isAttacking is False:
                 self.direction = Direction.RIGHT
                 self.x += self.move_per_second * ms_frame / 1000
                 if not self.isJump:
@@ -179,8 +182,8 @@ class Player:
         if self.vel_y > 10:
             self.vel_y = 10
         self.y += self.vel_y
-        if self.y > 600 - 100:
-            self.y = 600 - 100
+        if self.y > self.height - 100:
+            self.y = self.height - 100
             self.in_air = False
             self.isJump = False
 

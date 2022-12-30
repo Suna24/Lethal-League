@@ -10,7 +10,7 @@ class Score:
         self.rect3color = (255, 255, 255)
         self.hasBeenCalled = False
 
-    def draw(self, screen):
+    def draw(self, screen,width):
         if self.score_p1 == 1 and self.score_p2 == 1:
             self.rect1color = (0, 0, 255)
             self.rect2color = (255, 255, 255)
@@ -43,9 +43,9 @@ class Score:
             self.rect1color = (0, 0, 255)
             self.rect2color = (255, 0, 0)
             self.rect3color = (255, 0, 0)
-        rect1 = pygame.Rect(310, 0, 50, 30)
-        rect2 = pygame.Rect(440, 0, 50, 30)
-        rect3 = pygame.Rect(375, 0, 50, 30)
+        rect1 = pygame.Rect(width / 2 - 25 - 65, 0, 50, 30)
+        rect2 = pygame.Rect(width / 2 - 25 + 65, 0, 50, 30)
+        rect3 = pygame.Rect(width / 2 - 25, 0, 50, 30)
         pygame.draw.rect(screen, self.rect1color, rect1)
         pygame.draw.rect(screen, self.rect2color, rect2)
         pygame.draw.rect(screen, self.rect3color, rect3)
