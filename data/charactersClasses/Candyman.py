@@ -3,7 +3,7 @@ import pygame
 
 class Candyman(character):
     def __init__(self, sprites):
-        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites,25, 15)
+        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10), sprites.size - (15 * 10))
         self.hitbox = pygame.Rect(0, 0, sprites.size * 0.43, sprites.size * 0.73)
         self.attackUpRectDefault = pygame.Rect(0, 0, sprites.size * 0.57, sprites.size * 0.1)
         self.aURxoffset = self.hitbox.width * 0.5
