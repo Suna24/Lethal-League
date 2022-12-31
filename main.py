@@ -37,14 +37,14 @@ listOfMapBackgrounds = [
     pygame.image.load("data/images/Maps/map7.png"),
     pygame.image.load("data/images/Maps/map8.png")]
 listOfMapMenuBackgrounds = [
-    pygame.image.load("data/images/MapsBackground/map1.png"),
-    pygame.image.load("data/images/MapsBackground/map2.png"),
-    pygame.image.load("data/images/MapsBackground/map3.png"),
-    pygame.image.load("data/images/MapsBackground/map4.png"),
-    pygame.image.load("data/images/MapsBackground/map5.png"),
-    pygame.image.load("data/images/MapsBackground/map6.png"),
-    pygame.image.load("data/images/MapsBackground/map7.png"),
-    pygame.image.load("data/images/MapsBackground/map8.png")]
+    pygame.image.load("data/images/Maps/map1.png"),
+    pygame.image.load("data/images/Maps/map2.png"),
+    pygame.image.load("data/images/Maps/map3.png"),
+    pygame.image.load("data/images/Maps/map4.png"),
+    pygame.image.load("data/images/Maps/map5.png"),
+    pygame.image.load("data/images/Maps/map6.png"),
+    pygame.image.load("data/images/Maps/map7.png"),
+    pygame.image.load("data/images/Maps/map8.png")]
 
 welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -194,7 +194,7 @@ def welcomeScreen():
 def chooseMapScreen():
     print("In choose map screen")
 
-    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4)
+    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4,SCREEN_WIDTH, SCREEN_HEIGHT)
     run = True
 
     # Create a user event appearing every 0.5 sec
@@ -249,11 +249,11 @@ def chooseCharacterScreen():
         pygame.image.load("data/images/CharacterSelection/CandyMan.png"),
         pygame.image.load("data/images/CharacterSelection/Switch.png")]
 
-    chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2)
+    chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    for i in range(len(listOfCharacterBg)):
-        listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
-            listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
+    #for i in range(len(listOfCharacterBg)):
+    #    listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
+    #       listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
 
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT
