@@ -36,7 +36,7 @@ class Particle:
         self.defaultY = y
         self.elasticity = 0.75
         self.move_per_second = 800
-        self.size = size
+        self.size = size * 0.75
         self.color = (255, 255, 255)
         self.thickness = 0
         self.speed = 1

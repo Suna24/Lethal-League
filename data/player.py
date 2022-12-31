@@ -40,7 +40,7 @@ class Player:
         self.invincibleTimer = 0
         self.isAttacking = False
         self.attackDirection = 0
-        self.power = 100
+        self.power = 0
         self.powerRect = powerRect
         self.isJump = True
         self.direction = direction

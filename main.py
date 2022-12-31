@@ -67,10 +67,10 @@ def gameLoop():
     gravity = (math.pi, 0.0003)
     run = True
 
-    player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10),
+    player = Player(0, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10),
                     listOfCharacters[gameManager.firstCharacter], Direction.RIGHT,
                     listOfSprites[gameManager.firstCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
-    player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
+    player2 = Player(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
                      pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[gameManager.secondCharacter],
                      Direction.LEFT,
                      listOfSprites[gameManager.secondCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -81,7 +81,7 @@ def gameLoop():
     # Map
     map_background_scaled = pygame.transform.scale(listOfMapBackgrounds[gameManager.map], (SCREEN_WIDTH, SCREEN_HEIGHT))
     score = Score()
-    particle = Particle(400, 100, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+    particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
     player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
                         pygame.K_n)
@@ -120,7 +120,7 @@ def gameLoop():
                 score.hasBeenCalled = True
                 pygame.time.set_timer(playerHasScored, 3000, True)
             else:
-                score.displayActualScore(screen)
+                score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
 
         elif players[1].character.health <= 0:
@@ -134,7 +134,7 @@ def gameLoop():
                 score.hasBeenCalled = True
                 pygame.time.set_timer(playerHasScored, 3000, True)
             else:
-                score.displayActualScore(screen)
+                score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
 
         if score.oneWon() is True:
@@ -142,7 +142,7 @@ def gameLoop():
                 run = False
                 pygame.time.set_timer(playerHasScored, 6000, True)
             else:
-                score.displayActualScore(screen)
+                score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
             pygame.time.wait(3000)
             chooseCharacterScreen()
@@ -194,7 +194,7 @@ def welcomeScreen():
 def chooseMapScreen():
     print("In choose map screen")
 
-    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4,SCREEN_WIDTH, SCREEN_HEIGHT)
+    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4, SCREEN_WIDTH, SCREEN_HEIGHT)
     run = True
 
     # Create a user event appearing every 0.5 sec
@@ -251,7 +251,7 @@ def chooseCharacterScreen():
 
     chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    #for i in range(len(listOfCharacterBg)):
+    # for i in range(len(listOfCharacterBg)):
     #    listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
     #       listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
 
