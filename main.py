@@ -50,11 +50,11 @@ welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Players sprites
-listOfCharacters = [CharacterEnum.LATCH, CharacterEnum.RAPTOR, CharacterEnum.DICE, CharacterEnum.SONATA,
-                    CharacterEnum.CANDYMAN, CharacterEnum.SWITCH]
+listOfCharacters = [CharacterEnum.LATCH, CharacterEnum.RAPTOR, CharacterEnum.DICE, CharacterEnum.CANDYMAN,
+                    CharacterEnum.SONATA, CharacterEnum.SWITCH]
 listOfSprites = [Sprite(CharacterEnum.LATCH, SIZE), Sprite(CharacterEnum.RAPTOR, SIZE),
-                 Sprite(CharacterEnum.DICE, SIZE), Sprite(CharacterEnum.SONATA, SIZE),
-                 Sprite(CharacterEnum.CANDYMAN, SIZE), Sprite(CharacterEnum.SWITCH, SIZE)]
+                 Sprite(CharacterEnum.DICE, SIZE), Sprite(CharacterEnum.CANDYMAN, SIZE),
+                 Sprite(CharacterEnum.SONATA, SIZE), Sprite(CharacterEnum.SWITCH, SIZE)]
 
 # Sounds
 listOfMusicPath = ["data/musics/HomePage.mp3",
@@ -246,8 +246,8 @@ def chooseCharacterScreen():
         pygame.image.load("data/images/CharacterSelection/Latch.png"),
         pygame.image.load("data/images/CharacterSelection/Raptor.png"),
         pygame.image.load("data/images/CharacterSelection/Dice.png"),
-        pygame.image.load("data/images/CharacterSelection/Sonata.png"),
         pygame.image.load("data/images/CharacterSelection/CandyMan.png"),
+        pygame.image.load("data/images/CharacterSelection/Sonata.png"),
         pygame.image.load("data/images/CharacterSelection/Switch.png")]
 
     chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2, SCREEN_WIDTH, SCREEN_HEIGHT)
