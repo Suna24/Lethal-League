@@ -34,7 +34,7 @@ class Particle:
         self.height = height
         self.defaultX = x
         self.defaultY = y
-        self.elasticity = 0.75
+        self.elasticity = 0.8
         self.move_per_second = 800
         self.size = size * 0.75
         self.color = (255, 255, 255)

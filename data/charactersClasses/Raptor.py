@@ -37,7 +37,6 @@ class Raptor(character, ABC):
 
     def deployUltimate(self):
         self.speed = 8
-        print("Ultimate deployed")
 
     def resetUltimate(self):
         self.speed = 3

@@ -64,14 +64,15 @@ mixer.music.load(listOfMusicPath[0])
 
 def gameLoop():
     print(gameManager.map)
-    gravity = (math.pi, 0.0003)
+    gravity = (math.pi, 0.002)
     run = True
 
-    player = Player(0, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10),
+    player = Player(0, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 400, 40), pygame.Rect(0, 40, 400, 20),
                     listOfCharacters[gameManager.firstCharacter], Direction.RIGHT,
                     listOfSprites[gameManager.firstCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
-    player2 = Player(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
-                     pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[gameManager.secondCharacter],
+    player2 = Player(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, (255, 0, 0), pygame.Rect(screen.get_width() - 400, 0, 400,
+                                                                                       40),
+                     pygame.Rect(screen.get_width() - 400, 40, 400, 20), listOfCharacters[gameManager.secondCharacter],
                      Direction.LEFT,
                      listOfSprites[gameManager.secondCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
     # Sound
