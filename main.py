@@ -12,8 +12,9 @@ from data.chooseElement import ChooseElement
 from data.gameManager import GameManager
 
 # Consts
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1600
+SCREEN_HEIGHT = 900
+SIZE = 275
 
 # Initialization
 pygame.init()
@@ -36,41 +37,44 @@ listOfMapBackgrounds = [
     pygame.image.load("data/images/Maps/map7.png"),
     pygame.image.load("data/images/Maps/map8.png")]
 listOfMapMenuBackgrounds = [
-    pygame.image.load("data/images/MapsBackground/map1.png"),
-    pygame.image.load("data/images/MapsBackground/map2.png"),
-    pygame.image.load("data/images/MapsBackground/map3.png"),
-    pygame.image.load("data/images/MapsBackground/map4.png"),
-    pygame.image.load("data/images/MapsBackground/map5.png"),
-    pygame.image.load("data/images/MapsBackground/map6.png"),
-    pygame.image.load("data/images/MapsBackground/map7.png"),
-    pygame.image.load("data/images/MapsBackground/map8.png")]
+    pygame.image.load("data/images/Maps/map1.png"),
+    pygame.image.load("data/images/Maps/map2.png"),
+    pygame.image.load("data/images/Maps/map3.png"),
+    pygame.image.load("data/images/Maps/map4.png"),
+    pygame.image.load("data/images/Maps/map5.png"),
+    pygame.image.load("data/images/Maps/map6.png"),
+    pygame.image.load("data/images/Maps/map7.png"),
+    pygame.image.load("data/images/Maps/map8.png")]
 
 welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Players sprites
-listOfCharacters = [CharacterEnum.RAPTOR, CharacterEnum.LATCH, CharacterEnum.DICE, CharacterEnum.SONATA,
-                    CharacterEnum.CANDYMAN, CharacterEnum.SWITCH]
-listOfSprites = [Sprite(CharacterEnum.RAPTOR), Sprite(CharacterEnum.LATCH),
-                 Sprite(CharacterEnum.DICE), Sprite(CharacterEnum.SONATA),
-                 Sprite(CharacterEnum.CANDYMAN), Sprite(CharacterEnum.SWITCH)]
+listOfCharacters = [CharacterEnum.LATCH, CharacterEnum.RAPTOR, CharacterEnum.DICE, CharacterEnum.CANDYMAN,
+                    CharacterEnum.SONATA, CharacterEnum.SWITCH]
+listOfSprites = [Sprite(CharacterEnum.LATCH, SIZE), Sprite(CharacterEnum.RAPTOR, SIZE),
+                 Sprite(CharacterEnum.DICE, SIZE), Sprite(CharacterEnum.CANDYMAN, SIZE),
+                 Sprite(CharacterEnum.SONATA, SIZE), Sprite(CharacterEnum.SWITCH, SIZE)]
 
 # Sounds
 listOfMusicPath = ["data/musics/HomePage.mp3",
                    "data/musics/Fight.mp3"]
 mixer.music.load(listOfMusicPath[0])
 
+
 def gameLoop():
     print(gameManager.map)
-    gravity = (math.pi, 0.0003)
+    gravity = (math.pi, 0.002)
     run = True
 
-    player = Player(100, 100, (0, 0, 255), pygame.Rect(0, 0, 300, 30), pygame.Rect(0, 30, 300, 10),
-                    listOfCharacters[gameManager.firstCharacter], Direction.RIGHT, listOfSprites)
-    player2 = Player(700, 100, (255, 0, 0), pygame.Rect(screen.get_width() - 300, 0, 300, 30),
-                     pygame.Rect(screen.get_width() - 300, 30, 300, 10), listOfCharacters[gameManager.secondCharacter],
+    player = Player(0, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 400, 40), pygame.Rect(0, 40, 400, 20),
+                    listOfCharacters[gameManager.firstCharacter], Direction.RIGHT,
+                    listOfSprites[gameManager.firstCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
+    player2 = Player(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, (255, 0, 0), pygame.Rect(screen.get_width() - 400, 0, 400,
+                                                                                       40),
+                     pygame.Rect(screen.get_width() - 400, 40, 400, 20), listOfCharacters[gameManager.secondCharacter],
                      Direction.LEFT,
-                     listOfSprites)
+                     listOfSprites[gameManager.secondCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
     # Sound
     mixer.music.load(listOfMusicPath[1])
     mixer.music.play(-1)
@@ -78,7 +82,7 @@ def gameLoop():
     # Map
     map_background_scaled = pygame.transform.scale(listOfMapBackgrounds[gameManager.map], (SCREEN_WIDTH, SCREEN_HEIGHT))
     score = Score()
-    particle = Particle(400, 100, 10, screen)
+    particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
     player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
                         pygame.K_n)
@@ -87,7 +91,7 @@ def gameLoop():
 
     playerHasScored = pygame.USEREVENT + 1
     eventOccurs = False
-    
+
     while run:
         ms_frame = clock.tick(300)
         for event in pygame.event.get():
@@ -104,7 +108,7 @@ def gameLoop():
             player.move(screen, ms_frame, score)
         particle.move(gravity, ms_frame)
         particle.bounce(players)
-        score.draw(screen)
+        score.draw(screen, SCREEN_WIDTH)
         particle.display(screen)
         if players[0].character.health <= 0:
             if players[1].direction == Direction.RIGHT:
@@ -117,7 +121,7 @@ def gameLoop():
                 score.hasBeenCalled = True
                 pygame.time.set_timer(playerHasScored, 3000, True)
             else:
-                score.displayActualScore(screen)
+                score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
 
         elif players[1].character.health <= 0:
@@ -131,7 +135,7 @@ def gameLoop():
                 score.hasBeenCalled = True
                 pygame.time.set_timer(playerHasScored, 3000, True)
             else:
-                score.displayActualScore(screen)
+                score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
 
         if score.oneWon() is True:
@@ -139,11 +143,12 @@ def gameLoop():
                 run = False
                 pygame.time.set_timer(playerHasScored, 6000, True)
             else:
-                score.displayActualScore(screen)
+                score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
             pygame.time.wait(3000)
             chooseCharacterScreen()
         pygame.display.update()
+
 
 def resetPositions(players, ball, score):
     for player in players:
@@ -181,7 +186,7 @@ def welcomeScreen():
         screen.blit(welcome_background_scaled, (0, 0))
         # Blinking text
         if textDisplayed is True:
-            screen.blit(text, (150, 20))
+            screen.blit(text, (SCREEN_WIDTH - 1000, SCREEN_HEIGHT - 75))
         pygame.display.update()
 
     pygame.quit()
@@ -190,7 +195,7 @@ def welcomeScreen():
 def chooseMapScreen():
     print("In choose map screen")
 
-    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4)
+    chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4, SCREEN_WIDTH, SCREEN_HEIGHT)
     run = True
 
     # Create a user event appearing every 0.5 sec
@@ -238,18 +243,18 @@ def chooseCharacterScreen():
     print("In choose Character Screen")
     # Load images
     listOfCharacterBg = [
-        pygame.image.load("data/images/CharacterSelection/Raptor.png"),
         pygame.image.load("data/images/CharacterSelection/Latch.png"),
+        pygame.image.load("data/images/CharacterSelection/Raptor.png"),
         pygame.image.load("data/images/CharacterSelection/Dice.png"),
-        pygame.image.load("data/images/CharacterSelection/Sonata.png"),
         pygame.image.load("data/images/CharacterSelection/CandyMan.png"),
+        pygame.image.load("data/images/CharacterSelection/Sonata.png"),
         pygame.image.load("data/images/CharacterSelection/Switch.png")]
 
-    chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2)
+    chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    for i in range(len(listOfCharacterBg)):
-        listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
-            listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
+    # for i in range(len(listOfCharacterBg)):
+    #    listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
+    #       listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
 
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT

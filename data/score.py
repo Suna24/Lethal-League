@@ -10,7 +10,7 @@ class Score:
         self.rect3color = (255, 255, 255)
         self.hasBeenCalled = False
 
-    def draw(self, screen):
+    def draw(self, screen, width):
         if self.score_p1 == 1 and self.score_p2 == 1:
             self.rect1color = (0, 0, 255)
             self.rect2color = (255, 255, 255)
@@ -43,9 +43,9 @@ class Score:
             self.rect1color = (0, 0, 255)
             self.rect2color = (255, 0, 0)
             self.rect3color = (255, 0, 0)
-        rect1 = pygame.Rect(310, 0, 50, 30)
-        rect2 = pygame.Rect(440, 0, 50, 30)
-        rect3 = pygame.Rect(375, 0, 50, 30)
+        rect1 = pygame.Rect(width / 2 - 100 - 65, 0, 100, 60)
+        rect2 = pygame.Rect(width / 2 - 50, 0, 100, 60)
+        rect3 = pygame.Rect(width / 2 + 65, 0, 100, 60)
         pygame.draw.rect(screen, self.rect1color, rect1)
         pygame.draw.rect(screen, self.rect2color, rect2)
         pygame.draw.rect(screen, self.rect3color, rect3)
@@ -56,11 +56,11 @@ class Score:
         elif param == 2:
             self.score_p2 += 1
 
-    def displayActualScore(self, screen):
+    def displayActualScore(self, screen, width, height):
         font = pygame.font.SysFont("rubik", 150)
         text = font.render(str(self.score_p1) + " - " + str(self.score_p2), True, [255, 255, 255])
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0,200, 800, 100))
-        screen.blit(text, (300, 200))
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0, height/2 - 100, width, 100))
+        screen.blit(text, (width/2 - 100, height/2 - 100))
 
     def oneWon(self):
         if self.score_p1 == 2 or self.score_p2 == 2:
@@ -73,4 +73,3 @@ class Score:
         text = font.render(str(self.score_p1) + " - " + str(self.score_p2), True, [255, 255, 255])
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0, 200, 800, 100))
         screen.blit(text, (350, 200))
-

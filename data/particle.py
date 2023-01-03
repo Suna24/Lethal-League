@@ -27,14 +27,16 @@ def setInvicibility(players):
 
 
 class Particle:
-    def __init__(self, x, y, size, screen):
+    def __init__(self, x, y, size, screen, width, height):
         self.x = x
         self.y = y
+        self.width = width
+        self.height = height
         self.defaultX = x
         self.defaultY = y
-        self.elasticity = 0.75
+        self.elasticity = 0.8
         self.move_per_second = 800
-        self.size = size
+        self.size = size * 0.75
         self.color = (255, 255, 255)
         self.thickness = 0
         self.speed = 1
@@ -157,8 +159,8 @@ class Particle:
                         setInvicibility(players)
                 else:
                     self.color = (255, 255, 255)
-        if self.x > 800 - self.size:
-            self.x = 2 * (800 - self.size) - self.x
+        if self.x > self.width - self.size:
+            self.x = 2 * (self.width - self.size) - self.x
             self.angle = - self.angle
             self.speed *= self.elasticity
 
@@ -167,8 +169,8 @@ class Particle:
             self.angle = - self.angle
             self.speed *= self.elasticity
 
-        if self.y > 570 - self.size:
-            self.y = 2 * (570 - self.size) - self.y
+        if self.y > (self.height - 30) - self.size:
+            self.y = 2 * ((self.height - 30) - self.size) - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
 

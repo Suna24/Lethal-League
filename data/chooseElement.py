@@ -2,7 +2,7 @@ import pygame
 
 
 class ChooseElement:
-    def __init__(self, screen, listOfBackgrounds, rows, columns):
+    def __init__(self, screen, listOfBackgrounds, rows, columns, width, height):
         self.screen = screen
         self.rows = rows
         self.columns = columns
@@ -15,7 +15,7 @@ class ChooseElement:
         self.initIndexOfChoices()
 
         # Create all rectangle choices
-        self.listOfRectangleChoices = self.makeRectangleChoices(800, 600)
+        self.listOfRectangleChoices = self.makeRectangleChoices(width, height)
 
     def initIndexOfChoices(self):
         self.allChoices = [[0 for i in range(self.columns)] for i in range(self.rows)]
@@ -95,12 +95,13 @@ class ChooseElement:
             indexToRemember.append((self.columns - 1) + i * self.columns)
 
         for i in range(len(self.listOfBackgrounds)):
-            listOfRectangleChoices.append(pygame.Rect(x, y, screenWidth/self.columns, screenHeight/self.rows, width=5))
+            listOfRectangleChoices.append(
+                pygame.Rect(x, y, screenWidth / self.columns, screenHeight / self.rows, width=5))
             if i in indexToRemember:
                 x = 0
-                y += screenHeight/self.rows
+                y += screenHeight / self.rows
             else:
-                x += screenWidth/self.columns
+                x += screenWidth / self.columns
 
             print(str(x) + " " + str(y))
 
@@ -109,8 +110,10 @@ class ChooseElement:
     def fillRectangleWithBackgrounds(self, screen):
         for i in range(len(self.listOfBackgrounds)):
             pygame.draw.rect(screen, [255, 255, 0], self.listOfRectangleChoices[i])
-            center = (self.listOfRectangleChoices[i].centerx - self.listOfBackgrounds[i].get_size()[0] / 2, self.listOfRectangleChoices[i].y)
-            screen.blit(self.listOfBackgrounds[i], center)
+            center = (self.listOfRectangleChoices[i].centerx - self.listOfBackgrounds[i].get_width() / 4,
+                      self.listOfRectangleChoices[i].y)
+            size = self.listOfRectangleChoices[i].height
+            screen.blit(pygame.transform.scale(self.listOfBackgrounds[i], (size, size)), center)
 
     def drawBorderOfRectangleChoice(self, screen, indexOfRectangle, color):
         x, y = self.listOfRectangleChoices[indexOfRectangle].x, self.listOfRectangleChoices[indexOfRectangle].y
