@@ -144,11 +144,10 @@ def gameLoop():
                 pygame.time.set_timer(playerHasScored, 6000, True)
             else:
                 score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
-            pygame.display.update()
-            pygame.time.wait(3000)
-            chooseCharacterScreen()
         pygame.display.update()
 
+    mixer.music.stop()
+    chooseCharacterScreen()
 
 def resetPositions(players, ball, score):
     for player in players:
@@ -240,7 +239,14 @@ def chooseMapScreen():
 
 # Function that enables players to choose their characters
 def chooseCharacterScreen():
-    print("In choose Character Screen")
+
+    # Sound
+    if mixer.get_busy() is True:
+        mixer.music.stop()
+
+    mixer.music.load(listOfMusicPath[0])
+    mixer.music.play(-1)
+
     # Load images
     listOfCharacterBg = [
         pygame.image.load("data/images/CharacterSelection/Latch.png"),
@@ -251,10 +257,6 @@ def chooseCharacterScreen():
         pygame.image.load("data/images/CharacterSelection/Switch.png")]
 
     chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2, SCREEN_WIDTH, SCREEN_HEIGHT)
-
-    # for i in range(len(listOfCharacterBg)):
-    #    listOfCharacterBg[i] = pygame.transform.scale(listOfCharacterBg[i], (
-    #       listOfCharacterBg[i].get_size()[0] / 4, listOfCharacterBg[i].get_size()[1] / 4))
 
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT

@@ -65,10 +65,10 @@ class ChooseElement:
             for i in range(0, self.rows):
                 indexToRemember.append(i * self.columns)
             if currentIndex in indexToRemember:
-                print("New index : " + str(self.allChoices[x][self.columns - 1]))
-                return self.allChoices[x + 1][y]
+                print("New index (in indexToRemember) : " + str(self.allChoices[x][self.columns - 1]))
+                return self.allChoices[x][y + 1]
             else:
-                print("New index : " + str(self.allChoices[x][y - 1]))
+                print("New index (not in indexToRemember) : " + str(self.allChoices[x][y - 1]))
                 return self.allChoices[x][y - 1]
 
         if key == pygame.K_d or key == pygame.K_RIGHT:
