@@ -7,6 +7,7 @@ class ChooseElement:
         self.rows = rows
         self.columns = columns
         self.listOfBackgrounds = listOfBackgrounds
+        self.allChoices = []
 
         if rows * columns != len(listOfBackgrounds):
             print("ATTENTION : le nombre de choix ne correspond pas au nombre de background passé en paramètres")
@@ -18,7 +19,7 @@ class ChooseElement:
         self.listOfRectangleChoices = self.makeRectangleChoices(width, height)
 
     def initIndexOfChoices(self):
-        self.allChoices = [[0 for i in range(self.columns)] for i in range(self.rows)]
+        self.allChoices = [[0 for _ in range(self.columns)] for _ in range(self.rows)]
         index = 0
         for i in range(self.rows):
             for j in range(self.columns):
@@ -117,7 +118,7 @@ class ChooseElement:
 
     def drawBorderOfRectangleChoice(self, screen, indexOfRectangle, color):
         x, y = self.listOfRectangleChoices[indexOfRectangle].x, self.listOfRectangleChoices[indexOfRectangle].y
-        rect_width, rect_height = self.listOfRectangleChoices[indexOfRectangle].width, \
-                                  self.listOfRectangleChoices[indexOfRectangle].height
+        rect_width, rect_height = self.listOfRectangleChoices[indexOfRectangle].width, self.listOfRectangleChoices[
+            indexOfRectangle].height
         pygame.draw.lines(screen, color, True,
                           ((x, y), (x + rect_width, y), (x + rect_width, y + rect_height), (x, y + rect_height)), 5)

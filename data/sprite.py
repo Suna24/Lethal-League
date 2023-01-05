@@ -4,7 +4,7 @@ from data.characterenum import CharacterEnum
 
 class Sprite:
 
-    def __init__(self):
+    def __init__(self, character, size):
         # All lists of sprites that we need
 
         self.defaultRight = None
@@ -30,7 +30,6 @@ class Sprite:
         self.attackingBelowRight = None
         self.attackingBelowLeft = None
 
-    def __init__(self, character,size):
         self.size = size
         # If the character chose is Raptor
         if character == CharacterEnum.RAPTOR:
@@ -299,7 +298,7 @@ class Sprite:
             self.attackingAboveRight.append(pygame.transform.rotate(self.attackingTopRight[i], 90))
         for i in range(len(self.attackingAboveRight)):
             self.attackingAboveRight[i] = pygame.transform.scale(self.attackingAboveRight[i],
-                                                                     (self.size, self.size))
+                                                                 (self.size, self.size))
         self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
 
         # Attacking Below sprites
@@ -308,7 +307,7 @@ class Sprite:
             self.attackingBelowRight.append(pygame.transform.rotate(self.attackingTopRight[i], -90))
         for i in range(len(self.attackingBelowRight)):
             self.attackingBelowRight[i] = pygame.transform.scale(self.attackingBelowRight[i],
-                                                                     (self.size, self.size))
+                                                                 (self.size, self.size))
         self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
 
         # Victory sprites
@@ -422,71 +421,76 @@ class Sprite:
 
     def initLatchSprites(self):
         # Default sprite
-        self.defaultRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Default/Latch_Default.png"), (self.size, self.size))]
+        self.defaultRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Default/Latch_Default.png"),
+                                                    (self.size, self.size))]
         self.defaultLeft = self.mirrorSprites(self.defaultRight)
 
         # Running sprites
-        self.runningRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_18.png"), (self.size,
-                                                                                                                  self.size)),
-                             pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_19.png"), (
-                             self.size, self.size)),
-                             pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_20.png"), (
-                             self.size, self.size)),
-                             pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_21.png"), (
-                             self.size, self.size)),
-                             pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_22.png"), (
-                             self.size, self.size)),
-                             pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_23.png"), (
-                             self.size, self.size))]
+        self.runningRight = [
+            pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_18.png"), (self.size,
+                                                                                                 self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_19.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_20.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_21.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_22.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/Running/Latch_23.png"), (
+                self.size, self.size))]
         self.runningLeft = self.mirrorSprites(self.runningRight)
 
         # Jumping sprites
         self.jumpingRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Jumping/Latch_04.png"), (
-        self.size, self.size))]
+            self.size, self.size))]
         self.jumpingLeft = self.mirrorSprites(self.jumpingRight)
 
         # Falling sprites
         self.fallingRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Falling/Latch_05.png"), (
-        self.size, self.size))]
+            self.size, self.size))]
         self.fallingLeft = self.mirrorSprites(self.fallingRight)
 
         # Attacking Top sprites
-        self.attackingTopRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_12.png"), (
-        self.size, self.size)),
-                                  pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_13.png"), (
-                                  self.size, self.size)),
-                                  pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_14.png"), (
-                                  self.size, self.size)),
-                                  pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_15.png"), (
-                                  self.size, self.size)),
-                                  pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_16.png"), (
-                                  self.size, self.size)),
-                                  pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_17.png"), (
-                                  self.size, self.size))]
+        self.attackingTopRight = [
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_12.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_13.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_14.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_15.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_16.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingTop/Latch_17.png"), (
+                self.size, self.size))]
         self.attackingTopLeft = self.mirrorSprites(self.attackingTopRight)
 
         # Attacking Middle sprites
-        self.attackingMiddleRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_07.png"), (
-        self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_08.png"), (
-                                     self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_09.png"), (
-                                     self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_10.png"), (
-                                     self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_11.png"), (
-                                     self.size, self.size))]
+        self.attackingMiddleRight = [
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_07.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_08.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_09.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_10.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingMiddle/Latch_11.png"), (
+                self.size, self.size))]
         self.attackingMiddleLeft = self.mirrorSprites(self.attackingMiddleRight)
 
         # Attacking Bottom sprites
-        self.attackingBottomRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_41.png"), (
-        self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_42.png"), (
-                                     self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_43.png"), (
-                                     self.size, self.size)),
-                                     pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_44.png"), (
-                                     self.size, self.size))]
+        self.attackingBottomRight = [
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_41.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_42.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_43.png"), (
+                self.size, self.size)),
+            pygame.transform.scale(pygame.image.load("data/images/Latch/AttackingBottom/Latch_44.png"), (
+                self.size, self.size))]
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
 
         # Attacking Above sprites
@@ -503,25 +507,24 @@ class Sprite:
 
         # Victory sprites
         self.victoryRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Victory/Latch_50.png"), (
-        self.size, self.size)),
+            self.size, self.size)),
                              pygame.transform.scale(pygame.image.load("data/images/Latch/Victory/Latch_51.png"), (
-                             self.size, self.size)),
+                                 self.size, self.size)),
                              pygame.transform.scale(pygame.image.load("data/images/Latch/Victory/Latch_52.png"), (
-                             self.size, self.size)),
+                                 self.size, self.size)),
                              pygame.transform.scale(pygame.image.load("data/images/Latch/Victory/Latch_53.png"), (
-                             self.size, self.size))]
+                                 self.size, self.size))]
         self.victoryLeft = self.mirrorSprites(self.victoryRight)
 
         # Hitted sprite
         self.hittedRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Hitted/Latch_24.png"), (
-        self.size, self.size))]
+            self.size, self.size))]
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
     def initDiceSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/Dice/Default/Dice_Default.png")]
-        for i in range(len(self.defaultRight)):
-            self.defaultRight[i] = pygame.transform.scale(self.defaultRight[i], (self.size, self.size))
+        self.defaultRight = self.sizeSprites(self.defaultRight, self.size)
         self.defaultLeft = self.mirrorSprites(self.defaultRight)
 
         # Running sprites
@@ -570,7 +573,7 @@ class Sprite:
         self.attackingMiddleLeft = self.mirrorSprites(self.attackingMiddleRight)
 
         # Attacking Bottom sprites
-        # TODO DICE BOTTOM
+        # TODO Add Sprites
         self.attackingBottomRight = [pygame.image.load("data/images/Dice/Default/Dice_Default.png")]
         for i in range(len(self.attackingBottomRight)):
             self.attackingBottomRight[i] = pygame.transform.scale(self.attackingBottomRight[i], (self.size, self.size))
@@ -578,16 +581,13 @@ class Sprite:
 
         # Attacking Above sprites
         self.attackingAboveRight = []
-        for i in range(len(self.attackingTopRight)):
-            self.attackingAboveRight.append(pygame.transform.rotate(self.attackingTopRight[i], 90))
-            self.attackingAboveRight[i] = pygame.transform.scale(self.attackingAboveRight[i], (self.size, self.size))
-        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
+        self.attackingAboveRight = self.rotateSprites(self.attackingTopRight, 90)
+        self.attackingAboveRight = self.sizeSprites(self.attackingAboveRight, self.size)
 
         # Attacking Below sprites
         self.attackingBelowRight = []
-        for i in range(len(self.attackingTopRight)):
-            self.attackingBelowRight.append(pygame.transform.rotate(self.attackingTopRight[i], -90))
-            self.attackingBelowRight[i] = pygame.transform.scale(self.attackingBelowRight[i], (self.size, self.size))
+        self.attackingBelowRight = self.rotateSprites(self.attackingTopRight, -90)
+        self.attackingBelowRight = self.sizeSprites(self.attackingBelowRight, self.size)
         self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
 
         # Victory sprites
@@ -607,8 +607,23 @@ class Sprite:
             self.hittedRight[i] = pygame.transform.scale(self.hittedRight[i], (self.size, self.size))
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
-    def mirrorSprites(self, listOfSprites):
+    @staticmethod
+    def mirrorSprites(listOfSprites):
         listOfSpritesMirrored = []
         for i in range(len(listOfSprites)):
             listOfSpritesMirrored.append(pygame.transform.flip(listOfSprites[i], True, False))
         return listOfSpritesMirrored
+
+    @staticmethod
+    def rotateSprites(listOfSprites, angle):
+        listOfSpritesRotated = []
+        for i in range(len(listOfSprites)):
+            listOfSpritesRotated.append(pygame.transform.rotate(listOfSprites[i], angle))
+        return listOfSpritesRotated
+
+    @staticmethod
+    def sizeSprites(listOfSprites, size):
+        listOfSpritesSized = []
+        for i in range(len(listOfSprites)):
+            listOfSpritesSized.append(pygame.transform.scale(listOfSprites[i], (size, size)))
+        return listOfSpritesSized

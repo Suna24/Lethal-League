@@ -1,5 +1,4 @@
 
-
 class GameManager:
     def __int__(self):
         self.firstCharacter = None

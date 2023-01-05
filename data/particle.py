@@ -139,22 +139,22 @@ class Particle:
                 if self.speed > 0.2:
                     if self.color != player.color and self.color != (255, 255, 255):
                         createBulletTime(self.speed)
-                        for player in players:
-                            if player.color == self.color:
-                                if player.character.__class__.__name__ == "Candyman" and player.usingUltimate:
-                                    player.character.health += self.speed * 10
-                                    if player.character.health > player.character.maxHealth:
-                                        player.character.health = player.character.maxHealth
+                        for playerHit in players:
+                            if playerHit.color == self.color:
+                                if playerHit.character.__class__.__name__ == "Candyman" and playerHit.usingUltimate:
+                                    playerHit.character.health += self.speed * 10
+                                    if playerHit.character.health > playerHit.character.maxHealth:
+                                        playerHit.character.health = playerHit.character.maxHealth
                                 else:
-                                    player.power += self.speed * 5
-                            if player.color != self.color:
-                                if player.character.__class__.__name__ == "Candyman" and player.usingUltimate:
-                                    player.character.health += self.speed * 10
-                                    if player.character.health > player.character.maxHealth:
-                                        player.character.health = player.character.maxHealth
+                                    playerHit.power += self.speed * 5
+                            if playerHit.color != self.color:
+                                if playerHit.character.__class__.__name__ == "Candyman" and playerHit.usingUltimate:
+                                    playerHit.character.health += self.speed * 10
+                                    if playerHit.character.health > playerHit.character.maxHealth:
+                                        playerHit.character.health = playerHit.character.maxHealth
                                 else:
-                                    player.character.health -= self.speed * 10
-                                player.power += self.speed * 10
+                                    playerHit.character.health -= self.speed * 10
+                                playerHit.power += self.speed * 10
                         self.color = (255, 255, 255)
                         setInvicibility(players)
                 else:
