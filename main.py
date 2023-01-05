@@ -1,6 +1,5 @@
 import pygame
 import math
-from threading import Timer
 from pygame import mixer
 from data.player import Player
 from data.particle import Particle
@@ -97,7 +96,7 @@ def gameLoop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 mixer.music.stop()
-                run = False
+                return True
             if event.type == playerHasScored:
                 eventOccurs = False
                 resetPositions(players, particle, score)
@@ -148,6 +147,7 @@ def gameLoop():
 
     mixer.music.stop()
     chooseCharacterScreen()
+
 
 def resetPositions(players, ball, score):
     for player in players:
@@ -207,7 +207,7 @@ def chooseMapScreen():
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                return True
             if event.type == blink:
                 blinking = not blinking
             if event.type == pygame.KEYDOWN:
@@ -239,7 +239,6 @@ def chooseMapScreen():
 
 # Function that enables players to choose their characters
 def chooseCharacterScreen():
-
     # Sound
     if mixer.get_busy() is True:
         mixer.music.stop()
@@ -272,7 +271,7 @@ def chooseCharacterScreen():
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                return True
             if event.type == blink:
                 blinking = not blinking
             if event.type == pygame.KEYDOWN:

@@ -1,5 +1,4 @@
 import pygame
-from data.particle import Particle
 from data.direction import Direction
 from data.characterenum import CharacterEnum
 from data.charactersClasses.Latch import Latch
@@ -87,7 +86,7 @@ class Player:
         else:
             screen.blit(listOfSprites[self.currentSprite],
                         (self.x - listOfSprites[self.currentSprite].get_width() // 2,
-                        self.y - listOfSprites[self.currentSprite].get_height() + 100))
+                         self.y - listOfSprites[self.currentSprite].get_height() + 100))
         self.repeatSprite -= 1
         if self.repeatSprite == 0:
             self.currentSprite += 1
@@ -142,7 +141,8 @@ class Player:
         if keys[self.specialAttack] and self.power == 100:
             self.usingUltimate = True
         if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
-                and self.isAttacking is False and self.isJump is False and self.in_air is False and score.hasBeenCalled is False:
+                and self.isAttacking is False and self.isJump is False and self.in_air is False \
+                and score.hasBeenCalled is False:
             if self.direction == Direction.RIGHT:
                 if not self.invincible:
                     screen.blit(self.character.sprite.defaultRight[0], (
@@ -155,12 +155,12 @@ class Player:
                             self.y - self.character.sprite.defaultRight[0].get_height() + 100))
                     pass
             else:
-                if not self.invincible:
+                if self.invincible is False:
                     screen.blit(self.character.sprite.defaultLeft[0], (
                         self.x - self.character.sprite.defaultLeft[0].get_width() // 2,
                         self.y - self.character.sprite.defaultLeft[0].get_height() + 100))
                 else:
-                    if self.blinking in range(0, 10):
+                    if (self.blinking in range(0, 10)) is True:
                         screen.blit(self.character.sprite.defaultLeft[0], (
                             self.x - self.character.sprite.defaultLeft[0].get_width() // 2,
                             self.y - self.character.sprite.defaultLeft[0].get_height() + 100))
@@ -168,7 +168,8 @@ class Player:
         else:
             if keys[self.moveLeft] and self.x > 0 and self.isAttacking is False:
                 self.direction = Direction.LEFT
-                if (self.isJump is False and self.in_air is False) or (self.usingUltimate and self.character.__class__.__name__ == "Raptor"):
+                if (self.isJump is False and self.in_air is False) \
+                        or (self.usingUltimate and self.character.__class__.__name__ == "Raptor"):
                     self.x -= self.move_per_second * ms_frame / 1000
                 else:
                     self.x -= self.move_per_second * ms_frame / 1000 * self.jumpReduce
@@ -176,7 +177,8 @@ class Player:
                     self.playAnimation(screen, self.character.sprite.runningLeft)
             if keys[self.moveRight] and self.x < 1600 - 10 and self.isAttacking is False:
                 self.direction = Direction.RIGHT
-                if (self.isJump is False and self.in_air is False) or (self.usingUltimate and self.character.__class__.__name__ == "Raptor"):
+                if (self.isJump is False and self.in_air is False) \
+                        or (self.usingUltimate and self.character.__class__.__name__ == "Raptor"):
                     self.x += self.move_per_second * ms_frame / 1000
                 else:
                     self.x += self.move_per_second * ms_frame / 1000 * self.jumpReduce
@@ -228,7 +230,7 @@ class Player:
         self.character.attackDownRect = 0
         self.character.hitbox.x = self.x - self.character.xhitboxoffset
         self.character.hitbox.y = self.y - self.character.yhitboxoffset
-        #pygame.draw.rect(screen, self.color, self.character.hitbox)
+        # pygame.draw.rect(screen, self.color, self.character.hitbox)
         pygame.draw.rect(screen, (255, 255, 255), self.hprect, 2)
         pygame.draw.rect(screen, (255, 0, 0), self.powerRect, 2)
         pygame.draw.rect(screen, (0, 0, 0), (self.powerRect.x + 2, self.powerRect.y + 2, (self.power * 396) / 100, 16))
@@ -240,7 +242,7 @@ class Player:
                 self.character.attackUpRect = self.character.attackUpRectDefault
                 self.character.attackUpRect.x = self.x - 10 - self.character.aURxoffset
                 self.character.attackUpRect.y = self.y - 20 - self.character.aURyoffset
-                #pygame.draw.rect(screen, (255, 0, 0), self.character.attackUpRect)
+                # pygame.draw.rect(screen, (255, 0, 0), self.character.attackUpRect)
                 if self.direction == Direction.RIGHT:
                     self.playAnimation(screen, self.character.sprite.attackingAboveRight)
                 else:
@@ -249,7 +251,7 @@ class Player:
                 self.character.attackDownRect = self.character.attackDownRectDefault
                 self.character.attackDownRect.x = self.x - 10 - self.character.aDRxoffset
                 self.character.attackDownRect.y = self.y + 100 - self.character.aDRyoffset
-                #pygame.draw.rect(screen, (0, 255, 0), self.character.attackDownRect)
+                # pygame.draw.rect(screen, (0, 255, 0), self.character.attackDownRect)
                 if self.direction == Direction.RIGHT:
                     self.playAnimation(screen, self.character.sprite.attackingBelowRight)
                 else:
@@ -264,7 +266,7 @@ class Player:
                     self.character.attackMiddleUpRect.x = self.x - 20 - self.character.aMURxoffsetLeft
                     self.character.attackMiddleUpRect.y = self.y - 20 - self.character.aMURyoffsetLeft
                     self.playAnimation(screen, self.character.sprite.attackingTopLeft)
-                #pygame.draw.rect(screen, (255, 255, 0), self.character.attackMiddleUpRect)
+                # pygame.draw.rect(screen, (255, 255, 0), self.character.attackMiddleUpRect)
             if self.attackDirection == 4:
                 self.character.attackMiddleDownRect = self.character.attackMiddleDownRectDefault
                 if self.direction == Direction.RIGHT:
@@ -275,7 +277,7 @@ class Player:
                     self.character.attackMiddleDownRect.x = self.x - 20 - self.character.aMDRxoffsetLeft
                     self.character.attackMiddleDownRect.y = self.y + 60 - self.character.aMDRyoffsetLeft
                     self.playAnimation(screen, self.character.sprite.attackingBottomLeft)
-                #pygame.draw.rect(screen, (255, 0, 255), self.character.attackMiddleDownRect)
+                # pygame.draw.rect(screen, (255, 0, 255), self.character.attackMiddleDownRect)
             if self.attackDirection == 5:
                 self.character.attackMiddleRect = self.character.attackMiddleRectDefault
                 if self.direction == Direction.RIGHT:
@@ -286,7 +288,7 @@ class Player:
                     self.character.attackMiddleRect.x = self.x - 20 - self.character.aMRxoffsetLeft
                     self.character.attackMiddleRect.y = self.y + 20 - self.character.aMRyoffsetLeft
                     self.playAnimation(screen, self.character.sprite.attackingMiddleLeft)
-                #pygame.draw.rect(screen, (0, 255, 255), self.character.attackMiddleRect)
+                # pygame.draw.rect(screen, (0, 255, 255), self.character.attackMiddleRect)
 
     def resetPosition(self):
         self.x = self.defaultX

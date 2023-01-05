@@ -1,9 +1,11 @@
 from data.character import character
 import pygame
 
+
 class Sonata(character):
     def __init__(self, sprites):
-        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10), sprites.size - (15 * 10))
+        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
+                           sprites.size - (15 * 10))
         self.hitbox = pygame.Rect(0, 0, sprites.size * 0.43, sprites.size * 0.73)
         self.attackUpRectDefault = pygame.Rect(0, 0, sprites.size * 0.57, sprites.size * 0.1)
         self.aURxoffset = self.hitbox.width * 0.5
@@ -31,7 +33,6 @@ class Sonata(character):
         self.attackMiddleUpRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleDownRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
-
 
     def deployUltimate(self):
         self.health += 0.5

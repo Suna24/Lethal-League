@@ -1,14 +1,12 @@
-from data.characterenum import CharacterEnum
-
-
-class character():
-    def __init__(self, speed, health, force, hitbox, attackUpRectDefault, attackDownRectDefault, attackMiddleUpRectDefault,
-                 attackMiddleDownRectDefault, attackMiddleRectDefault, sprite, xhitboxoffset, yhitboxoffset):
+class character:
+    def __init__(self, speed, health, force, hitbox, attackUpRectDefault, attackDownRectDefault,
+                 attackMiddleUpRectDefault, attackMiddleDownRectDefault, attackMiddleRectDefault, sprite, xhitboxoffset,
+                 yhitboxoffset):
         self.speed = speed  # 3
         self.health = health  # 100
         self.maxHealth = health
         self.hitbox = hitbox  # 0
-        self.force = force # 2
+        self.force = force  # 2
         self.attackUpRectDefault = attackUpRectDefault
         self.aURxoffset = 0
         self.aURyoffset = 0
@@ -39,10 +37,8 @@ class character():
         self.xhitboxoffset = xhitboxoffset
         self.yhitboxoffset = yhitboxoffset
 
-
     def deployUltimate(self):
         raise NotImplementedError("Subclass must implement abstract method")
-
 
     def resetUltimate(self):
         raise NotImplementedError("Subclass must implement abstract method")
