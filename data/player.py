@@ -25,10 +25,25 @@ class Player:
         # instantiate character
         if sprite == CharacterEnum.RAPTOR:
             self.character = Raptor(spritesList)
+            self.listOfMusics = ["data/musics/Latch/attack1.ogg",
+                                 "data/musics/Latch/attack2.ogg",
+                                 "data/musics/Latch/attack3.ogg"]
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
+            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Latch/specialAttack.ogg")
         elif sprite == CharacterEnum.DICE:
             self.character = Dice(spritesList)
+            self.listOfMusics = ["data/musics/Latch/attack1.ogg",
+                                 "data/musics/Latch/attack2.ogg",
+                                 "data/musics/Latch/attack3.ogg"]
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
+            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Latch/specialAttack.ogg")
         elif sprite == CharacterEnum.LATCH:
             self.character = Latch(spritesList)
+            self.listOfMusics = ["data/musics/Latch/attack1.ogg",
+                                 "data/musics/Latch/attack2.ogg",
+                                 "data/musics/Latch/attack3.ogg"]
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
+            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Latch/specialAttack.ogg")
         elif sprite == CharacterEnum.SONATA:
             self.character = Sonata(spritesList)
             self.listOfMusics = ["data/musics/Sonata/attack1.ogg",
@@ -38,6 +53,11 @@ class Player:
             self.specialAttackMusic = pygame.mixer.Sound("data/musics/Sonata/specialAttack.ogg")
         elif sprite == CharacterEnum.CANDYMAN:
             self.character = Candyman(spritesList)
+            self.listOfMusics = ["data/musics/CandyMan/attack1.ogg",
+                                 "data/musics/CandyMan/attack2.ogg",
+                                 "data/musics/CandyMan/attack3.ogg"]
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
+            self.specialAttackMusic = pygame.mixer.Sound("data/musics/CandyMan/specialAttack.ogg")
         elif sprite == CharacterEnum.SWITCH:
             self.character = Switch(spritesList)
             self.listOfMusics = ["data/musics/Switch/attack1.ogg",
