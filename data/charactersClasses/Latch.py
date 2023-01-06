@@ -2,6 +2,8 @@ from data.character import character
 import pygame
 
 
+# Latch class inherits from character class
+# So we init the character class with the specific Latch values
 class Latch(character):
     def __init__(self, sprites):
         character.__init__(self, 5, 10, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
@@ -35,7 +37,9 @@ class Latch(character):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
+        # Latch's ultimate is to boost his force
         self.force = 5
 
     def resetUltimate(self):
+        # Reverting the force back to normal
         self.force = 2

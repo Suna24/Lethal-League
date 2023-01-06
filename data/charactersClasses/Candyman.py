@@ -2,6 +2,8 @@ from data.character import character
 import pygame
 
 
+# Candyman class inherits from character class
+# So we init the character class with the specific Candyman values
 class Candyman(character):
     def __init__(self, sprites):
         character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
@@ -35,7 +37,9 @@ class Candyman(character):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
+        # his ultimate is used in particle.py so it doesn't need to be here
         pass
 
     def resetUltimate(self):
+        # his ultimate is used in particle.py so it doesn't need to be here
         pass

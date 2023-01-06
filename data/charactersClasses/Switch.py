@@ -1,7 +1,8 @@
 from data.character import character
 import pygame
 
-
+# Switch class inherits from character class
+# So we init the character class with the specific Switch values
 class Switch(character):
     def __init__(self, sprites):
         character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
@@ -37,6 +38,7 @@ class Switch(character):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
+        # Switch's ultimate is about growing their smash hitboxes
         self.attackUpRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.57 + 20, self.sprites.size * 0.1 + 20)
         self.attackDownRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.57 + 20, self.sprites.size * 0.1 + 20)
         self.attackMiddleUpRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.4 + 20, self.sprites.size * 0.1 + 20)
@@ -44,6 +46,7 @@ class Switch(character):
         self.attackMiddleRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.4 + 20, self.sprites.size * 0.1 + 20)
 
     def resetUltimate(self):
+        # Reverting the hitboxes to their original size
         self.attackUpRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.57, self.sprites.size * 0.1)
         self.attackDownRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.57, self.sprites.size * 0.1)
         self.attackMiddleUpRectDefault = pygame.Rect(0, 0, self.sprites.size * 0.4, self.sprites.size * 0.1)
