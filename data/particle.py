@@ -191,11 +191,14 @@ class Particle:
             self.y = 2 * ((self.height - 30) - self.size) - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
+            if self.speed < 0.5:
+                self.speed = 0.5
         # checking if the ball has hit the bottom
         elif self.y < self.size:
             self.y = 2 * self.size - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
+
 
     # function used to reset the ball to their original position
     def resetPosition(self):
