@@ -1,5 +1,6 @@
+import random
+
 import pygame
-from data.particle import Particle
 from data.direction import Direction
 from data.characterenum import CharacterEnum
 from data.charactersClasses.Latch import Latch
@@ -30,10 +31,20 @@ class Player:
             self.character = Latch(spritesList)
         elif sprite == CharacterEnum.SONATA:
             self.character = Sonata(spritesList)
+            self.listOfMusics = ["data/musics/Sonata/attack1.ogg",
+                                "data/musics/Sonata/attack2.ogg",
+                                "data/musics/Sonata/attack3.ogg"]
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
+            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Sonata/specialAttack.ogg")
         elif sprite == CharacterEnum.CANDYMAN:
             self.character = Candyman(spritesList)
         elif sprite == CharacterEnum.SWITCH:
             self.character = Switch(spritesList)
+            self.listOfMusics = ["data/musics/Switch/attack1.ogg",
+                            "data/musics/Switch/attack2.ogg",
+                            "data/musics/Switch/attack3.ogg"]
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
+            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Switch/specialAttack.ogg")
         self.move_per_second = self.character.speed * 100
         self.colorguard = color
         self.invincible = False
@@ -93,10 +104,9 @@ class Player:
             self.currentSprite += 1
             self.repeatSprite = 20
 
-    def move(self, screen, ms_frame, score):
+    def move(self, screen, ms_frame, score, channelUltimate, channelAttack):
         self.move_per_second = self.character.speed * 100
         if self.usingUltimate:
-            print("using ultimate")
             self.character.deployUltimate()
             if self.character.__class__.__name__ == "Dice":
                 self.color = (255, 255, 255)
@@ -140,6 +150,7 @@ class Player:
         keys = pygame.key.get_pressed()
         # Default character position if both keys are pressed
         if keys[self.specialAttack] and self.power == 100:
+            channelUltimate.play(self.specialAttackMusic, loops=0)
             self.usingUltimate = True
         if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
                 and self.isAttacking is False and self.isJump is False and self.in_air is False and score.hasBeenCalled is False:
@@ -193,6 +204,9 @@ class Player:
                 self.playAnimation(screen, self.character.sprite.jumpingRight)
             else:
                 self.playAnimation(screen, self.character.sprite.jumpingLeft)
+        if keys[self.attack]:
+            channelAttack.play(self.attackMusic, loops=0)
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
         if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] \
                 and self.isAttacking is False and self.newAttack is False:
             self.isAttacking = True

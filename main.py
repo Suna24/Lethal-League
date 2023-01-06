@@ -21,7 +21,19 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Lethal League")
 clock = pygame.time.Clock()
-mixer.init()
+mixer.init(channels=4)
+
+# Init channels
+channel0 = mixer.Channel(0)
+channel0.set_volume(0.1)
+channel1 = mixer.Channel(1)
+channel1.set_volume(0.1)
+
+# For players
+channel2 = mixer.Channel(2)
+channel2.set_volume(0.75)
+channel3 = mixer.Channel(3)
+channel3.set_volume(0.7)
 
 # Game Manager to store which characters and which map is selected
 gameManager = GameManager()
@@ -57,10 +69,8 @@ listOfSprites = [Sprite(CharacterEnum.LATCH, SIZE), Sprite(CharacterEnum.RAPTOR,
                  Sprite(CharacterEnum.SONATA, SIZE), Sprite(CharacterEnum.SWITCH, SIZE)]
 
 # Sounds
-listOfMusicPath = ["data/musics/HomePage.mp3",
-                   "data/musics/Fight.mp3"]
-mixer.music.load(listOfMusicPath[0])
-
+listOfMusicPath = [mixer.Sound("data/musics/HomePage.mp3"),
+                   mixer.Sound("data/musics/Fight.mp3")]
 
 def gameLoop():
     print(gameManager.map)
@@ -76,8 +86,11 @@ def gameLoop():
                      Direction.LEFT,
                      listOfSprites[gameManager.secondCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
     # Sound
-    mixer.music.load(listOfMusicPath[1])
-    mixer.music.play(-1)
+    channel1.play(listOfMusicPath[1], loops=-1)
+
+    END_MUSIC = pygame.USEREVENT + 100
+    channel2.set_endevent(END_MUSIC)
+    channel3.set_endevent(END_MUSIC)
 
     # Map
     map_background_scaled = pygame.transform.scale(listOfMapBackgrounds[gameManager.map], (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -101,11 +114,14 @@ def gameLoop():
             if event.type == playerHasScored:
                 eventOccurs = False
                 resetPositions(players, particle, score)
+            if event.type == END_MUSIC:
+                print("music_end")
         screen.blit(map_background_scaled, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
         for player in players:
             player.draw(screen)
-            player.move(screen, ms_frame, score)
+            player.move(screen, ms_frame, score, channel2, channel3)
+
         particle.move(gravity, ms_frame)
         particle.bounce(players)
         score.draw(screen, SCREEN_WIDTH)
@@ -146,7 +162,7 @@ def gameLoop():
                 score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
         pygame.display.update()
 
-    mixer.music.stop()
+    channel1.stop()
     chooseCharacterScreen()
 
 def resetPositions(players, ball, score):
@@ -168,9 +184,9 @@ def welcomeScreen():
     # Boolean useful
     run = True
     textDisplayed = True
+
     # Play music
-    mixer.music.set_volume(0.1)
-    mixer.music.play(-1)
+    channel0.play(listOfMusicPath[0], loops=-1)
 
     while run:
         for event in pygame.event.get():
@@ -219,7 +235,7 @@ def chooseMapScreen():
                 if key == pygame.K_RETURN:
                     if hasChoosen is True:
                         gameManager.map = index
-                        mixer.music.stop()
+                        channel0.stop()
                         gameLoop()
 
         screen.fill([0, 0, 0])
@@ -241,11 +257,11 @@ def chooseMapScreen():
 def chooseCharacterScreen():
 
     # Sound
-    if mixer.get_busy() is True:
-        mixer.music.stop()
+    if channel1.get_busy() is True:
+        channel1.stop()
 
-    mixer.music.load(listOfMusicPath[0])
-    mixer.music.play(-1)
+    if channel0.get_busy() is False:
+        channel0.play(listOfMusicPath[0], loops=-1)
 
     # Load images
     listOfCharacterBg = [
