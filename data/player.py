@@ -68,6 +68,7 @@ class Player:
         self.ultimateTimer = 0
         self.jumpReduce = 0.5
         self.blinking = 0
+        self.unableToMove = False
 
     # function used to attribute keys to the player
     def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
@@ -102,7 +103,8 @@ class Player:
     # function used to move and do actions with the player
     def update(self, screen, ms_frame, score):
         self.updateStatus()
-        self.move(screen, ms_frame, score)
+        if not self.unableToMove:
+            self.move(screen, ms_frame, score)
 
     # function used to update invincibility and attack timers
     def updateStatus(self):
@@ -273,6 +275,8 @@ class Player:
         self.character.hitbox.y = self.y - self.character.yhitboxoffset
         # pygame.draw.rect(screen, self.color, self.character.hitbox)
         #displaying HUD for the player
+        pygame.draw.polygon(screen, self.color, ((self.x - 20, self.y - 150), (self.x + 20, self.y - 150),
+                                                 (self.x, self.y - 125)))
         pygame.draw.rect(screen, (255, 255, 255), self.hprect, 2)
         pygame.draw.rect(screen, (255, 0, 0), self.powerRect, 2)
         pygame.draw.rect(screen, (0, 0, 0), (self.powerRect.x + 2, self.powerRect.y + 2, (self.power * 396) / 100, 16))

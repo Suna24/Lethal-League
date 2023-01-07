@@ -108,6 +108,9 @@ def gameLoop():
             # if a player scored
             if event.type == playerHasScored:
                 eventOccurs = False
+                # Re-enabling movement for players
+                players[0].unableToMove = False
+                players[1].unableToMove = False
                 resetPositions(players, particle, score)
         screen.blit(map_background_scaled, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
@@ -123,6 +126,9 @@ def gameLoop():
         particle.display(screen)
         # playing animation if a player scored
         if players[0].character.health <= 0:
+            # Disabling movement for players
+            players[0].unableToMove = True
+            players[1].unableToMove = True
             if players[1].direction == Direction.RIGHT:
                 players[1].playAnimation(screen, players[1].character.sprite.victoryRight)
             else:
@@ -137,6 +143,9 @@ def gameLoop():
             pygame.display.update()
 
         elif players[1].character.health <= 0:
+            # Disabling movement for players
+            players[0].unableToMove = True
+            players[1].unableToMove = True
             if players[0].direction == Direction.RIGHT:
                 players[0].playAnimation(screen, players[0].character.sprite.victoryRight)
             else:

@@ -99,12 +99,12 @@ class Particle:
                         self.x += 10
                         self.angle = math.pi / 4
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     else:
                         self.x -= 10
                         self.angle = (7 * math.pi) / 4
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     player.isAttacking = False
             elif player.character.attackMiddleRect != 0:
                 if self.circle.colliderect(player.character.attackMiddleRect):
@@ -114,13 +114,13 @@ class Particle:
                         self.x += 10
                         self.angle = math.pi / 2
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     else:
                         self.y = player.character.attackMiddleRect.y
                         self.x -= 10
                         self.angle = (3 * math.pi) / 2
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     player.isAttacking = False
             elif player.character.attackDownRect != 0:
                 if self.circle.colliderect(player.character.attackDownRect):
@@ -130,12 +130,12 @@ class Particle:
                         self.y = player.character.attackDownRect.y + 32
                         self.angle = 15
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     else:
                         self.y = player.character.attackDownRect.y + 32
                         self.angle = - 15
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     player.isAttacking = False
             elif player.character.attackUpRect != 0:
                 if self.circle.colliderect(player.character.attackUpRect):
@@ -145,12 +145,12 @@ class Particle:
                         self.y = player.character.attackUpRect.y - 32
                         self.angle = 100
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     else:
                         self.y = player.character.attackUpRect.y - 32
                         self.angle = - 100
                         self.speed *= player.character.force
-                        self.color = player.color
+                        self.color = player.colorguard
                     player.isAttacking = False
             # checking hitted player
             if self.circle.colliderect(player.character.hitbox):
@@ -158,7 +158,7 @@ class Particle:
                 if self.speed > 0.2:
                     # checking if color of the ball is the same of the player
                     # if not the player will be hitted
-                    if self.color != player.color and self.color != (255, 255, 255):
+                    if self.color != player.color and self.color != (255, 255, 255) and not player.invincible:
                         createBulletTime(self.speed)
                         # boosting ultimate charge for player who hit the ball
                         self.returnOneOfTwo(player, players).power += self.speed * 5
@@ -198,7 +198,6 @@ class Particle:
             self.y = 2 * self.size - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
-
 
     # function used to reset the ball to their original position
     def resetPosition(self):

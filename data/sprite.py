@@ -568,24 +568,19 @@ class Sprite:
                                      pygame.image.load("data/images/Dice/AttackingMiddle/Dice_09.png"),
                                      pygame.image.load("data/images/Dice/AttackingMiddle/Dice_10.png"),
                                      pygame.image.load("data/images/Dice/AttackingMiddle/Dice_11.png")]
-        for i in range(len(self.attackingMiddleRight)):
-            self.attackingMiddleRight[i] = pygame.transform.scale(self.attackingMiddleRight[i], (self.size, self.size))
+        self.attackingMiddleRight = self.sizeSprites(self.attackingMiddleRight, self.size)
         self.attackingMiddleLeft = self.mirrorSprites(self.attackingMiddleRight)
 
         # Attacking Bottom sprites
-        # TODO Add Sprites
-        self.attackingBottomRight = [pygame.image.load("data/images/Dice/Default/Dice_Default.png")]
-        for i in range(len(self.attackingBottomRight)):
-            self.attackingBottomRight[i] = pygame.transform.scale(self.attackingBottomRight[i], (self.size, self.size))
+        self.attackingBottomRight = self.rotateSprites(self.attackingTopLeft, 180)
         self.attackingBottomLeft = self.mirrorSprites(self.attackingBottomRight)
 
         # Attacking Above sprites
-        self.attackingAboveRight = []
         self.attackingAboveRight = self.rotateSprites(self.attackingTopRight, 90)
         self.attackingAboveRight = self.sizeSprites(self.attackingAboveRight, self.size)
+        self.attackingAboveLeft = self.mirrorSprites(self.attackingAboveRight)
 
         # Attacking Below sprites
-        self.attackingBelowRight = []
         self.attackingBelowRight = self.rotateSprites(self.attackingTopRight, -90)
         self.attackingBelowRight = self.sizeSprites(self.attackingBelowRight, self.size)
         self.attackingBelowLeft = self.mirrorSprites(self.attackingBelowRight)
