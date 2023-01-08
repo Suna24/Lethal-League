@@ -25,49 +25,29 @@ class Player:
         self.height = height
         self.defaultX = x
         self.defaultY = y
+        # voice lines attributes
+        self.listOfMusics = []
+        self.attackMusic = None
+        self.specialAttackMusic = None
         # instantiate character (checking which character is selected)
         if sprite == CharacterEnum.RAPTOR:
             self.character = Raptor(spritesList)
-            self.listOfMusics = ["data/musics/Latch/attack1.ogg",
-                                 "data/musics/Latch/attack2.ogg",
-                                 "data/musics/Latch/attack3.ogg"]
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Latch/specialAttack.ogg")
+            self.setVoiceLines("Raptor")
         elif sprite == CharacterEnum.DICE:
             self.character = Dice(spritesList)
-            self.listOfMusics = ["data/musics/Latch/attack1.ogg",
-                                 "data/musics/Latch/attack2.ogg",
-                                 "data/musics/Latch/attack3.ogg"]
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Latch/specialAttack.ogg")
+            self.setVoiceLines("Dice")
         elif sprite == CharacterEnum.LATCH:
             self.character = Latch(spritesList)
-            self.listOfMusics = ["data/musics/Latch/attack1.ogg",
-                                 "data/musics/Latch/attack2.ogg",
-                                 "data/musics/Latch/attack3.ogg"]
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Latch/specialAttack.ogg")
+            self.setVoiceLines("Latch")
         elif sprite == CharacterEnum.SONATA:
             self.character = Sonata(spritesList)
-            self.listOfMusics = ["data/musics/Sonata/attack1.ogg",
-                                "data/musics/Sonata/attack2.ogg",
-                                "data/musics/Sonata/attack3.ogg"]
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Sonata/specialAttack.ogg")
+            self.setVoiceLines("Sonata")
         elif sprite == CharacterEnum.CANDYMAN:
             self.character = Candyman(spritesList)
-            self.listOfMusics = ["data/musics/CandyMan/attack1.ogg",
-                                 "data/musics/CandyMan/attack2.ogg",
-                                 "data/musics/CandyMan/attack3.ogg"]
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            self.specialAttackMusic = pygame.mixer.Sound("data/musics/CandyMan/specialAttack.ogg")
+            self.setVoiceLines("CandyMan")
         elif sprite == CharacterEnum.SWITCH:
             self.character = Switch(spritesList)
-            self.listOfMusics = ["data/musics/Switch/attack1.ogg",
-                            "data/musics/Switch/attack2.ogg",
-                            "data/musics/Switch/attack3.ogg"]
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            self.specialAttackMusic = pygame.mixer.Sound("data/musics/Switch/specialAttack.ogg")
+            self.setVoiceLines("Switch")
         # basing on stats from the character class, set the player's stats
         self.move_per_second = self.character.speed * 100
         self.colorguard = color
@@ -102,6 +82,14 @@ class Player:
         self.blinking = 0
         self.unableToMove = False
 
+    # function used to set up the voice lines
+    def setVoiceLines(self, character):
+        self.listOfMusics = ["data/musics/" + character + "/attack1.ogg",
+                             "data/musics/" + character + "/attack2.ogg",
+                             "data/musics/" + character + "/attack3.ogg"]
+        self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, len(self.listOfMusics) - 1)])
+        self.specialAttackMusic = pygame.mixer.Sound("data/musics/" + character + "/specialAttack.ogg")
+
     # function used to attribute keys to the player
     def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
         self.moveUp = moveUp
@@ -133,10 +121,10 @@ class Player:
             self.repeatSprite = 20
 
     # function used to move and do actions with the player
-    def update(self, screen, ms_frame, score):
+    def update(self, screen, ms_frame, score, channelUltimate, channelAttack):
         self.updateStatus()
         if not self.unableToMove:
-            self.move(screen, ms_frame, score)
+            self.move(screen, ms_frame, score, channelUltimate, channelAttack)
 
     # function used to update invincibility and attack timers
     def updateStatus(self):
@@ -177,7 +165,6 @@ class Player:
                 self.blinking = 0
             if self.invincibleTimer >= 1000:
                 self.invincible = False
-                print("invincible off")
                 self.color = self.colorguard
                 self.invincibleTimer = 0
         if self.isAttacking:
@@ -188,7 +175,7 @@ class Player:
                 self.attackTimer = 0
 
     # function used to move the player
-    def move(self, screen, ms_frame, score):
+    def move(self, screen, ms_frame, score, channelUltimate, channelAttack):
         # calculating the distance the player should move in one frame
         self.move_per_second = self.character.speed * 100
         # getting the keys pressed
