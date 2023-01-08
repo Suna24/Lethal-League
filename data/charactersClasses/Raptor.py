@@ -3,8 +3,9 @@ from abc import ABC
 from data.character import character
 import pygame
 
-
-class Raptor(character, ABC):
+# Raptor class inherits from character class
+# So we init the character class with the specific Raptor values
+class Raptor(character):
     def __init__(self, sprites):
         character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
                            sprites.size - (15 * 10))
@@ -37,7 +38,9 @@ class Raptor(character, ABC):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
+        # Raptor's ultimate is to increase his speed
         self.speed = 8
 
     def resetUltimate(self):
+        # Reverting the speed to the default value
         self.speed = 5

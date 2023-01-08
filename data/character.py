@@ -1,3 +1,9 @@
+# Base code for a character
+# creating hitboxes for the character
+# like attack or touch hitboxes
+# setting also character's attributes (speed, force, etc.)
+# creating offsets in order to make the hitboxes corresponding to each character
+
 class character:
     def __init__(self, speed, health, force, hitbox, attackUpRectDefault, attackDownRectDefault,
                  attackMiddleUpRectDefault, attackMiddleDownRectDefault, attackMiddleRectDefault, sprite, xhitboxoffset,
@@ -38,7 +44,9 @@ class character:
         self.yhitboxoffset = yhitboxoffset
 
     def deployUltimate(self):
+        # raise Error on mother class
         raise NotImplementedError("Subclass must implement abstract method")
 
     def resetUltimate(self):
+        # raise Error on mother class
         raise NotImplementedError("Subclass must implement abstract method")

@@ -61,11 +61,14 @@ listOfMusicPath = ["data/musics/HomePage.mp3",
 mixer.music.load(listOfMusicPath[0])
 
 
+# Function used to display and play the game loop
 def gameLoop():
     print(gameManager.map)
+    # setting gravity
     gravity = (math.pi, 0.002)
     run = True
 
+    # Creating players
     player = Player(0, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 400, 40), pygame.Rect(0, 40, 400, 20),
                     listOfCharacters[gameManager.firstCharacter], Direction.RIGHT,
                     listOfSprites[gameManager.firstCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -81,6 +84,8 @@ def gameLoop():
     # Map
     map_background_scaled = pygame.transform.scale(listOfMapBackgrounds[gameManager.map], (SCREEN_WIDTH, SCREEN_HEIGHT))
     score = Score()
+
+    # Settings controls
     particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
     player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
@@ -91,25 +96,39 @@ def gameLoop():
     playerHasScored = pygame.USEREVENT + 1
     eventOccurs = False
 
+    # while loop to keep the game running
     while run:
+        # checking the frame rate
         ms_frame = clock.tick(300)
+        # checking events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 mixer.music.stop()
                 return True
+            # if a player scored
             if event.type == playerHasScored:
                 eventOccurs = False
+                # Re-enabling movement for players
+                players[0].unableToMove = False
+                players[1].unableToMove = False
                 resetPositions(players, particle, score)
         screen.blit(map_background_scaled, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
+        # drawing the players
         for player in players:
             player.draw(screen)
-            player.move(screen, ms_frame, score)
+            player.update(screen, ms_frame, score)
+        # drawing and moving the particle
         particle.move(gravity, ms_frame)
         particle.bounce(players)
+        # drawing scores
         score.draw(screen, SCREEN_WIDTH)
         particle.display(screen)
+        # playing animation if a player scored
         if players[0].character.health <= 0:
+            # Disabling movement for players
+            players[0].unableToMove = True
+            players[1].unableToMove = True
             if players[1].direction == Direction.RIGHT:
                 players[1].playAnimation(screen, players[1].character.sprite.victoryRight)
             else:
@@ -124,6 +143,9 @@ def gameLoop():
             pygame.display.update()
 
         elif players[1].character.health <= 0:
+            # Disabling movement for players
+            players[0].unableToMove = True
+            players[1].unableToMove = True
             if players[0].direction == Direction.RIGHT:
                 players[0].playAnimation(screen, players[0].character.sprite.victoryRight)
             else:
@@ -137,6 +159,7 @@ def gameLoop():
                 score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             pygame.display.update()
 
+        # checking if someone won
         if score.oneWon() is True:
             if eventOccurs is False:
                 run = False
