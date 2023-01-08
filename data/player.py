@@ -131,10 +131,11 @@ class Player:
         # if in ultimating mode, update the timer and if it's over, set the mode to false
         if self.usingUltimate:
             self.character.deployUltimate()
-            # Dice's ultimate is different than others, so it's handled separately
+            # Dice's ultimate is different from others, so it's handled separately
             # Dice is getting invincible while in ultimate mode
             if self.character.__class__.__name__ == "Dice":
                 self.color = (255, 255, 255)
+                self.invincible = True
             self.ultimateTimer += 1
             self.power -= 1
             if self.ultimateTimer == 3000:
@@ -142,6 +143,7 @@ class Player:
                 self.character.resetUltimate()
                 if self.character.__class__.__name__ == "Dice":
                     self.color = self.colorguard
+                    self.invincible = False
                 self.ultimateTimer = 0
                 self.power = 0
         self.ultchargeTimer += 1

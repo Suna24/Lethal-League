@@ -38,7 +38,7 @@ class Latch(character):
 
     def deployUltimate(self):
         # Latch's ultimate is to boost his force
-        self.force = 5
+        self.force = 4
 
     def resetUltimate(self):
         # Reverting the force back to normal
