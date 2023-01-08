@@ -155,7 +155,7 @@ class Particle:
             # checking hitted player
             if self.circle.colliderect(player.character.hitbox):
                 # checking if the ball has speed
-                if self.speed > 0.2:
+                if self.speed > 0.5:
                     # checking if color of the ball is the same of the player
                     # if not the player will be hitted
                     if self.color != player.color and self.color != (255, 255, 255) and not player.invincible:
