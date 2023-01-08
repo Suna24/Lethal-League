@@ -5,7 +5,7 @@ import pygame
 
 # Raptor class inherits from character class
 # So we init the character class with the specific Raptor values
-class Raptor(character, ABC):
+class Raptor(character):
     def __init__(self, sprites):
         character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
                            sprites.size - (15 * 10))

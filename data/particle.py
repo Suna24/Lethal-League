@@ -191,6 +191,7 @@ class Particle:
             self.y = 2 * ((self.height - 30) - self.size) - self.y
             self.angle = math.pi - self.angle
             self.speed *= self.elasticity
+            # When bouncing on ground, letting ball with a minimum speed to simplify the game
             if self.speed < 0.5:
                 self.speed = 0.5
         # checking if the ball has hit the bottom

@@ -40,7 +40,6 @@ class Sonata(character):
         self.health += 0.5
         if self.health > 100:
             self.health = 100
-        print("Ultimate deployed")
 
     def resetUltimate(self):
         # Disabling ultimate
