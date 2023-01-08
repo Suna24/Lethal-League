@@ -1,9 +1,12 @@
 from data.character import character
 import pygame
 
+# Sonata class inherits from character class
+# So we init the character class with the specific Sonata values
 class Sonata(character):
     def __init__(self, sprites):
-        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10), sprites.size - (15 * 10))
+        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
+                           sprites.size - (15 * 10))
         self.hitbox = pygame.Rect(0, 0, sprites.size * 0.43, sprites.size * 0.73)
         self.attackUpRectDefault = pygame.Rect(0, 0, sprites.size * 0.57, sprites.size * 0.1)
         self.aURxoffset = self.hitbox.width * 0.5
@@ -32,10 +35,12 @@ class Sonata(character):
         self.attackMiddleDownRect = pygame.Rect(0, 0, 0, 0)
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
-
     def deployUltimate(self):
+        # Sonata's ultimate is to heal herself
         self.health += 0.5
-        print("Ultimate deployed")
+        if self.health > 100:
+            self.health = 100
 
     def resetUltimate(self):
+        # Disabling ultimate
         pass

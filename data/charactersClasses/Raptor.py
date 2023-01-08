@@ -3,10 +3,12 @@ from abc import ABC
 from data.character import character
 import pygame
 
-
-class Raptor(character, ABC):
+# Raptor class inherits from character class
+# So we init the character class with the specific Raptor values
+class Raptor(character):
     def __init__(self, sprites):
-        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10), sprites.size - (15 * 10))
+        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
+                           sprites.size - (15 * 10))
         self.hitbox = pygame.Rect(0, 0, sprites.size * 0.43, sprites.size * 0.73)
         self.attackUpRectDefault = pygame.Rect(0, 0, sprites.size * 0.57, sprites.size * 0.1)
         self.aURxoffset = self.hitbox.width * 0.5
@@ -36,7 +38,9 @@ class Raptor(character, ABC):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
+        # Raptor's ultimate is to increase his speed
         self.speed = 8
 
     def resetUltimate(self):
-        self.speed = 3
+        # Reverting the speed to the default value
+        self.speed = 5

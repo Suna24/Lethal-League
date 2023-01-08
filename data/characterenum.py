@@ -1,6 +1,7 @@
 from enum import Enum
 
 
+# Enum for all character types
 class CharacterEnum(Enum):
     RAPTOR = 0
     LATCH = 1

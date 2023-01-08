@@ -1,14 +1,18 @@
-from data.characterenum import CharacterEnum
+# Base code for a character
+# creating hitboxes for the character
+# like attack or touch hitboxes
+# setting also character's attributes (speed, force, etc.)
+# creating offsets in order to make the hitboxes corresponding to each character
 
-
-class character():
-    def __init__(self, speed, health, force, hitbox, attackUpRectDefault, attackDownRectDefault, attackMiddleUpRectDefault,
-                 attackMiddleDownRectDefault, attackMiddleRectDefault, sprite, xhitboxoffset, yhitboxoffset):
+class character:
+    def __init__(self, speed, health, force, hitbox, attackUpRectDefault, attackDownRectDefault,
+                 attackMiddleUpRectDefault, attackMiddleDownRectDefault, attackMiddleRectDefault, sprite, xhitboxoffset,
+                 yhitboxoffset):
         self.speed = speed  # 3
         self.health = health  # 100
         self.maxHealth = health
         self.hitbox = hitbox  # 0
-        self.force = force # 2
+        self.force = force  # 2
         self.attackUpRectDefault = attackUpRectDefault
         self.aURxoffset = 0
         self.aURyoffset = 0
@@ -39,10 +43,10 @@ class character():
         self.xhitboxoffset = xhitboxoffset
         self.yhitboxoffset = yhitboxoffset
 
-
     def deployUltimate(self):
+        # raise Error on mother class
         raise NotImplementedError("Subclass must implement abstract method")
 
-
     def resetUltimate(self):
+        # raise Error on mother class
         raise NotImplementedError("Subclass must implement abstract method")
