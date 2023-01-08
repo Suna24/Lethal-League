@@ -56,7 +56,7 @@ class Player:
         self.invincibleTimer = 0
         self.isAttacking = False
         self.attackDirection = 0
-        self.power = 100
+        self.power = 0
         self.powerRect = powerRect
         self.isJump = True
         self.direction = direction
@@ -151,7 +151,7 @@ class Player:
         if self.power > 100:
             self.power = 100
         # resetting timers for new attacks and ult charge loading
-        if self.ultchargeTimer == 600:
+        if self.ultchargeTimer == 200:
             self.power += 1
             self.ultchargeTimer = 0
         if self.newAttack:
