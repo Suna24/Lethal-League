@@ -6,7 +6,7 @@ import pygame
 # So we init the character class with the specific Latch values
 class Latch(character):
     def __init__(self, sprites):
-        character.__init__(self, 5, 10, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
+        character.__init__(self, 5, 100, 2, 0, 0, 0, 0, 0, 0, sprites, sprites.size - (25 * 10),
                            sprites.size - (15 * 10))
         self.hitbox = pygame.Rect(0, 0, sprites.size * 0.43, sprites.size * 0.73)
         self.attackUpRectDefault = pygame.Rect(0, 0, sprites.size * 0.57, sprites.size * 0.1)
@@ -38,7 +38,7 @@ class Latch(character):
 
     def deployUltimate(self):
         # Latch's ultimate is to boost his force
-        self.force = 5
+        self.force = 4
 
     def resetUltimate(self):
         # Reverting the force back to normal

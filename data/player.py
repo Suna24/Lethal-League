@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from data.attackEnum import AttackEnum
 from data.direction import Direction
@@ -23,19 +25,29 @@ class Player:
         self.height = height
         self.defaultX = x
         self.defaultY = y
+        # voice lines attributes
+        self.listOfMusics = []
+        self.attackMusic = None
+        self.specialAttackMusic = None
         # instantiate character (checking which character is selected)
         if sprite == CharacterEnum.RAPTOR:
             self.character = Raptor(spritesList)
+            self.setVoiceLines("Raptor")
         elif sprite == CharacterEnum.DICE:
             self.character = Dice(spritesList)
+            self.setVoiceLines("Dice")
         elif sprite == CharacterEnum.LATCH:
             self.character = Latch(spritesList)
+            self.setVoiceLines("Latch")
         elif sprite == CharacterEnum.SONATA:
             self.character = Sonata(spritesList)
+            self.setVoiceLines("Sonata")
         elif sprite == CharacterEnum.CANDYMAN:
             self.character = Candyman(spritesList)
+            self.setVoiceLines("CandyMan")
         elif sprite == CharacterEnum.SWITCH:
             self.character = Switch(spritesList)
+            self.setVoiceLines("Switch")
         # basing on stats from the character class, set the player's stats
         self.move_per_second = self.character.speed * 100
         self.colorguard = color
@@ -44,7 +56,7 @@ class Player:
         self.invincibleTimer = 0
         self.isAttacking = False
         self.attackDirection = 0
-        self.power = 100
+        self.power = 0
         self.powerRect = powerRect
         self.isJump = True
         self.direction = direction
@@ -69,6 +81,14 @@ class Player:
         self.jumpReduce = 0.5
         self.blinking = 0
         self.unableToMove = False
+
+    # function used to set up the voice lines
+    def setVoiceLines(self, character):
+        self.listOfMusics = ["data/musics/" + character + "/attack1.ogg",
+                             "data/musics/" + character + "/attack2.ogg",
+                             "data/musics/" + character + "/attack3.ogg"]
+        self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, len(self.listOfMusics) - 1)])
+        self.specialAttackMusic = pygame.mixer.Sound("data/musics/" + character + "/specialAttack.ogg")
 
     # function used to attribute keys to the player
     def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
@@ -101,21 +121,21 @@ class Player:
             self.repeatSprite = 20
 
     # function used to move and do actions with the player
-    def update(self, screen, ms_frame, score):
+    def update(self, screen, ms_frame, score, channelUltimate, channelAttack):
         self.updateStatus()
         if not self.unableToMove:
-            self.move(screen, ms_frame, score)
+            self.move(screen, ms_frame, score, channelUltimate, channelAttack)
 
     # function used to update invincibility and attack timers
     def updateStatus(self):
         # if in ultimating mode, update the timer and if it's over, set the mode to false
         if self.usingUltimate:
-            print("using ultimate")
             self.character.deployUltimate()
-            # Dice's ultimate is different than others, so it's handled separately
+            # Dice's ultimate is different from others, so it's handled separately
             # Dice is getting invincible while in ultimate mode
             if self.character.__class__.__name__ == "Dice":
                 self.color = (255, 255, 255)
+                self.invincible = True
             self.ultimateTimer += 1
             self.power -= 1
             if self.ultimateTimer == 3000:
@@ -123,6 +143,7 @@ class Player:
                 self.character.resetUltimate()
                 if self.character.__class__.__name__ == "Dice":
                     self.color = self.colorguard
+                    self.invincible = False
                 self.ultimateTimer = 0
                 self.power = 0
         self.ultchargeTimer += 1
@@ -130,7 +151,7 @@ class Player:
         if self.power > 100:
             self.power = 100
         # resetting timers for new attacks and ult charge loading
-        if self.ultchargeTimer == 600:
+        if self.ultchargeTimer == 200:
             self.power += 1
             self.ultchargeTimer = 0
         if self.newAttack:
@@ -146,7 +167,6 @@ class Player:
                 self.blinking = 0
             if self.invincibleTimer >= 1000:
                 self.invincible = False
-                print("invincible off")
                 self.color = self.colorguard
                 self.invincibleTimer = 0
         if self.isAttacking:
@@ -157,13 +177,14 @@ class Player:
                 self.attackTimer = 0
 
     # function used to move the player
-    def move(self, screen, ms_frame, score):
+    def move(self, screen, ms_frame, score, channelUltimate, channelAttack):
         # calculating the distance the player should move in one frame
         self.move_per_second = self.character.speed * 100
         # getting the keys pressed
         keys = pygame.key.get_pressed()
         # if the player is pressing ultimate key and the power is full, set the ultimate mode to true
         if keys[self.specialAttack] and self.power == 100:
+            channelUltimate.play(self.specialAttackMusic, loops=0)
             self.usingUltimate = True
         # Default character position if both keys are pressed
         if (not (keys[self.moveLeft] or keys[self.moveRight]) or (keys[self.moveLeft] and keys[self.moveRight])) \
@@ -227,6 +248,9 @@ class Player:
                 self.playAnimation(screen, self.character.sprite.jumpingRight)
             else:
                 self.playAnimation(screen, self.character.sprite.jumpingLeft)
+        if keys[self.attack]:
+            channelAttack.play(self.attackMusic, loops=0)
+            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
             # if the player pressed the attack key, and pressed left or right and moveUp then attacking on Up attack
         if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] \
                 and self.isAttacking is False and self.newAttack is False:
