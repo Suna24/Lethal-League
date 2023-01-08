@@ -68,8 +68,8 @@ listOfSprites = [Sprite(CharacterEnum.LATCH, SIZE), Sprite(CharacterEnum.RAPTOR,
                  Sprite(CharacterEnum.SONATA, SIZE), Sprite(CharacterEnum.SWITCH, SIZE)]
 
 # Sounds
-listOfMusicPath = [mixer.Sound("data/musics/HomePage.mp3"),
-                   mixer.Sound("data/musics/Fight.mp3")]
+listOfMusicPath = [mixer.Sound("data/musics/HomePage.ogg"),
+                   mixer.Sound("data/musics/Fight.ogg")]
 
 # Function used to display and play the game loop
 def gameLoop():
