@@ -248,32 +248,24 @@ class Player:
                 self.playAnimation(screen, self.character.sprite.jumpingRight)
             else:
                 self.playAnimation(screen, self.character.sprite.jumpingLeft)
-        if keys[self.attack]:
-            channelAttack.play(self.attackMusic, loops=0)
-            self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
-            # if the player pressed the attack key, and pressed left or right and moveUp then attacking on Up attack
+        # if the player pressed the attack key, and pressed left or right and moveUp then attacking on Up attack
         if keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveUp] \
                 and self.isAttacking is False and self.newAttack is False:
-            self.isAttacking = True
-            self.attackDirection = AttackEnum.ATTACKMIDDLEUP
+            self.updateWhenAttacking(AttackEnum.ATTACKMIDDLEUP, channelAttack)
             # if the player pressed the attack key, and pressed left or right and moveDown then attacking on Down attack
         elif keys[self.attack] and (keys[self.moveRight] or keys[self.moveLeft]) and keys[self.moveDown] \
                 and self.isAttacking is False and self.newAttack is False:
-            self.isAttacking = True
-            self.attackDirection = AttackEnum.ATTACKMIDDLEDOWN
+            self.updateWhenAttacking(AttackEnum.ATTACKMIDDLEDOWN, channelAttack)
             # if the player pressed the attack key, and pressed left or right then attacking on middle attack
         elif keys[self.attack] and (
                 keys[self.moveRight] or keys[self.moveLeft]) and self.isAttacking is False and self.newAttack is False:
-            self.isAttacking = True
-            self.attackDirection = AttackEnum.ATTACKMIDDLE
+            self.updateWhenAttacking(AttackEnum.ATTACKMIDDLE, channelAttack)
             # if the player pressed the attack key, and pressed top then attacking on top attack
         elif keys[self.moveUp] and keys[self.attack] and self.isAttacking is False and self.newAttack is False:
-            self.isAttacking = True
-            self.attackDirection = AttackEnum.ATTACKTOP
+            self.updateWhenAttacking(AttackEnum.ATTACKTOP, channelAttack)
             # if the player pressed the attack key, and pressed down then attacking on down attack
         elif keys[self.moveDown] and keys[self.attack] and self.isAttacking is False and self.newAttack is False:
-            self.isAttacking = True
-            self.attackDirection = AttackEnum.ATTACKBOTTOM
+            self.updateWhenAttacking(AttackEnum.ATTACKBOTTOM, channelAttack)
         # adding velocity y to the player
         self.vel_y += 0.038
         # if the player velocity y is bigger than 5, set it to 5
@@ -286,6 +278,12 @@ class Player:
             self.y = self.height - 100
             self.in_air = False
             self.isJump = False
+
+    def updateWhenAttacking(self, attackDirection, channelAttack):
+        self.isAttacking = True
+        self.attackDirection = attackDirection
+        channelAttack.play(self.attackMusic, loops=0)
+        self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
 
     # function to draw on screen the player
     def draw(self, screen):
