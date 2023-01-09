@@ -50,6 +50,7 @@ class Sprite:
         elif character == CharacterEnum.DICE:
             self.initDiceSprites()
 
+    # function that init Raptor sprites
     def initRaptorSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/Raptor/Default/Raptor_Default.png")]
@@ -140,6 +141,7 @@ class Sprite:
             self.hittedRight[i] = pygame.transform.scale(self.hittedRight[i], (self.size, self.size))
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
+    # function that init Switch sprites
     def initSwitchSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/Switch/Default/Switch_Default.png")]
@@ -234,6 +236,7 @@ class Sprite:
             self.hittedRight[i] = pygame.transform.scale(self.hittedRight[i], (self.size, self.size))
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
+    # function that init CandyMan sprites
     def initCandyManSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/CandyMan/Default/CandyMan_Default.png")]
@@ -325,6 +328,7 @@ class Sprite:
             self.hittedRight[i] = pygame.transform.scale(self.hittedRight[i], (self.size, self.size))
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
+    # function that init Sonata sprites
     def initSonataSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/Sonata/Default/Sonata_Default.png")]
@@ -419,6 +423,7 @@ class Sprite:
             self.hittedRight[i] = pygame.transform.scale(self.hittedRight[i], (self.size, self.size))
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
+    # function that init Latch sprites
     def initLatchSprites(self):
         # Default sprite
         self.defaultRight = [pygame.transform.scale(pygame.image.load("data/images/Latch/Default/Latch_Default.png"),
@@ -521,6 +526,7 @@ class Sprite:
             self.size, self.size))]
         self.hittedLeft = self.mirrorSprites(self.hittedRight)
 
+    # function that init Dice sprites
     def initDiceSprites(self):
         # Default sprite
         self.defaultRight = [pygame.image.load("data/images/Dice/Default/Dice_Default.png")]
