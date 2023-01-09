@@ -6,11 +6,11 @@
 
 # Lethal-League
 
-Dans le cadre de nos études à l'ESIEA et de notre PST (Projet Scientifique et Technique) nous devons réaliser un jeu rétro en python. Nous disposons d'une durée de 3 mois pour réaliser ce projet.
+Dans le cadre de nos études à l'ESIEA et de notre PST (Projet Scientifique et Technique) nous devons réaliser un jeu rétro en python. Nous disposons d'une durée de 3 mois pour réaliser ce projet à la suite desquels nous devrons présenter notre jeu lors du salon des PST.
 
 ## Présentation du projet
 
-Notre application se base sur le jeu existant Lethal-League disponible sur Steam via ce lien
+Notre application se base sur le jeu existant Lethal-League disponible sur Steam via [ce lien](https://store.steampowered.com/app/553310/Lethal_League_Blaze/).
 
 ## Logiciels & Librairies utilisés
 
