@@ -17,9 +17,15 @@ SIZE = 275
 
 # Initialization
 pygame.init()
+# Icon
+icon = pygame.image.load("data/images/Latch/Default/Latch_Default.png")
+pygame.display.set_icon(icon)
+# Screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Lethal League")
+# Clock
 clock = pygame.time.Clock()
+# Music
 mixer.init(channels=4)
 
 # Init channels
