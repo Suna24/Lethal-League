@@ -17,9 +17,15 @@ SIZE = 275
 
 # Initialization
 pygame.init()
+# Icon
+icon = pygame.image.load("data/images/Latch/Default/Latch_Default.png")
+pygame.display.set_icon(icon)
+# Screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Lethal League")
+# Clock
 clock = pygame.time.Clock()
+# Music
 mixer.init(channels=4)
 
 # Init channels
@@ -87,12 +93,9 @@ def gameLoop(stopAll):
                      pygame.Rect(screen.get_width() - 400, 40, 400, 20), listOfCharacters[gameManager.secondCharacter],
                      Direction.LEFT,
                      listOfSprites[gameManager.secondCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
-    # Sound
-    channel1.play(listOfMusicPath[1], loops=-1)
 
-    END_MUSIC = pygame.USEREVENT + 100
-    channel2.set_endevent(END_MUSIC)
-    channel3.set_endevent(END_MUSIC)
+    # play gameLoop sound
+    channel1.play(listOfMusicPath[1], loops=-1)
 
     # Map
     map_background_scaled = pygame.transform.scale(listOfMapBackgrounds[gameManager.map], (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -101,11 +104,13 @@ def gameLoop(stopAll):
     # Settings controls
     particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
-    player2.mapControls(pygame.K_KP8, pygame.K_KP5, pygame.K_KP4, pygame.K_KP6, pygame.K_KP_ENTER, pygame.K_RIGHT,
-                        pygame.K_DOWN)
+    player2.mapControls(pygame.K_CARET, 249, pygame.K_m, pygame.K_ASTERISK, pygame.K_RCTRL,
+                        pygame.K_SEMICOLON,
+                        pygame.K_k)
     players = [player, player2]
     resetPositions(players, particle, score)
 
+    # events
     playerHasScored = pygame.USEREVENT + 1
     eventOccurs = False
 
@@ -118,6 +123,7 @@ def gameLoop(stopAll):
             run = False
             return True
         for event in pygame.event.get():
+            # if the player decide to quit
             if event.type == pygame.QUIT:
                 mixer.music.stop()
                 stopAll = True
@@ -128,8 +134,6 @@ def gameLoop(stopAll):
                 players[0].unableToMove = False
                 players[1].unableToMove = False
                 resetPositions(players, particle, score)
-            if event.type == END_MUSIC:
-                print("music_end")
         screen.blit(map_background_scaled, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30))
         # drawing the players
@@ -187,10 +191,11 @@ def gameLoop(stopAll):
                 score.displayActualScore(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
         pygame.display.update()
 
+    # stop the channel which is playing the music
     channel1.stop()
     stopAll = chooseCharacterScreen(stopAll)
 
-
+# function that reset position of the ball, the players and score attribute
 def resetPositions(players, ball, score):
     for player in players:
         player.resetPosition()
@@ -204,9 +209,11 @@ def welcomeScreen():
     # Fonts
     font = pygame.font.SysFont("rubik", 35)
     text = font.render('PRESS ANY KEY TO CONTINUE', True, [255, 255, 255])
+
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT
     pygame.time.set_timer(blink, 500)
+
     # Boolean useful
     stopAll = False
     run = True
@@ -223,8 +230,9 @@ def welcomeScreen():
             if event.type == pygame.QUIT:
                 stopAll = True
             if event.type == pygame.KEYDOWN:
+                print(event.key)
                 stopAll = chooseCharacterScreen(stopAll)
-                print(stopAll)
+            # blinking event
             if event.type == blink:
                 textDisplayed = not textDisplayed
 
@@ -236,46 +244,59 @@ def welcomeScreen():
             screen.blit(text, (SCREEN_WIDTH - 1000, SCREEN_HEIGHT - 75))
         pygame.display.update()
 
+# function that enables the player to choose the map
 def chooseMapScreen(stopAll):
-    print("In choose map screen")
 
+    # create the object used to handle map choices
     chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4, SCREEN_WIDTH, SCREEN_HEIGHT)
     run = True
 
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT
     pygame.time.set_timer(blink, 500)
+
+    # Useful boolean
     blinking = True
     hasChoosen = False
     index = 0
 
+    # loop
     while run:
         if stopAll is True:
             run = False
             return True
         for event in pygame.event.get():
+            # if the player decide to quit
             if event.type == pygame.QUIT:
                 stopAll = True
+            # blinking event
             if event.type == blink:
                 blinking = not blinking
+            # if player is moving to choose the game map
             if event.type == pygame.KEYDOWN:
                 key = event.key
                 if key == pygame.K_q or key == pygame.K_s or key == pygame.K_d or key == pygame.K_z:
                     index = chooseElement.changeIndex(index, key)
+                # if he selects/not selects the map
                 if key == pygame.K_SPACE:
                     hasChoosen = not hasChoosen
+                # if he validates the map
                 if key == pygame.K_RETURN:
                     if hasChoosen is True:
                         gameManager.map = index
+                        # stop music
                         channel0.stop()
                         stopAll = gameLoop(stopAll)
 
         screen.fill([0, 0, 0])
 
+        # draw rectangles choices
         chooseElement.fillRectangleWithBackgrounds(screen)
+
         if hasChoosen is True:
             drawValidation()
 
+        # this part is used to make the "blinking event"
         if blinking is True:
             if not hasChoosen:
                 chooseElement.drawBorderOfRectangleChoice(screen, index, (0, 0, 255))
@@ -304,6 +325,7 @@ def chooseCharacterScreen(stopAll):
         pygame.image.load("data/images/CharacterSelection/Sonata.png"),
         pygame.image.load("data/images/CharacterSelection/Switch.png")]
 
+    # # create the object used to handle characters choices
     chooseElement = ChooseElement(screen, listOfCharacterBg, 3, 2, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     # Create a user event appearing every 0.5 sec
@@ -322,20 +344,27 @@ def chooseCharacterScreen(stopAll):
             run = False
             return True
         for event in pygame.event.get():
+            # if the player decide to quit
             if event.type == pygame.QUIT:
                 stopAll = True
+            # if there is a blinking event
             if event.type == blink:
                 blinking = not blinking
+            # if players are moving to choose their characters
             if event.type == pygame.KEYDOWN:
                 key = event.key
+                # player 1
                 if key == pygame.K_q or key == pygame.K_s or key == pygame.K_d or key == pygame.K_z:
                     index1 = chooseElement.changeIndex(index1, key)
+                # player 2
                 if key == pygame.K_KP8 or key == pygame.K_KP5 or key == pygame.K_KP4 or key == pygame.K_KP6:
                     index2 = chooseElement.changeIndex(index2, key)
+                # selection
                 if key == pygame.K_SPACE:
                     hasChoosen1 = not hasChoosen1
-                if key == pygame.K_KP_ENTER:
+                if key == pygame.K_RCTRL:
                     hasChoosen2 = not hasChoosen2
+                # if validation, update gameManager values
                 if hasChoosen1 is True and hasChoosen2 is True:
                     if key == pygame.K_RETURN:
                         gameManager.firstCharacter = index1
@@ -344,10 +373,14 @@ def chooseCharacterScreen(stopAll):
 
         screen.fill([0, 0, 0])
 
+        # fill rectangle choices with backgrounds
         chooseElement.fillRectangleWithBackgrounds(screen)
+
+        # if the two players have chosen
         if hasChoosen1 is True and hasChoosen2 is True:
             drawValidation()
 
+        # blinking events
         if blinking is True:
             if not hasChoosen2:
                 chooseElement.drawBorderOfRectangleChoice(screen, index2, (255, 0, 0))
@@ -365,6 +398,7 @@ def chooseCharacterScreen(stopAll):
     pygame.quit()
 
 
+# function used to print on screen the key to press to validate choices
 def drawValidation():
     pygame.draw.rect(screen, [0, 0, 0], [0, SCREEN_HEIGHT / 2 - 100, SCREEN_WIDTH, 200])
     text = pygame.font.SysFont("rubik", 80, italic=True).render('PRESS Enter TO CONTINUE', True, [255, 255, 255])
