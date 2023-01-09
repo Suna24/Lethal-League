@@ -71,8 +71,9 @@ listOfSprites = [Sprite(CharacterEnum.LATCH, SIZE), Sprite(CharacterEnum.RAPTOR,
 listOfMusicPath = [mixer.Sound("data/musics/HomePage.ogg"),
                    mixer.Sound("data/musics/Fight.ogg")]
 
+
 # Function used to display and play the game loop
-def gameLoop():
+def gameLoop(stopAll):
     print(gameManager.map)
     # setting gravity
     gravity = (math.pi, 0.002)
@@ -114,10 +115,12 @@ def gameLoop():
         # checking the frame rate
         ms_frame = clock.tick(300)
         # checking events
+        if stopAll is True:
+            run = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 mixer.music.stop()
-                return True
+                stopAll = True
             # if a player scored
             if event.type == playerHasScored:
                 eventOccurs = False
@@ -133,7 +136,7 @@ def gameLoop():
         for player in players:
             player.draw(screen)
             player.update(screen, ms_frame, score, channel2, channel3)
-            
+
         # drawing and moving the particle
         particle.move(gravity, ms_frame)
         particle.bounce(players)
@@ -185,7 +188,7 @@ def gameLoop():
         pygame.display.update()
 
     channel1.stop()
-    chooseCharacterScreen()
+    chooseCharacterScreen(stopAll)
 
 
 def resetPositions(players, ball, score):
@@ -205,6 +208,7 @@ def welcomeScreen():
     blink = pygame.USEREVENT
     pygame.time.set_timer(blink, 500)
     # Boolean useful
+    stopAll = False
     run = True
     textDisplayed = True
 
@@ -212,11 +216,13 @@ def welcomeScreen():
     channel0.play(listOfMusicPath[0], loops=-1)
 
     while run:
+        if stopAll is True:
+            run = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                chooseCharacterScreen()
+                chooseCharacterScreen(stopAll)
             if event.type == blink:
                 textDisplayed = not textDisplayed
 
@@ -230,7 +236,7 @@ def welcomeScreen():
     pygame.quit()
 
 
-def chooseMapScreen():
+def chooseMapScreen(stopAll):
     print("In choose map screen")
 
     chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -244,9 +250,11 @@ def chooseMapScreen():
     index = 0
 
     while run:
+        if stopAll is True:
+            run = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return True
+                stopAll = True
             if event.type == blink:
                 blinking = not blinking
             if event.type == pygame.KEYDOWN:
@@ -259,11 +267,13 @@ def chooseMapScreen():
                     if hasChoosen is True:
                         gameManager.map = index
                         channel0.stop()
-                        gameLoop()
+                        gameLoop(stopAll)
 
         screen.fill([0, 0, 0])
 
         chooseElement.fillRectangleWithBackgrounds(screen)
+        if hasChoosen is True:
+            drawValidation()
 
         if blinking is True:
             if not hasChoosen:
@@ -277,7 +287,7 @@ def chooseMapScreen():
 
 
 # Function that enables players to choose their characters
-def chooseCharacterScreen():
+def chooseCharacterScreen(stopAll):
     # Sound
     if channel1.get_busy() is True:
         channel1.stop()
@@ -308,9 +318,11 @@ def chooseCharacterScreen():
     index2 = 0
 
     while run:
+        if stopAll is True:
+            run = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return True
+                stopAll = True
             if event.type == blink:
                 blinking = not blinking
             if event.type == pygame.KEYDOWN:
@@ -323,15 +335,17 @@ def chooseCharacterScreen():
                     hasChoosen1 = not hasChoosen1
                 if key == pygame.K_RCTRL:
                     hasChoosen2 = not hasChoosen2
-                if key == pygame.K_RETURN:
-                    if hasChoosen1 is True and hasChoosen2 is True:
+                if hasChoosen1 is True and hasChoosen2 is True:
+                    if key == pygame.K_RETURN:
                         gameManager.firstCharacter = index1
                         gameManager.secondCharacter = index2
-                        chooseMapScreen()
+                        chooseMapScreen(stopAll)
 
         screen.fill([0, 0, 0])
 
         chooseElement.fillRectangleWithBackgrounds(screen)
+        if hasChoosen1 is True and hasChoosen2 is True:
+            drawValidation()
 
         if blinking is True:
             if not hasChoosen2:
@@ -348,6 +362,12 @@ def chooseCharacterScreen():
 
         pygame.display.update()
     pygame.quit()
+
+
+def drawValidation():
+    pygame.draw.rect(screen, [0, 0, 0], [0, SCREEN_HEIGHT / 2 - 100, SCREEN_WIDTH, 200])
+    text = pygame.font.SysFont("rubik", 80, italic=True).render('PRESS Enter TO CONTINUE', True, [255, 255, 255])
+    screen.blit(text, (SCREEN_WIDTH - 1200, SCREEN_HEIGHT / 2 - 20))
 
 
 # Launch the game
