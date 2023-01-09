@@ -80,7 +80,7 @@ def gameLoop(stopAll):
     run = True
 
     # Creating players
-    player = Player(0, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 400, 40), pygame.Rect(0, 40, 400, 20),
+    player = Player(100, SCREEN_HEIGHT - 100, (0, 0, 255), pygame.Rect(0, 0, 400, 40), pygame.Rect(0, 40, 400, 20),
                     listOfCharacters[gameManager.firstCharacter], Direction.RIGHT,
                     listOfSprites[gameManager.firstCharacter], SCREEN_WIDTH, SCREEN_HEIGHT)
     player2 = Player(SCREEN_WIDTH - 100, SCREEN_HEIGHT - 100, (255, 0, 0), pygame.Rect(screen.get_width() - 400, 0, 400,
