@@ -74,7 +74,6 @@ listOfMusicPath = [mixer.Sound("data/musics/HomePage.ogg"),
 
 # Function used to display and play the game loop
 def gameLoop(stopAll):
-    print(gameManager.map)
     # setting gravity
     gravity = (math.pi, 0.002)
     run = True
@@ -117,6 +116,7 @@ def gameLoop(stopAll):
         # checking events
         if stopAll is True:
             run = False
+            return True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 mixer.music.stop()
@@ -188,7 +188,7 @@ def gameLoop(stopAll):
         pygame.display.update()
 
     channel1.stop()
-    chooseCharacterScreen(stopAll)
+    stopAll = chooseCharacterScreen(stopAll)
 
 
 def resetPositions(players, ball, score):
@@ -217,24 +217,24 @@ def welcomeScreen():
 
     while run:
         if stopAll is True:
-            run = False
+            pygame.quit()
+            break
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                stopAll = True
             if event.type == pygame.KEYDOWN:
-                chooseCharacterScreen(stopAll)
+                stopAll = chooseCharacterScreen(stopAll)
+                print(stopAll)
             if event.type == blink:
                 textDisplayed = not textDisplayed
 
         # Background
-        screen.blit(welcome_background_scaled, (0, 0))
+        if stopAll is False:
+            screen.blit(welcome_background_scaled, (0, 0))
         # Blinking text
         if textDisplayed is True:
             screen.blit(text, (SCREEN_WIDTH - 1000, SCREEN_HEIGHT - 75))
         pygame.display.update()
-
-    pygame.quit()
-
 
 def chooseMapScreen(stopAll):
     print("In choose map screen")
@@ -252,6 +252,7 @@ def chooseMapScreen(stopAll):
     while run:
         if stopAll is True:
             run = False
+            return True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 stopAll = True
@@ -267,7 +268,7 @@ def chooseMapScreen(stopAll):
                     if hasChoosen is True:
                         gameManager.map = index
                         channel0.stop()
-                        gameLoop(stopAll)
+                        stopAll = gameLoop(stopAll)
 
         screen.fill([0, 0, 0])
 
@@ -283,7 +284,6 @@ def chooseMapScreen(stopAll):
             chooseElement.drawBorderOfRectangleChoice(screen, index, (0, 0, 255))
 
         pygame.display.update()
-    pygame.quit()
 
 
 # Function that enables players to choose their characters
@@ -320,6 +320,7 @@ def chooseCharacterScreen(stopAll):
     while run:
         if stopAll is True:
             run = False
+            return True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 stopAll = True
@@ -339,7 +340,7 @@ def chooseCharacterScreen(stopAll):
                     if key == pygame.K_RETURN:
                         gameManager.firstCharacter = index1
                         gameManager.secondCharacter = index2
-                        chooseMapScreen(stopAll)
+                        stopAll = chooseMapScreen(stopAll)
 
         screen.fill([0, 0, 0])
 
