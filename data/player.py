@@ -279,9 +279,11 @@ class Player:
             self.in_air = False
             self.isJump = False
 
+    # function to update some status and play sounds while attacking
     def updateWhenAttacking(self, attackDirection, channelAttack):
         self.isAttacking = True
         self.attackDirection = attackDirection
+        # play sounds and generate a new random one among the list
         channelAttack.play(self.attackMusic, loops=0)
         self.attackMusic = pygame.mixer.Sound(self.listOfMusics[random.randint(0, 2)])
 
