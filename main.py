@@ -102,8 +102,8 @@ def gameLoop(stopAll):
     # Settings controls
     particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
-    player2.mapControls(pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RCTRL, pygame.K_RSHIFT,
-                        pygame.K_n)
+    player2.mapControls(pygame.K_KP8, pygame.K_KP5, pygame.K_KP4, pygame.K_KP6, pygame.K_KP_ENTER, pygame.K_RIGHT,
+                        pygame.K_DOWN)
     players = [player, player2]
     resetPositions(players, particle, score)
 
@@ -329,11 +329,11 @@ def chooseCharacterScreen(stopAll):
                 key = event.key
                 if key == pygame.K_q or key == pygame.K_s or key == pygame.K_d or key == pygame.K_z:
                     index1 = chooseElement.changeIndex(index1, key)
-                if key == pygame.K_UP or key == pygame.K_DOWN or key == pygame.K_LEFT or key == pygame.K_RIGHT:
+                if key == pygame.K_KP8 or key == pygame.K_KP5 or key == pygame.K_KP4 or key == pygame.K_KP6:
                     index2 = chooseElement.changeIndex(index2, key)
                 if key == pygame.K_SPACE:
                     hasChoosen1 = not hasChoosen1
-                if key == pygame.K_RCTRL:
+                if key == pygame.K_KP_ENTER:
                     hasChoosen2 = not hasChoosen2
                 if hasChoosen1 is True and hasChoosen2 is True:
                     if key == pygame.K_RETURN:

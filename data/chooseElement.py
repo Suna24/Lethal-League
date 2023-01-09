@@ -42,7 +42,7 @@ class ChooseElement:
 
         [x, y] = self.getCoupleOfIndex(currentIndex)
 
-        if key == pygame.K_z or key == pygame.K_UP:
+        if key == pygame.K_z or key == pygame.K_KP8:
             print("Z pressed")
             if currentIndex in self.allChoices[0]:
                 print("New index : " + str(self.allChoices[self.rows - 1][y]))
@@ -51,7 +51,7 @@ class ChooseElement:
                 print("New index : " + str(self.allChoices[x - 1][y]))
                 return self.allChoices[x - 1][y]
 
-        if key == pygame.K_s or key == pygame.K_DOWN:
+        if key == pygame.K_s or key == pygame.K_KP5:
             print("S pressed")
             if currentIndex in self.allChoices[self.rows - 1]:
                 print("New index : " + str(self.allChoices[0][y]))
@@ -60,7 +60,7 @@ class ChooseElement:
                 print("New index : " + str(self.allChoices[x + 1][y]))
                 return self.allChoices[x + 1][y]
 
-        if key == pygame.K_q or key == pygame.K_LEFT:
+        if key == pygame.K_q or key == pygame.K_KP4:
             print("Q pressed")
             indexToRemember = []
             for i in range(0, self.rows):
@@ -72,7 +72,7 @@ class ChooseElement:
                 print("New index (not in indexToRemember) : " + str(self.allChoices[x][y - 1]))
                 return self.allChoices[x][y - 1]
 
-        if key == pygame.K_d or key == pygame.K_RIGHT:
+        if key == pygame.K_d or key == pygame.K_KP6:
             print("D pressed")
             indexToRemember = [self.columns - 1]
             for i in range(1, self.rows):
