@@ -1,6 +1,7 @@
 from data.character import character
 import pygame
 
+
 # Sonata class inherits from character class
 # So we init the character class with the specific Sonata values
 class Sonata(character):

@@ -301,7 +301,7 @@ class Player:
         self.character.hitbox.x = self.x - self.character.xhitboxoffset
         self.character.hitbox.y = self.y - self.character.yhitboxoffset
         # pygame.draw.rect(screen, self.color, self.character.hitbox)
-        #displaying HUD for the player
+        # displaying HUD for the player
         pygame.draw.polygon(screen, self.color, ((self.x - 20, self.y - 150), (self.x + 20, self.y - 150),
                                                  (self.x, self.y - 125)))
         pygame.draw.rect(screen, (255, 255, 255), self.hprect, 2)

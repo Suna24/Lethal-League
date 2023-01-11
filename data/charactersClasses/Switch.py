@@ -1,6 +1,7 @@
 from data.character import character
 import pygame
 
+
 # Switch class inherits from character class
 # So we init the character class with the specific Switch values
 class Switch(character):

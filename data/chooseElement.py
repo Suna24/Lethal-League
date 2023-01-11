@@ -15,7 +15,8 @@ class ChooseElement:
         self.allChoices = []
 
         if rows * columns != len(listOfBackgrounds):
-            print("WARNING : the number of choices does not correspond to the number of background passed in parameters")
+            print("WARNING : the number of choices does not correspond to the number"
+                  " of background passed in parameters")
 
         # Initialize allChoices
         self.initIndexOfChoices()

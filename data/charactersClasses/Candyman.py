@@ -37,9 +37,9 @@ class Candyman(character):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
-        # his ultimate is used in particle.py so it doesn't need to be here
+        # his ultimate is used in particle.py, so it doesn't need to be here
         pass
 
     def resetUltimate(self):
-        # his ultimate is used in particle.py so it doesn't need to be here
+        # his ultimate is used in particle.py, so it doesn't need to be here
         pass
