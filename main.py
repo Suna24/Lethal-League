@@ -101,9 +101,9 @@ def gameLoop(stopAll):
     # Settings controls
     particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
     player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
-    player2.mapControls(pygame.K_CARET, 249, pygame.K_m, pygame.K_ASTERISK, pygame.K_RCTRL,
-                        pygame.K_SEMICOLON,
-                        pygame.K_k)
+    player2.mapControls(pygame.K_o, pygame.K_l, pygame.K_k, pygame.K_m, pygame.K_RCTRL,
+                        pygame.K_n,
+                        pygame.K_p)
     players = [player, player2]
     resetPositions(players, particle, score)
 
@@ -140,7 +140,7 @@ def gameLoop(stopAll):
 
         # drawing and moving the particle
         particle.move(gravity, ms_frame)
-        particle.bounce(players)
+        particle.bounce(players, clock)
         # drawing scores
         score.draw(screen, SCREEN_WIDTH)
         particle.display(screen)
