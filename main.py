@@ -449,9 +449,7 @@ def chooseCharacterScreen(stopAll):
 def mapControlsMenu():
     # Fonts
     font = pygame.font.SysFont("rubik", 35)
-    # Create a user event appearing every 0.5 sec
-    blink = pygame.USEREVENT
-    pygame.time.set_timer(blink, 500)
+    # Creating all rectangles and texts
     rectangles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     soundRectangles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     text = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -473,6 +471,7 @@ def mapControlsMenu():
     textJ1 = font.render("Joueur 1", True, (0, 0, 255))
     textJ2 = font.render("Joueur 2", True, (255, 0, 0))
     textReturn = font.render("<- Retour - Echap", True, (255, 255, 255))
+    # inflating all rectangles in arrays
     for i in range(0, 14):
         if i <= 6:
             rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 - 100, SCREEN_HEIGHT / 2 - 350 + i * 100, 200, 75)
@@ -496,13 +495,16 @@ def mapControlsMenu():
                 run = False
             if event.type == pygame.KEYDOWN:
                 key = event.key
+                # if the player decided to change a key
                 if changingKey:
                     keyToChange = None
                     indexForKey = None
+                    # checking if the key is already mapped
                     for i in range(0, 14):
                         if controls[i] == key:
                             keyToChange = controls[currentIndex]
                             indexForKey = i
+                    # if the key is already mapped, we invert keys
                     if keyToChange is not None:
                         controls[indexForKey] = keyToChange
                         controls[currentIndex] = key
@@ -510,6 +512,7 @@ def mapControlsMenu():
                         text[indexForKey] = font.render(pygame.key.name(controls[indexForKey]), True, (255, 255, 255))
                         changingKey = False
                         break
+                    # if the key is not mapped, we change it
                     else:
                         controls[currentIndex] = key
                         text[currentIndex] = font.render(pygame.key.name(controls[currentIndex]), True, (255, 255, 255))
@@ -518,11 +521,13 @@ def mapControlsMenu():
                 if key == pygame.K_ESCAPE and changingKey is False:
                     run = False
                     break
+                # checking if player asked for resetting controls
                 if key == pygame.K_r and changingKey is False:
                     for i in range(0, 14):
                         controls[i] = defaultControls[i]
                         text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
                     break
+                # checking which volume to switch
                 if key == pygame.K_i and changingKey is False:
                     main.volumeMusic -= 0.1
                     channel0.set_volume(main.volumeMusic)
@@ -539,6 +544,7 @@ def mapControlsMenu():
                     main.volumeSounds += 0.1
                     channel2.set_volume(main.volumeSounds)
                     channel3.set_volume(main.volumeSounds)
+                # checking where player is looking to go for
                 if (key == pygame.K_z or key == pygame.K_UP) and changingKey is False:
                     currentIndex = (currentIndex - 1) % len(rectangles)
                 elif key == pygame.K_s or key == pygame.K_DOWN and changingKey is False:
@@ -549,9 +555,11 @@ def mapControlsMenu():
                 elif key == pygame.K_d or key == pygame.K_RIGHT and changingKey is False:
                     if currentIndex < len(rectangles) / 2:
                         currentIndex += 7
+                # checking if player turns on mode to change a key
                 elif key == pygame.K_RETURN and changingKey is False:
                     changingKey = True
                     text[currentIndex] = font.render("...", True, (255, 255, 255))
+        # drawing all rectangles and texts
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
         for i in range(0, 14):
             if i == currentIndex and changingKey is False:
@@ -578,7 +586,7 @@ def mapControlsMenu():
             volumeMusicIndex = 0
         if main.volumeSounds == 0:
             volumeSoundIndex = 0
-
+        # drawing volume bars
         for i in range(0, 20):
             if i <= 9:
                 if i <= volumeMusicIndex:
