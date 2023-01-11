@@ -63,6 +63,17 @@ listOfMapMenuBackgrounds = [
     pygame.image.load("data/images/Maps/map7.png"),
     pygame.image.load("data/images/Maps/map8.png")]
 
+defaultControls = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c,
+                   pygame.K_o,
+                   pygame.K_l, pygame.K_k, pygame.K_m, pygame.K_RCTRL,
+                   pygame.K_n,
+                   pygame.K_p]
+
+controls = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c, pygame.K_o,
+            pygame.K_l, pygame.K_k, pygame.K_m, pygame.K_RCTRL,
+            pygame.K_n,
+            pygame.K_p]
+
 welcome_background = pygame.image.load("data/images/welcome_background.jpg")
 welcome_background_scaled = pygame.transform.scale(welcome_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -103,10 +114,8 @@ def gameLoop(stopAll):
 
     # Settings controls
     particle = Particle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 30, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
-    player.mapControls(pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c)
-    player2.mapControls(pygame.K_o, pygame.K_l, pygame.K_k, pygame.K_m, pygame.K_RCTRL,
-                        pygame.K_n,
-                        pygame.K_p)
+    player.mapControls(controls[0:7])
+    player2.mapControls(controls[7:14])
     players = [player, player2]
     resetPositions(players, particle, score)
 
@@ -128,6 +137,11 @@ def gameLoop(stopAll):
                 mixer.music.stop()
                 stopAll = True
             # if a player scored
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    mixer.music.stop()
+                    run = False
+                    break
             if event.type == playerHasScored:
                 eventOccurs = False
                 # Re-enabling movement for players
@@ -195,6 +209,7 @@ def gameLoop(stopAll):
     channel1.stop()
     stopAll = chooseCharacterScreen(stopAll)
 
+
 # function that reset position of the ball, the players and score attribute
 def resetPositions(players, ball, score):
     for player in players:
@@ -209,6 +224,7 @@ def welcomeScreen():
     # Fonts
     font = pygame.font.SysFont("rubik", 35)
     text = font.render('PRESS ANY KEY TO CONTINUE', True, [255, 255, 255])
+    text2 = font.render('OR R TO CHANGE CONTROLS', True, [255, 255, 255])
 
     # Create a user event appearing every 0.5 sec
     blink = pygame.USEREVENT
@@ -224,13 +240,25 @@ def welcomeScreen():
 
     while run:
         if stopAll is True:
+            mixer.music.stop()
             pygame.quit()
+            exit()
             break
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 stopAll = True
+                mixer.music.stop()
+                pygame.quit()
+                exit()
             if event.type == pygame.KEYDOWN:
-                print(event.key)
+                if event.key == pygame.K_r:
+                    mapControlsMenu()
+                    break
+                if event.key == pygame.K_ESCAPE:
+                    mixer.music.stop()
+                    pygame.quit()
+                    exit()
+                    break
                 stopAll = chooseCharacterScreen(stopAll)
             # blinking event
             if event.type == blink:
@@ -242,11 +270,12 @@ def welcomeScreen():
         # Blinking text
         if textDisplayed is True:
             screen.blit(text, (SCREEN_WIDTH - 1000, SCREEN_HEIGHT - 75))
+            screen.blit(text2, (SCREEN_WIDTH - 1000, SCREEN_HEIGHT - 40))
         pygame.display.update()
+
 
 # function that enables the player to choose the map
 def chooseMapScreen(stopAll):
-
     # create the object used to handle map choices
     chooseElement = ChooseElement(screen, listOfMapMenuBackgrounds, 2, 4, SCREEN_WIDTH, SCREEN_HEIGHT)
     run = True
@@ -263,20 +292,23 @@ def chooseMapScreen(stopAll):
     # loop
     while run:
         if stopAll is True:
-            run = False
             return True
         for event in pygame.event.get():
             # if the player decide to quit
             if event.type == pygame.QUIT:
                 stopAll = True
+                break
             # blinking event
             if event.type == blink:
                 blinking = not blinking
             # if player is moving to choose the game map
             if event.type == pygame.KEYDOWN:
                 key = event.key
-                if key == pygame.K_q or key == pygame.K_s or key == pygame.K_d or key == pygame.K_z:
-                    index = chooseElement.changeIndex(index, key)
+                if key == pygame.K_r:
+                    mapControlsMenu()
+                    break
+                if key == controls[0] or key == controls[1] or key == controls[2] or key == controls[3]:
+                    index = chooseElement.changeIndex(index, key, controls[0:5], controls[7:11])
                 # if he selects/not selects the map
                 if key == pygame.K_SPACE:
                     hasChoosen = not hasChoosen
@@ -347,22 +379,29 @@ def chooseCharacterScreen(stopAll):
             # if the player decide to quit
             if event.type == pygame.QUIT:
                 stopAll = True
+                welcomeScreen()
+                return
             # if there is a blinking event
             if event.type == blink:
                 blinking = not blinking
             # if players are moving to choose their characters
             if event.type == pygame.KEYDOWN:
                 key = event.key
+                if key == pygame.K_ESCAPE:
+                    welcomeScreen()
                 # player 1
-                if key == pygame.K_q or key == pygame.K_s or key == pygame.K_d or key == pygame.K_z:
-                    index1 = chooseElement.changeIndex(index1, key)
+                if key == controls[0] or key == controls[1] or key == controls[2] or key == controls[3]:
+                    index1 = chooseElement.changeIndex(index1, key, controls[0:4], controls[7:11])
+                if event.key == pygame.K_r:
+                    mapControlsMenu()
+                    break
                 # player 2
-                if key == pygame.K_KP8 or key == pygame.K_KP5 or key == pygame.K_KP4 or key == pygame.K_KP6:
-                    index2 = chooseElement.changeIndex(index2, key)
+                if key == controls[7] or key == controls[8] or key == controls[9] or key == controls[10]:
+                    index2 = chooseElement.changeIndex(index2, key, controls[0:4], controls[7:11])
                 # selection
-                if key == pygame.K_SPACE:
+                if key == controls[4]:
                     hasChoosen1 = not hasChoosen1
-                if key == pygame.K_RCTRL:
+                if key == controls[11]:
                     hasChoosen2 = not hasChoosen2
                 # if validation, update gameManager values
                 if hasChoosen1 is True and hasChoosen2 is True:
@@ -396,6 +435,89 @@ def chooseCharacterScreen(stopAll):
 
         pygame.display.update()
     pygame.quit()
+
+
+def mapControlsMenu():
+    # Fonts
+    font = pygame.font.SysFont("rubik", 35)
+    # Create a user event appearing every 0.5 sec
+    blink = pygame.USEREVENT
+    pygame.time.set_timer(blink, 500)
+    rectangles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    text = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    textCommands = [0, 0, 0, 0, 0, 0, 0]
+    currentIndex = 0
+    # create a reset button at middle
+    rectangleReset = pygame.Rect(SCREEN_WIDTH / 2 - 100, 25, 200, 75)
+    textReset = font.render("Reset - R", True, (255, 255, 255))
+    changingKey = False
+    strings = ["Attaque haute", "Attaque basse", "Aller a gauche", "Aller a droite",
+               "Sauter / Confirmer",
+               "Attaquer",
+               "Coup spécial"]
+    textJ1 = font.render("Joueur 1", True, (0, 0, 255))
+    textJ2 = font.render("Joueur 2", True, (255, 0, 0))
+    textReturn = font.render("<- Retour - Echap", True, (255, 255, 255))
+    for i in range(0, 14):
+        if i <= 6:
+            rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 - 100, SCREEN_HEIGHT / 2 - 300 + i * 100, 200, 75)
+        else:
+            rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 * 3 - 100, SCREEN_HEIGHT / 2 - 300 + (i - 7) * 100, 200, 75)
+        text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
+    for i in range(0, 7):
+        textCommands[i] = font.render(strings[i], True, (255, 255, 255))
+    run = True
+    print(rectangles)
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                key = event.key
+                if changingKey:
+                    controls[currentIndex] = key
+                    text[currentIndex] = font.render(pygame.key.name(controls[currentIndex]), True, (255, 255, 255))
+                    changingKey = False
+                    break
+                if key == pygame.K_ESCAPE and changingKey is False:
+                    run = False
+                    break
+                if key == pygame.K_r:
+                    for i in range(0, 14):
+                        controls[i] = defaultControls[i]
+                        text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
+                    break
+                if (key == pygame.K_z or key == pygame.K_UP) and changingKey is False:
+                    currentIndex = (currentIndex - 1) % len(rectangles)
+                elif key == pygame.K_s or key == pygame.K_DOWN and changingKey is False:
+                    currentIndex = (currentIndex + 1) % len(rectangles)
+                elif key == pygame.K_q or key == pygame.K_LEFT and changingKey is False:
+                    if currentIndex > len(rectangles) / 2 - 1:
+                        currentIndex -= len(rectangles) / 2
+                elif key == pygame.K_d or key == pygame.K_RIGHT and changingKey is False:
+                    if currentIndex < len(rectangles) / 2:
+                        currentIndex += len(rectangles) / 2
+                elif key == pygame.K_RETURN and changingKey is False:
+                    changingKey = True
+                    text[currentIndex] = font.render("...", True, (255, 255, 255))
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
+        for i in range(0, 14):
+            if i == currentIndex and changingKey is False:
+                pygame.draw.rect(screen, (255, 0, 255), rectangles[i], 5)
+            elif i == currentIndex and changingKey is True:
+                pygame.draw.rect(screen, (0, 255, 0), rectangles[i], 5)
+            else:
+                pygame.draw.rect(screen, (255, 255, 255), rectangles[i], 2)
+        screen.blit(textJ1, (SCREEN_WIDTH / 4 - 50, SCREEN_HEIGHT / 2 - 400))
+        screen.blit(textJ2, (SCREEN_WIDTH / 4 * 3 - 50, SCREEN_HEIGHT / 2 - 400))
+        screen.blit(textReturn, (50, 50))
+        for i in range(0, 7):
+            screen.blit(textCommands[i], (SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 275 + i * 100))
+        for i in range(0, 14):
+            screen.blit(text[i], (rectangles[i].x + 50, rectangles[i].y + 25))
+        pygame.draw.rect(screen, (255, 255, 255), rectangleReset, 2)
+        screen.blit(textReset, (rectangleReset.x + 50, rectangleReset.y + 25))
+        pygame.display.update()
 
 
 # function used to print on screen the key to press to validate choices
