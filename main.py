@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import math
 from pygame import mixer
@@ -244,14 +246,12 @@ def welcomeScreen():
         if stopAll is True:
             mixer.music.stop()
             pygame.quit()
-            exit()
-            break
+            sys.exit()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                stopAll = True
                 mixer.music.stop()
                 pygame.quit()
-                exit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     mapControlsMenu()
@@ -259,8 +259,7 @@ def welcomeScreen():
                 if event.key == pygame.K_ESCAPE:
                     mixer.music.stop()
                     pygame.quit()
-                    exit()
-                    break
+                    sys.exit()
                 stopAll = chooseCharacterScreen(stopAll)
             # blinking event
             if event.type == blink:
