@@ -14,11 +14,11 @@ def addVectors(angle1, length1, angle2, length2):
 
 
 # function used to create a time delay to intense actions
-def createBulletTime(speed):
+def createBulletTime(speed, clock):
     i = 0
     if speed > 0.5:
         while i < 20:
-            pygame.time.wait(10)
+            clock.tick(120)
             i += 1
 
 
@@ -65,12 +65,12 @@ class Particle:
         self.y -= math.cos(self.angle) * self.speed * self.move_per_second * ms_frame / 1000
 
     # function used to calculate the bounce and the trajectory of the ball
-    def bounce(self, players):
+    def bounce(self, players, clock):
         # checking if a player has hit the ball
         for player in players:
             if player.character.attackMiddleDownRect != 0:
                 if self.circle.colliderect(player.character.attackMiddleDownRect):
-                    createBulletTime(self.speed)
+                    createBulletTime(self.speed, clock)
                     # calculating the angle of the ball
                     if player.direction == Direction.RIGHT:
                         self.x += 10
@@ -93,7 +93,7 @@ class Particle:
                     player.isAttacking = False
             elif player.character.attackMiddleUpRect != 0:
                 if self.circle.colliderect(player.character.attackMiddleUpRect):
-                    createBulletTime(self.speed)
+                    createBulletTime(self.speed, clock)
                     # calculating the angle of the ball
                     if player.direction == Direction.RIGHT:
                         self.x += 10
@@ -108,7 +108,7 @@ class Particle:
                     player.isAttacking = False
             elif player.character.attackMiddleRect != 0:
                 if self.circle.colliderect(player.character.attackMiddleRect):
-                    createBulletTime(self.speed)
+                    createBulletTime(self.speed, clock)
                     if player.direction == Direction.RIGHT:
                         self.y = player.character.attackMiddleRect.y
                         self.x += 10
@@ -124,7 +124,7 @@ class Particle:
                     player.isAttacking = False
             elif player.character.attackDownRect != 0:
                 if self.circle.colliderect(player.character.attackDownRect):
-                    createBulletTime(self.speed)
+                    createBulletTime(self.speed, clock)
                     # calculating the angle of the ball
                     if self.x > player.character.attackDownRect.x:
                         self.y = player.character.attackDownRect.y + 32
@@ -139,7 +139,7 @@ class Particle:
                     player.isAttacking = False
             elif player.character.attackUpRect != 0:
                 if self.circle.colliderect(player.character.attackUpRect):
-                    createBulletTime(self.speed)
+                    createBulletTime(self.speed, clock)
                     # calculating the angle of the ball
                     if self.x < player.character.attackUpRect.x:
                         self.y = player.character.attackUpRect.y - 32
@@ -159,7 +159,7 @@ class Particle:
                     # checking if color of the ball is the same of the player
                     # if not the player will be hitted
                     if self.color != player.color and self.color != (255, 255, 255) and not player.invincible:
-                        createBulletTime(self.speed)
+                        createBulletTime(self.speed, clock)
                         # boosting ultimate charge for player who hit the ball
                         self.returnOneOfTwo(player, players).power += self.speed * 5
                         # boosting more for player who was hit
