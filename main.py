@@ -311,7 +311,7 @@ def chooseMapScreen(stopAll):
                     mapControlsMenu()
                     break
                 if key == controls[0] or key == controls[1] or key == controls[2] or key == controls[3]:
-                    index = chooseElement.changeIndex(index, key, controls[0:5], controls[7:11])
+                    index = chooseElement.changeIndex(index, key, controls[0:4], controls[7:11])
                 # if he selects/not selects the map
                 if key == pygame.K_SPACE:
                     hasChoosen = not hasChoosen
