@@ -52,13 +52,17 @@ class ChooseElement:
         return [x, y]
 
     # function used to change the index of the player (when he wants to move on a choos screen)
-    def changeIndex(self, currentIndex, key):
-
+    def changeIndex(self, currentIndex, key, keyJ1, keyJ2):
+        print(keyJ1)
+        if len(keyJ1) != 4:
+            raise Exception("keyJ1 must be a list of 4 keys")
+        if len(keyJ2) != 4:
+            raise Exception("keyJ2 must be a list of 4 keys")
         # we get the couple of index used to know on which index we currently are
         [x, y] = self.getCoupleOfIndex(currentIndex)
 
         # if the player go on the top
-        if key == pygame.K_z or key == pygame.K_KP8:
+        if key == keyJ1[0] or key == keyJ2[0]:
             # if we are on the top row, then the next choice is on the last row
             if currentIndex in self.allChoices[0]:
                 return self.allChoices[self.rows - 1][y]
@@ -67,7 +71,7 @@ class ChooseElement:
                 return self.allChoices[x - 1][y]
 
         # if the player go below
-        if key == pygame.K_s or key == pygame.K_KP5:
+        if key == keyJ1[1] or key == keyJ2[1]:
             # if we are on the last row, then the next choice is on the top row
             if currentIndex in self.allChoices[self.rows - 1]:
                 return self.allChoices[0][y]
@@ -76,7 +80,7 @@ class ChooseElement:
                 return self.allChoices[x + 1][y]
 
         # if the player go on the left
-        if key == pygame.K_q or key == pygame.K_KP4:
+        if key == keyJ1[2] or key == keyJ2[2]:
             # we memorize all index that are situated on the first column
             indexToRemember = []
             for i in range(0, self.rows):
@@ -89,7 +93,7 @@ class ChooseElement:
                 return self.allChoices[x][y - 1]
 
         # if the player go on right
-        if key == pygame.K_d or key == pygame.K_KP6:
+        if key == keyJ1[3] or key == keyJ2[3]:
             # we memorize all index that are situated on the last column
             indexToRemember = [self.columns - 1]
             for i in range(1, self.rows):

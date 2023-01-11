@@ -91,14 +91,17 @@ class Player:
         self.specialAttackMusic = pygame.mixer.Sound("data/musics/" + character + "/specialAttack.ogg")
 
     # function used to attribute keys to the player
-    def mapControls(self, moveUp, moveDown, moveLeft, moveRight, jump, attack, specialAttack):
-        self.moveUp = moveUp
-        self.moveDown = moveDown
-        self.moveLeft = moveLeft
-        self.moveRight = moveRight
-        self.jump = jump
-        self.attack = attack
-        self.specialAttack = specialAttack
+    def mapControls(self, keybinds):
+        if len(keybinds) == 7:
+            self.moveUp = keybinds[0]
+            self.moveDown = keybinds[1]
+            self.moveLeft = keybinds[2]
+            self.moveRight = keybinds[3]
+            self.jump = keybinds[4]
+            self.attack = keybinds[5]
+            self.specialAttack = keybinds[6]
+        else:
+            raise Exception("Keybinds list is not the right size")
 
     # function used to play animations of the player
     def playAnimation(self, screen, listOfSprites):
