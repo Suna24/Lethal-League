@@ -304,6 +304,9 @@ def chooseMapScreen(stopAll):
             # if player is moving to choose the game map
             if event.type == pygame.KEYDOWN:
                 key = event.key
+                if key == pygame.K_ESCAPE:
+                    welcomeScreen()
+                    break
                 if key == pygame.K_r:
                     mapControlsMenu()
                     break
@@ -475,14 +478,28 @@ def mapControlsMenu():
             if event.type == pygame.KEYDOWN:
                 key = event.key
                 if changingKey:
-                    controls[currentIndex] = key
-                    text[currentIndex] = font.render(pygame.key.name(controls[currentIndex]), True, (255, 255, 255))
-                    changingKey = False
-                    break
+                    keyToChange = None
+                    indexForKey = None
+                    for i in range(0, 14):
+                        if controls[i] == key:
+                            keyToChange = controls[currentIndex]
+                            indexForKey = i
+                    if keyToChange is not None:
+                        controls[indexForKey] = keyToChange
+                        controls[currentIndex] = key
+                        text[currentIndex] = font.render(pygame.key.name(controls[currentIndex]), True, (255, 255, 255))
+                        text[indexForKey] = font.render(pygame.key.name(controls[indexForKey]), True, (255, 255, 255))
+                        changingKey = False
+                        break
+                    else:
+                        controls[currentIndex] = key
+                        text[currentIndex] = font.render(pygame.key.name(controls[currentIndex]), True, (255, 255, 255))
+                        changingKey = False
+                        break
                 if key == pygame.K_ESCAPE and changingKey is False:
                     run = False
                     break
-                if key == pygame.K_r:
+                if key == pygame.K_r and changingKey is False:
                     for i in range(0, 14):
                         controls[i] = defaultControls[i]
                         text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
@@ -493,10 +510,10 @@ def mapControlsMenu():
                     currentIndex = (currentIndex + 1) % len(rectangles)
                 elif key == pygame.K_q or key == pygame.K_LEFT and changingKey is False:
                     if currentIndex > len(rectangles) / 2 - 1:
-                        currentIndex -= len(rectangles) / 2
+                        currentIndex -= 7
                 elif key == pygame.K_d or key == pygame.K_RIGHT and changingKey is False:
                     if currentIndex < len(rectangles) / 2:
-                        currentIndex += len(rectangles) / 2
+                        currentIndex += 7
                 elif key == pygame.K_RETURN and changingKey is False:
                     changingKey = True
                     text[currentIndex] = font.render("...", True, (255, 255, 255))
