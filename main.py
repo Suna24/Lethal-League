@@ -29,20 +29,20 @@ pygame.display.set_caption("Lethal League")
 clock = pygame.time.Clock()
 # Music
 mixer.init(channels=4)
-volumeMusic = [0.5]
-volumeSounds = [1.0]
+volumeMusic = 0.5
+volumeSounds = 1.0
 
 # Init channels
 channel0 = mixer.Channel(0)
-channel0.set_volume(volumeMusic[0])
+channel0.set_volume(volumeMusic)
 channel1 = mixer.Channel(1)
-channel1.set_volume(volumeMusic[0])
+channel1.set_volume(volumeMusic)
 
 # For players
 channel2 = mixer.Channel(2)
-channel2.set_volume(volumeSounds[0])
+channel2.set_volume(volumeSounds)
 channel3 = mixer.Channel(3)
-channel3.set_volume(volumeSounds[0])
+channel3.set_volume(volumeSounds)
 
 # Game Manager to store which characters and which map is selected
 gameManager = GameManager()
@@ -442,7 +442,7 @@ def chooseCharacterScreen(stopAll):
 # Function to display the controls' menu, to change the controls of players
 def mapControlsMenu():
     # Fonts
-    global volumeSounds
+    global volumeSounds, volumeMusic
     font = pygame.font.SysFont("rubik", 35)
     # Creating all rectangles and texts
     rectangles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -523,23 +523,30 @@ def mapControlsMenu():
                         text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
                     break
                 # checking which volume to switch
-                if key == pygame.K_i:
-                    if changingKey is False:
-                        volumeMusic[0] -= 0.1
-                        channel0.set_volume(volumeMusic[0])
-                        channel1.set_volume(volumeMusic[0])
+                if key == pygame.K_i and not changingKey:
+                        volumeMusic -= 0.1
+                        if volumeMusic < 0:
+                            volumeMusic = 0
+                        channel0.set_volume(volumeMusic)
+                        channel1.set_volume(volumeMusic)
                 if key == pygame.K_p and changingKey is False:
-                    volumeMusic[0] += 0.1
-                    channel0.set_volume(volumeMusic[0])
-                    channel1.set_volume(volumeMusic[0])
+                    volumeMusic += 0.1
+                    if volumeMusic > 1:
+                        volumeMusic = 1
+                    channel0.set_volume(volumeMusic)
+                    channel1.set_volume(volumeMusic)
                 if key == pygame.K_k and changingKey is False:
-                    volumeSounds[0] -= 0.1
-                    channel2.set_volume(volumeSounds[0])
-                    channel3.set_volume(volumeSounds[0])
+                    volumeSounds -= 0.1
+                    if volumeSounds < 0:
+                        volumeSounds = 0
+                    channel2.set_volume(volumeSounds)
+                    channel3.set_volume(volumeSounds)
                 if key == pygame.K_m and changingKey is False:
-                    volumeSounds[0] += 0.1
-                    channel2.set_volume(volumeSounds[0])
-                    channel3.set_volume(volumeSounds[0])
+                    volumeSounds += 0.1
+                    if volumeSounds > 1:
+                        volumeSounds = 1
+                    channel2.set_volume(volumeSounds)
+                    channel3.set_volume(volumeSounds)
                 # checking where player is looking to go for
                 if (key == pygame.K_z or key == pygame.K_UP) and changingKey is False:
                     currentIndex = (currentIndex - 1) % len(rectangles)
@@ -576,8 +583,8 @@ def mapControlsMenu():
             screen.blit(textCommands[i], (SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 325 + i * 100))
         for i in range(0, 14):
             screen.blit(text[i], (rectangles[i].x + 50, rectangles[i].y + 25))
-        volumeMusicIndex = int(volumeMusic[0] * 10)
-        volumeSoundIndex = int(volumeSounds[0] * 10)
+        volumeMusicIndex = int(volumeMusic * 10)
+        volumeSoundIndex = int(volumeSounds * 10)
         if volumeMusic == 0:
             volumeMusicIndex = 0
         if volumeSounds == 0:
