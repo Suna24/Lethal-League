@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import math
 from pygame import mixer
@@ -27,18 +29,20 @@ pygame.display.set_caption("Lethal League")
 clock = pygame.time.Clock()
 # Music
 mixer.init(channels=4)
+volumeMusic = 0.5
+volumeSounds = 1.0
 
 # Init channels
 channel0 = mixer.Channel(0)
-channel0.set_volume(0.1)
+channel0.set_volume(volumeMusic)
 channel1 = mixer.Channel(1)
-channel1.set_volume(0.1)
+channel1.set_volume(volumeMusic)
 
 # For players
 channel2 = mixer.Channel(2)
-channel2.set_volume(0.75)
+channel2.set_volume(volumeSounds)
 channel3 = mixer.Channel(3)
-channel3.set_volume(0.7)
+channel3.set_volume(volumeSounds)
 
 # Game Manager to store which characters and which map is selected
 gameManager = GameManager()
@@ -63,6 +67,7 @@ listOfMapMenuBackgrounds = [
     pygame.image.load("data/images/Maps/map7.png"),
     pygame.image.load("data/images/Maps/map8.png")]
 
+# Declaring controls to control the players and interact with the menu
 defaultControls = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_SPACE, pygame.K_LSHIFT, pygame.K_c,
                    pygame.K_o,
                    pygame.K_l, pygame.K_k, pygame.K_m, pygame.K_RCTRL,
@@ -129,7 +134,6 @@ def gameLoop(stopAll):
         ms_frame = clock.tick(300)
         # checking events
         if stopAll is True:
-            run = False
             return True
         for event in pygame.event.get():
             # if the player decide to quit
@@ -207,7 +211,7 @@ def gameLoop(stopAll):
 
     # stop the channel which is playing the music
     channel1.stop()
-    stopAll = chooseCharacterScreen(stopAll)
+    chooseCharacterScreen(stopAll)
 
 
 # function that reset position of the ball, the players and score attribute
@@ -242,14 +246,12 @@ def welcomeScreen():
         if stopAll is True:
             mixer.music.stop()
             pygame.quit()
-            exit()
-            break
+            sys.exit()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                stopAll = True
                 mixer.music.stop()
                 pygame.quit()
-                exit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     mapControlsMenu()
@@ -257,8 +259,7 @@ def welcomeScreen():
                 if event.key == pygame.K_ESCAPE:
                     mixer.music.stop()
                     pygame.quit()
-                    exit()
-                    break
+                    sys.exit()
                 stopAll = chooseCharacterScreen(stopAll)
             # blinking event
             if event.type == blink:
@@ -376,12 +377,10 @@ def chooseCharacterScreen(stopAll):
 
     while run:
         if stopAll is True:
-            run = False
             return True
         for event in pygame.event.get():
             # if the player decide to quit
             if event.type == pygame.QUIT:
-                stopAll = True
                 welcomeScreen()
                 return
             # if there is a blinking event
@@ -440,13 +439,14 @@ def chooseCharacterScreen(stopAll):
     pygame.quit()
 
 
+# Function to display the controls' menu, to change the controls of players
 def mapControlsMenu():
     # Fonts
+    global volumeSounds, volumeMusic
     font = pygame.font.SysFont("rubik", 35)
-    # Create a user event appearing every 0.5 sec
-    blink = pygame.USEREVENT
-    pygame.time.set_timer(blink, 500)
+    # Creating all rectangles and texts
     rectangles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    soundRectangles = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     text = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     textCommands = [0, 0, 0, 0, 0, 0, 0]
     currentIndex = 0
@@ -458,32 +458,48 @@ def mapControlsMenu():
                "Sauter / Confirmer",
                "Attaquer",
                "Coup spécial"]
+    textI = font.render("I", True, (255, 255, 255))
+    textP = font.render("P", True, (255, 255, 255))
+    textK = font.render("K", True, (255, 255, 255))
+    textM = font.render("M", True, (255, 255, 255))
+    textMusic = font.render("Music - Sounds", True, (255, 255, 255))
     textJ1 = font.render("Joueur 1", True, (0, 0, 255))
     textJ2 = font.render("Joueur 2", True, (255, 0, 0))
     textReturn = font.render("<- Retour - Echap", True, (255, 255, 255))
+    # inflating all rectangles in arrays
     for i in range(0, 14):
         if i <= 6:
-            rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 - 100, SCREEN_HEIGHT / 2 - 300 + i * 100, 200, 75)
+            rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 - 100, SCREEN_HEIGHT / 2 - 350 + i * 100, 200, 75)
         else:
-            rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 * 3 - 100, SCREEN_HEIGHT / 2 - 300 + (i - 7) * 100, 200, 75)
+            rectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 * 3 - 100, SCREEN_HEIGHT / 2 - 350 + (i - 7) * 100, 200, 75)
         text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
     for i in range(0, 7):
         textCommands[i] = font.render(strings[i], True, (255, 255, 255))
+    for i in range(0, 20):
+        if i <= 9:
+            soundRectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 - 100 + i * 20, SCREEN_HEIGHT / 2 - 350 + 7 * 100, 20, 75)
+        else:
+            # display rectangles for sounds at right of the screen
+            soundRectangles[i] = pygame.Rect(SCREEN_WIDTH / 4 * 3 - 100 + (i - 10) * 20,
+                                             SCREEN_HEIGHT / 2 - 350 + 7 * 100,
+                                             20, 75)
     run = True
-    print(rectangles)
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
                 key = event.key
+                # if the player decided to change a key
                 if changingKey:
                     keyToChange = None
                     indexForKey = None
+                    # checking if the key is already mapped
                     for i in range(0, 14):
                         if controls[i] == key:
                             keyToChange = controls[currentIndex]
                             indexForKey = i
+                    # if the key is already mapped, we invert keys
                     if keyToChange is not None:
                         controls[indexForKey] = keyToChange
                         controls[currentIndex] = key
@@ -491,6 +507,7 @@ def mapControlsMenu():
                         text[indexForKey] = font.render(pygame.key.name(controls[indexForKey]), True, (255, 255, 255))
                         changingKey = False
                         break
+                    # if the key is not mapped, we change it
                     else:
                         controls[currentIndex] = key
                         text[currentIndex] = font.render(pygame.key.name(controls[currentIndex]), True, (255, 255, 255))
@@ -499,11 +516,38 @@ def mapControlsMenu():
                 if key == pygame.K_ESCAPE and changingKey is False:
                     run = False
                     break
+                # checking if player asked for resetting controls
                 if key == pygame.K_r and changingKey is False:
                     for i in range(0, 14):
                         controls[i] = defaultControls[i]
                         text[i] = font.render(pygame.key.name(controls[i]), True, (255, 255, 255))
                     break
+                # checking which volume to switch
+                if key == pygame.K_i and not changingKey:
+                        volumeMusic -= 0.1
+                        if volumeMusic < 0:
+                            volumeMusic = 0
+                        channel0.set_volume(volumeMusic)
+                        channel1.set_volume(volumeMusic)
+                if key == pygame.K_p and changingKey is False:
+                    volumeMusic += 0.1
+                    if volumeMusic > 1:
+                        volumeMusic = 1
+                    channel0.set_volume(volumeMusic)
+                    channel1.set_volume(volumeMusic)
+                if key == pygame.K_k and changingKey is False:
+                    volumeSounds -= 0.1
+                    if volumeSounds < 0:
+                        volumeSounds = 0
+                    channel2.set_volume(volumeSounds)
+                    channel3.set_volume(volumeSounds)
+                if key == pygame.K_m and changingKey is False:
+                    volumeSounds += 0.1
+                    if volumeSounds > 1:
+                        volumeSounds = 1
+                    channel2.set_volume(volumeSounds)
+                    channel3.set_volume(volumeSounds)
+                # checking where player is looking to go for
                 if (key == pygame.K_z or key == pygame.K_UP) and changingKey is False:
                     currentIndex = (currentIndex - 1) % len(rectangles)
                 elif key == pygame.K_s or key == pygame.K_DOWN and changingKey is False:
@@ -514,9 +558,11 @@ def mapControlsMenu():
                 elif key == pygame.K_d or key == pygame.K_RIGHT and changingKey is False:
                     if currentIndex < len(rectangles) / 2:
                         currentIndex += 7
+                # checking if player turns on mode to change a key
                 elif key == pygame.K_RETURN and changingKey is False:
                     changingKey = True
                     text[currentIndex] = font.render("...", True, (255, 255, 255))
+        # drawing all rectangles and texts
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
         for i in range(0, 14):
             if i == currentIndex and changingKey is False:
@@ -528,10 +574,34 @@ def mapControlsMenu():
         screen.blit(textJ1, (SCREEN_WIDTH / 4 - 50, SCREEN_HEIGHT / 2 - 400))
         screen.blit(textJ2, (SCREEN_WIDTH / 4 * 3 - 50, SCREEN_HEIGHT / 2 - 400))
         screen.blit(textReturn, (50, 50))
+        screen.blit(textMusic, (SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT - 75))
+        screen.blit(textI, (200, SCREEN_HEIGHT - 75))
+        screen.blit(textP, (SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT - 75))
+        screen.blit(textK, (SCREEN_WIDTH / 2 + 200, SCREEN_HEIGHT - 75))
+        screen.blit(textM, (SCREEN_WIDTH - 200, SCREEN_HEIGHT - 75))
         for i in range(0, 7):
-            screen.blit(textCommands[i], (SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 275 + i * 100))
+            screen.blit(textCommands[i], (SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 325 + i * 100))
         for i in range(0, 14):
             screen.blit(text[i], (rectangles[i].x + 50, rectangles[i].y + 25))
+        volumeMusicIndex = int(volumeMusic * 10)
+        volumeSoundIndex = int(volumeSounds * 10)
+        if volumeMusic == 0:
+            volumeMusicIndex = 0
+        if volumeSounds == 0:
+            volumeSoundIndex = 0
+        # drawing volume bars
+        for i in range(0, 20):
+            if i <= 9:
+                if i <= volumeMusicIndex:
+                    pygame.draw.rect(screen, (0, 255, 0), soundRectangles[i])
+                else:
+                    pygame.draw.rect(screen, (255, 255, 255), soundRectangles[i], 2)
+            else:
+                if i - 10 <= volumeSoundIndex:
+                    pygame.draw.rect(screen, (0, 255, 0), soundRectangles[i])
+                else:
+                    pygame.draw.rect(screen, (255, 255, 255), soundRectangles[i], 2)
+
         pygame.draw.rect(screen, (255, 255, 255), rectangleReset, 2)
         screen.blit(textReset, (rectangleReset.x + 50, rectangleReset.y + 25))
         pygame.display.update()

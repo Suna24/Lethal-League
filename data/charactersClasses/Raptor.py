@@ -1,7 +1,6 @@
-from abc import ABC
-
 from data.character import character
 import pygame
+
 
 # Raptor class inherits from character class
 # So we init the character class with the specific Raptor values

@@ -37,9 +37,9 @@ class Dice(character):
         self.attackMiddleRect = pygame.Rect(0, 0, 0, 0)
 
     def deployUltimate(self):
-        # his ultimate is used in player.py so it is not needed here
+        # his ultimate is used in player.py, so it is not needed here
         pass
 
     def resetUltimate(self):
-        # his ultimate is used in player.py so it is not needed here
+        # his ultimate is used in player.py, so it is not needed here
         pass
